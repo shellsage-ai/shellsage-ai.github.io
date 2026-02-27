@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://shellsage-ai.github.io/sitemap.xml

@@ -1,0 +1,232 @@
+[
+  {
+    "slug": "agent-skills-launch-pack",
+    "title": "Agent Skills Launch Pack",
+    "price": 29,
+    "currency": "USD",
+    "description": "10 production-ready AI agent skills: PR reviews, bug triage, API docs, test writing, refactor planning, changelog generation, dependency audits, onboarding guides, sales outreach, and daily standups. Works with OpenClaw, LangChain, AutoGPT, and any prompt-based agent runtime.",
+    "buy_url": "https://buy.stripe.com/aFaeVf2R31N45tpcPVdjO0A",
+    "gumroad_url": "https://jamiesupply.gumroad.com/l/gjvdi",
+    "product_page_url": "https://shellsage-ai.github.io/products/agent-skills-launch-pack/",
+    "category": "10 skills",
+    "tags": [
+      "10 Skills",
+      "AI Agent",
+      "Developer"
+    ],
+    "format": "digital-download",
+    "version": "1.0.0"
+  },
+  {
+    "slug": "first-10-customers-playbook",
+    "title": "First 10 Customers Playbook",
+    "price": 27,
+    "currency": "USD",
+    "description": "A step-by-step guide to landing your first 10 paying customers. Includes a Notion pipeline template, cold outreach message sequences, and follow-up scripts — tailored for developers and indie builders.",
+    "buy_url": "https://buy.stripe.com/fZueVf8bn77o0958zFdjO0n",
+    "gumroad_url": "https://jamiesupply.gumroad.com/l/oaeasu",
+    "product_page_url": "https://shellsage-ai.github.io/products/first-10-customers-playbook/",
+    "category": "playbook",
+    "tags": [
+      "Playbook",
+      "Growth",
+      "Freelancer"
+    ],
+    "format": "digital-download",
+    "version": "1.0.1"
+  },
+  {
+    "slug": "mcp-server-boilerplate-kit",
+    "title": "MCP Server Boilerplate Kit",
+    "price": 49,
+    "currency": "USD",
+    "description": "Production-ready Model Context Protocol server templates in TypeScript and Python. Docker setup, GitHub Actions CI, middleware, resource/tool scaffolding — ship your first MCP server in minutes.",
+    "buy_url": "https://buy.stripe.com/5kQfZj0IV0J0095cPVdjO0q",
+    "gumroad_url": "https://jamiesupply.gumroad.com/l/taboxe",
+    "product_page_url": "https://shellsage-ai.github.io/products/mcp-server-boilerplate-kit/",
+    "category": "typescript",
+    "tags": [
+      "TypeScript",
+      "Python",
+      "MCP"
+    ],
+    "format": "digital-download",
+    "version": "1.0.0"
+  },
+  {
+    "slug": "first-client-outbound-system",
+    "title": "First-Client Outbound System",
+    "price": 27,
+    "currency": "USD",
+    "description": "5-doc system to land your first 3 clients: niche scoring matrix, 20-site audit worksheet, email/LinkedIn/Reddit outreach scripts, AI-search visibility checklist, and follow-up cadence guide.",
+    "buy_url": "https://buy.stripe.com/cNifZjdvH3Vc1d92bhdjO0u",
+    "gumroad_url": "https://jamiesupply.gumroad.com/l/drpsf",
+    "product_page_url": "https://shellsage-ai.github.io/products/first-client-outbound-system/",
+    "category": "outbound",
+    "tags": [
+      "Outbound",
+      "Sales",
+      "Templates"
+    ],
+    "format": "digital-download",
+    "version": "1.0.0"
+  },
+  {
+    "slug": "off-platform-lead-engine-kit",
+    "title": "Off-Platform Lead Engine Kit",
+    "price": 27,
+    "currency": "USD",
+    "description": "Go direct-to-client: 5 niche offer templates, outbound audit workflow with Loom script, lightweight CRM tracker, follow-up cadences, and a profile-to-offer conversion checklist for Fiverr/Upwork sellers.",
+    "buy_url": "https://buy.stripe.com/fZu5kFcrD8bscVRdTZdjO0v",
+    "gumroad_url": "https://jamiesupply.gumroad.com/l/rilbj",
+    "product_page_url": "https://shellsage-ai.github.io/products/off-platform-lead-engine-kit/",
+    "category": "lead gen",
+    "tags": [
+      "Lead Gen",
+      "Direct Clients",
+      "Freelance"
+    ],
+    "format": "digital-download",
+    "version": "1.0.0"
+  },
+  {
+    "slug": "upwork-contract-safety-sop-pack",
+    "title": "Upwork Contract Safety SOP Pack",
+    "price": 19,
+    "currency": "USD",
+    "description": "4-doc SOP to protect every dollar you earn: pre-contract red flag checklist, client risk scoring sheet, hourly log template, and a dispute evidence bundle guide.",
+    "buy_url": "https://buy.stripe.com/fZuaEZ63fgHYbRN3fldjO0w",
+    "gumroad_url": "https://jamiesupply.gumroad.com/l/jluvd",
+    "product_page_url": "https://shellsage-ai.github.io/products/upwork-contract-safety-sop-pack/",
+    "category": "upwork",
+    "tags": [
+      "Upwork",
+      "Contract Safety",
+      "Freelance"
+    ],
+    "format": "digital-download",
+    "version": "1.0.0"
+  },
+  {
+    "slug": "claude-code-workflow-kit",
+    "title": "Claude Code Workflow & AGENTS.md Template Kit",
+    "price": 19,
+    "currency": "USD",
+    "description": "The complete Claude Code setup kit: 10 AGENTS.md templates, pre-configured .claude/ directories, 4 multi-agent orchestration patterns, and a workflow cheat sheet. Go from blank project to production-ready Claude Code config in minutes.",
+    "buy_url": "https://buy.stripe.com/cNi14pbnz4Zg9JF8zFdjO0x",
+    "gumroad_url": "https://jamiesupply.gumroad.com/l/sdgpj",
+    "product_page_url": "https://shellsage-ai.github.io/products/claude-code-workflow-kit/",
+    "category": "claude code",
+    "tags": [
+      "Claude Code",
+      "AGENTS.md",
+      "AI Workflow"
+    ],
+    "format": "digital-download",
+    "version": "1.0.0"
+  },
+  {
+    "slug": "agent-monitor-cli",
+    "title": "Agent Monitor CLI",
+    "price": 29,
+    "currency": "USD",
+    "description": "Lightweight monitoring for AI agents — action logs, failure alerts, cost tracking, and audit exports. Zero dependencies. Self-hosted. Built for indie devs running autonomous agents in production.",
+    "buy_url": "https://buy.stripe.com/28EaEZ9frbnEf3ZeY3djO0o",
+    "gumroad_url": "https://jamiesupply.gumroad.com/l/hfnafd",
+    "product_page_url": "https://shellsage-ai.github.io/products/agent-monitor-cli/",
+    "category": "ai agents",
+    "tags": [
+      "AI Agents",
+      "CLI",
+      "Observability"
+    ],
+    "format": "digital-download",
+    "version": "1.0.0"
+  },
+  {
+    "slug": "agent-deployment-checklist",
+    "title": "Agent Deployment Checklist & Runbook Kit",
+    "price": 19,
+    "currency": "USD",
+    "description": "Ship agents to production with confidence — 85-item checklists, runbooks for systemd/Docker/PM2/OpenClaw, alerting configs, and rollback procedures.",
+    "buy_url": "https://buy.stripe.com/3cIdRbdvH4ZgaNJbLRdjO0B",
+    "gumroad_url": "https://jamiesupply.gumroad.com/l/fyclb",
+    "product_page_url": "https://shellsage-ai.github.io/products/agent-deployment-checklist/",
+    "category": "devops",
+    "tags": [
+      "DevOps",
+      "Checklists",
+      "Runbooks"
+    ],
+    "format": "digital-download",
+    "version": "1.0.0"
+  },
+  {
+    "slug": "claude-code-cost-optimization",
+    "title": "Claude Code Cost Optimization Playbook",
+    "price": 14,
+    "currency": "USD",
+    "description": "Cut your Claude Code bill without cutting output — 7-chapter guide with optimized settings, lean AGENTS.md templates, cost tracker, and budget calculator.",
+    "buy_url": "https://buy.stripe.com/dRm8wR77j63kg832bhdjO0C",
+    "gumroad_url": "https://jamiesupply.gumroad.com/l/qmazow",
+    "product_page_url": "https://shellsage-ai.github.io/products/claude-code-cost-optimization/",
+    "category": "claude code",
+    "tags": [
+      "Claude Code",
+      "Cost",
+      "Optimization"
+    ],
+    "format": "digital-download",
+    "version": "1.0.0"
+  },
+  {
+    "slug": "agent-skill-builder-kit",
+    "title": "Agent Skill Builder Kit",
+    "price": 24,
+    "currency": "USD",
+    "description": "Build custom AI agent skills for any niche — starter templates, patterns, testing harness, and packaging tooling. The toolkit behind the Skills Launch Pack.",
+    "buy_url": "https://buy.stripe.com/28E6oJ63f4ZgcVR8zFdjO0D",
+    "gumroad_url": "https://jamiesupply.gumroad.com/l/rnvnq",
+    "product_page_url": "https://shellsage-ai.github.io/products/agent-skill-builder-kit/",
+    "category": "skills",
+    "tags": [
+      "Skills",
+      "Templates",
+      "Agent Dev"
+    ],
+    "format": "digital-download",
+    "version": "1.0.0"
+  },
+  {
+    "slug": "mcp-integration-cookbook",
+    "title": "MCP Integration Recipes Cookbook",
+    "price": 39,
+    "currency": "USD",
+    "description": "15 production-ready MCP server recipes in TypeScript: Slack, PostgreSQL, GitHub, Docker, Auth (JWT/OAuth), rate limiting, server chaining, error handling, and CI/CD.",
+    "buy_url": "https://buy.stripe.com/4gMbJ33V72R85tp6rxdjO0E",
+    "gumroad_url": "https://jamiesupply.gumroad.com/l/nmicq",
+    "product_page_url": "https://shellsage-ai.github.io/products/mcp-integration-cookbook/",
+    "category": "mcp",
+    "tags": [
+      "MCP",
+      "Recipes",
+      "TypeScript"
+    ],
+    "format": "digital-download",
+    "version": "1.0.0"
+  },
+  {
+    "slug": "agent-evals-starter-kit",
+    "title": "Agent Evals Starter Kit",
+    "price": 24,
+    "currency": "USD",
+    "description": "",
+    "buy_url": "https://buy.stripe.com/00w8wRfDP63kaNJg27djO0F",
+    "gumroad_url": "https://jamiesupply.gumroad.com/l/huyrx",
+    "product_page_url": "https://shellsage-ai.github.io/products/agent-evals-starter-kit/",
+    "category": "developer-tools",
+    "tags": [],
+    "format": "digital-download",
+    "version": "1.0.0"
+  }
+]

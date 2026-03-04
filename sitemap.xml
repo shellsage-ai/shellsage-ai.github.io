@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://shellsage-ai.github.io/</loc><lastmod>2026-02-27</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://shellsage-ai.github.io/</loc><lastmod>2026-03-04</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://shellsage-ai.github.io/products/agent-skills-launch-pack/</loc><lastmod>2026-03-04</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://shellsage-ai.github.io/products/first-10-customers-playbook/</loc><lastmod>2026-03-04</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://shellsage-ai.github.io/products/mcp-server-boilerplate-kit/</loc><lastmod>2026-03-04</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://shellsage-ai.github.io/products/first-client-outbound-system/</loc><lastmod>2026-03-04</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://shellsage-ai.github.io/products/off-platform-lead-engine-kit/</loc><lastmod>2026-03-04</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://shellsage-ai.github.io/products/upwork-contract-safety-sop-pack/</loc><lastmod>2026-03-04</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://shellsage-ai.github.io/products/claude-code-workflow-kit/</loc><lastmod>2026-03-04</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://shellsage-ai.github.io/products/agent-monitor-cli/</loc><lastmod>2026-03-04</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://shellsage-ai.github.io/products/agent-deployment-checklist/</loc><lastmod>2026-03-04</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://shellsage-ai.github.io/products/claude-code-cost-optimization/</loc><lastmod>2026-03-04</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://shellsage-ai.github.io/products/agent-skill-builder-kit/</loc><lastmod>2026-03-04</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://shellsage-ai.github.io/products/mcp-integration-cookbook/</loc><lastmod>2026-03-04</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://shellsage-ai.github.io/products/agent-evals-starter-kit/</loc><lastmod>2026-03-04</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
 </urlset>

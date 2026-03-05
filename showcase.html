@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ShellSage AI — The Machine</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:#06060a;color:#e4e4e7;width:1080px;margin:0 auto;padding:0;overflow-x:hidden}
+
+/* Gradient overlays */
+.glow-top{position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:800px;height:600px;background:radial-gradient(ellipse,rgba(249,115,22,0.12) 0%,transparent 70%);pointer-events:none;z-index:0}
+.glow-mid{position:absolute;top:1800px;right:-200px;width:600px;height:600px;background:radial-gradient(ellipse,rgba(59,130,246,0.08) 0%,transparent 70%);pointer-events:none;z-index:0}
+
+/* Hero */
+.hero{position:relative;text-align:center;padding:80px 60px 60px;overflow:hidden}
+.hero .badge{display:inline-block;font-size:11px;font-weight:700;color:#f97316;background:rgba(249,115,22,0.1);border:1px solid rgba(249,115,22,0.25);padding:6px 16px;border-radius:20px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:24px}
+.hero h1{font-size:64px;font-weight:900;letter-spacing:-2.5px;line-height:1.05;background:linear-gradient(135deg,#ffffff 0%,#a1a1aa 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:16px}
+.hero h1 span{background:linear-gradient(135deg,#f97316 0%,#ef4444 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero .sub{font-size:20px;color:#71717a;font-weight:500;max-width:700px;margin:0 auto;line-height:1.5}
+.hero .sub strong{color:#a1a1aa}
+
+/* Stats Bar */
+.stats-bar{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;margin:0 40px 60px;background:#18181b;border-radius:16px;overflow:hidden;border:1px solid #27272a}
+.stat{padding:28px 16px;text-align:center;background:#09090b}
+.stat .num{font-size:36px;font-weight:900;letter-spacing:-1px}
+.stat .num.orange{color:#f97316}
+.stat .num.blue{color:#3b82f6}
+.stat .num.green{color:#10b981}
+.stat .num.purple{color:#a78bfa}
+.stat .num.rose{color:#fb7185}
+.stat .label{font-size:10px;color:#52525b;text-transform:uppercase;letter-spacing:1.2px;margin-top:4px;font-weight:600}
+
+/* Section */
+.section{padding:40px 60px}
+.section-label{font-size:11px;font-weight:700;color:#f97316;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px}
+.section-title{font-size:36px;font-weight:800;letter-spacing:-1.2px;color:#fafafa;margin-bottom:8px}
+.section-desc{font-size:15px;color:#71717a;max-width:600px;line-height:1.6;margin-bottom:32px}
+
+/* Loop Diagram */
+.loops{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-bottom:40px}
+.loop-card{background:linear-gradient(180deg,#131318 0%,#0d0d12 100%);border:1px solid #1e1e26;border-radius:12px;padding:20px 12px;text-align:center;position:relative}
+.loop-card::after{content:'→';position:absolute;right:-10px;top:50%;transform:translateY(-50%);color:#27272a;font-size:16px;font-weight:700}
+.loop-card:last-child::after{content:''}
+.loop-num{font-size:28px;font-weight:900;margin-bottom:4px}
+.loop-num.l1{color:#f97316}
+.loop-num.l2{color:#eab308}
+.loop-num.l3{color:#22c55e}
+.loop-num.l4{color:#3b82f6}
+.loop-num.l5{color:#8b5cf6}
+.loop-num.l6{color:#ec4899}
+.loop-num.l7{color:#ef4444}
+.loop-name{font-size:10px;font-weight:700;color:#a1a1aa;text-transform:uppercase;letter-spacing:0.5px}
+.loop-time{font-size:9px;color:#52525b;margin-top:4px;font-family:monospace}
+
+/* Arrow connector bar */
+.loop-flow{text-align:center;margin:-20px 0 40px;font-size:11px;color:#52525b;font-weight:600;letter-spacing:1px}
+.loop-flow span{color:#f97316}
+
+/* Platform Grid */
+.plat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:40px}
+.plat-card{background:#0d0d12;border:1px solid #1e1e26;border-radius:12px;padding:20px;display:flex;align-items:center;gap:14px}
+.plat-card .p-icon{font-size:28px;flex-shrink:0}
+.plat-card .p-name{font-size:13px;font-weight:700;color:#e4e4e7}
+.plat-card .p-detail{font-size:11px;color:#52525b;margin-top:2px}
+.plat-card.active{border-color:#1a3a1a}
+.plat-card.active .p-name{color:#4ade80}
+
+/* Capability Cards */
+.cap-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:40px}
+.cap{background:linear-gradient(180deg,#131318 0%,#0a0a0f 100%);border:1px solid #1e1e26;border-radius:14px;padding:24px 20px}
+.cap .c-icon{font-size:32px;margin-bottom:12px}
+.cap .c-title{font-size:15px;font-weight:800;color:#fafafa;margin-bottom:6px}
+.cap .c-desc{font-size:12px;color:#71717a;line-height:1.5}
+.cap .c-stat{display:inline-block;font-size:10px;font-weight:700;color:#f97316;background:rgba(249,115,22,0.1);padding:3px 8px;border-radius:6px;margin-top:10px}
+
+/* Vision Section */
+.vision{margin:0 60px 40px;background:linear-gradient(135deg,#0f0a1a 0%,#0a0f1a 50%,#0a1a0f 100%);border:1px solid #1e1a2e;border-radius:20px;padding:48px 40px;position:relative;overflow:hidden}
+.vision::before{content:'';position:absolute;top:0;right:0;width:300px;height:300px;background:radial-gradient(circle,rgba(168,85,247,0.08) 0%,transparent 70%);pointer-events:none}
+.vision .v-label{font-size:11px;font-weight:700;color:#a78bfa;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px}
+.vision .v-title{font-size:32px;font-weight:900;letter-spacing:-1px;color:#fafafa;margin-bottom:20px}
+.vision-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.v-item{display:flex;gap:12px;align-items:flex-start}
+.v-item .v-icon{font-size:20px;flex-shrink:0;margin-top:2px}
+.v-item .v-text{font-size:13px;color:#a1a1aa;line-height:1.5}
+.v-item .v-text strong{color:#e4e4e7}
+
+/* Code block */
+.code-block{background:#0d0d12;border:1px solid #1e1e26;border-radius:12px;padding:24px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#71717a;line-height:1.8;margin-bottom:40px;overflow:hidden;position:relative}
+.code-block .comment{color:#3b3b4f}
+.code-block .key{color:#f97316}
+.code-block .val{color:#4ade80}
+.code-block .str{color:#3b82f6}
+.code-block .num{color:#a78bfa}
+
+/* Footer */
+.footer{text-align:center;padding:48px 60px 60px;border-top:1px solid #18181b}
+.footer .f-logo{font-size:24px;font-weight:900;letter-spacing:-1px;background:linear-gradient(135deg,#f97316,#ef4444);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
+.footer .f-url{font-size:13px;color:#52525b;font-family:monospace}
+.footer .f-tag{font-size:12px;color:#3f3f46;margin-top:12px;font-style:italic}
+
+/* Divider */
+.divider{height:1px;background:linear-gradient(90deg,transparent,#27272a,transparent);margin:20px 60px}
+</style>
+</head>
+<body>
+
+<div class="glow-top"></div>
+<div class="glow-mid"></div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="badge">Autonomous Revenue Engine</div>
+  <h1>One AI.<br><span>Entire Business.</span></h1>
+  <div class="sub">
+    An autonomous agent that <strong>discovers market opportunities</strong>,
+    <strong>builds products</strong>, <strong>publishes to 6 platforms</strong>,
+    <strong>writes marketing content</strong>, and <strong>handles distribution</strong>.
+    All while you sleep.
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat">
+    <div class="num orange">147+</div>
+    <div class="label">Production Tools</div>
+  </div>
+  <div class="stat">
+    <div class="num blue">23</div>
+    <div class="label">Automated Crons</div>
+  </div>
+  <div class="stat">
+    <div class="num green">13</div>
+    <div class="label">Products Live</div>
+  </div>
+  <div class="stat">
+    <div class="num purple">22</div>
+    <div class="label">Platforms</div>
+  </div>
+  <div class="stat">
+    <div class="num rose">7</div>
+    <div class="label">Daily Loops</div>
+  </div>
+</div>
+
+<!-- THE ENGINE -->
+<div class="section">
+  <div class="section-label">The Engine</div>
+  <div class="section-title">7 Loops. Every Day. Fully Autonomous.</div>
+  <div class="section-desc">Each morning at 8 AM, the engine wakes up. By 6 PM, it has scanned markets, evaluated opportunities, validated products, distributed to every platform, handled support, audited itself, and posted marketing content.</div>
+
+  <div class="loops">
+    <div class="loop-card">
+      <div class="loop-num l1">01</div>
+      <div class="loop-name">Discovery</div>
+      <div class="loop-time">8:00 AM</div>
+    </div>
+    <div class="loop-card">
+      <div class="loop-num l2">02</div>
+      <div class="loop-name">Production</div>
+      <div class="loop-time">10:00 AM</div>
+    </div>
+    <div class="loop-card">
+      <div class="loop-num l3">03</div>
+      <div class="loop-name">Validation</div>
+      <div class="loop-time">12:00 PM</div>
+    </div>
+    <div class="loop-card">
+      <div class="loop-num l4">04</div>
+      <div class="loop-name">Distribution</div>
+      <div class="loop-time">2:00 PM</div>
+    </div>
+    <div class="loop-card">
+      <div class="loop-num l5">05</div>
+      <div class="loop-name">Support</div>
+      <div class="loop-time">5:00 PM</div>
+    </div>
+    <div class="loop-card">
+      <div class="loop-num l6">06</div>
+      <div class="loop-name">Improvement</div>
+      <div class="loop-time">6:00 PM</div>
+    </div>
+    <div class="loop-card">
+      <div class="loop-num l7">07</div>
+      <div class="loop-name">Marketing</div>
+      <div class="loop-time">9:00 AM</div>
+    </div>
+  </div>
+
+  <div class="loop-flow"><span>Signal</span> → Opportunity → Product → Validation → Distribution → Marketing → <span>Revenue</span></div>
+</div>
+
+<div class="divider"></div>
+
+<!-- WHAT IT DOES TODAY -->
+<div class="section">
+  <div class="section-label">Right Now</div>
+  <div class="section-title">What It Does Today</div>
+  <div class="section-desc">Not a prototype. Not a demo. This is production infrastructure running 24/7 on a single Windows machine with a 3060 GPU.</div>
+
+  <div class="cap-grid">
+    <div class="cap">
+      <div class="c-icon">🔍</div>
+      <div class="c-title">Market Scanner</div>
+      <div class="c-desc">Monitors RSS feeds, blogs, and developer forums for emerging patterns. Scores opportunities by market gap, feasibility, and revenue potential.</div>
+      <div class="c-stat">248 feeds scanned daily</div>
+    </div>
+    <div class="cap">
+      <div class="c-icon">🏭</div>
+      <div class="c-title">Product Factory</div>
+      <div class="c-desc">Generates complete digital products: documentation, code templates, configuration files, cover art, thumbnails, and ZIP packages.</div>
+      <div class="c-stat">13 products shipped</div>
+    </div>
+    <div class="cap">
+      <div class="c-icon">🚀</div>
+      <div class="c-title">Multi-Platform Publish</div>
+      <div class="c-desc">One product, six platforms. Automatically creates listings on Stripe, Gumroad, Ko-fi, GitHub Releases, Lemon Squeezy, and our website.</div>
+      <div class="c-stat">6 platforms automated</div>
+    </div>
+    <div class="cap">
+      <div class="c-icon">🌐</div>
+      <div class="c-title">Browser Automation</div>
+      <div class="c-desc">Adaptive selector discovery with persistent caching, anti-detection, CAPTCHA solving, and self-healing when sites change their UI.</div>
+      <div class="c-stat">69 Playwright scripts</div>
+    </div>
+    <div class="cap">
+      <div class="c-icon">📣</div>
+      <div class="c-title">Content Engine</div>
+      <div class="c-desc">Writes and publishes blog posts (Hashnode, Dev.to), social media (Reddit, Twitter, LinkedIn, Pinterest), and email newsletters (Substack).</div>
+      <div class="c-stat">7 social platforms</div>
+    </div>
+    <div class="cap">
+      <div class="c-icon">🎬</div>
+      <div class="c-title">Video Pipeline</div>
+      <div class="c-desc">Records terminal demos, generates branded HTML overlay cards, composes segments into product videos. Fully automated, zero human editing.</div>
+      <div class="c-stat">5 production tools</div>
+    </div>
+    <div class="cap">
+      <div class="c-icon">🗄️</div>
+      <div class="c-title">Revenue Database</div>
+      <div class="c-desc">SQLite single source of truth. Tracks every product, every sale, every event, every price across all platforms. 573+ logged actions and growing.</div>
+      <div class="c-stat">8 tables, real-time sync</div>
+    </div>
+    <div class="cap">
+      <div class="c-icon">🛡️</div>
+      <div class="c-title">Self-Validation</div>
+      <div class="c-desc">Runs 114 automated tests across all products. Reconciles prices, verifies ZIP integrity, checks platform status, and flags drift before humans notice.</div>
+      <div class="c-stat">114 tests, all passing</div>
+    </div>
+    <div class="cap">
+      <div class="c-icon">🔧</div>
+      <div class="c-title">Self-Programming</div>
+      <div class="c-desc">Creates and improves its own tools. Built 147+ Node.js scripts, fixed its own bugs, added new capabilities, committed its own code.</div>
+      <div class="c-stat">147+ tools authored</div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- PLATFORMS -->
+<div class="section">
+  <div class="section-label">Distribution</div>
+  <div class="section-title">Publishes Everywhere. Automatically.</div>
+  <div class="section-desc">Every product gets pushed to every relevant platform. One commit triggers the entire distribution chain.</div>
+
+  <div class="plat-grid">
+    <div class="plat-card active">
+      <div class="p-icon">💳</div>
+      <div><div class="p-name">Stripe</div><div class="p-detail">Primary checkout, webhooks, auto-delivery</div></div>
+    </div>
+    <div class="plat-card active">
+      <div class="p-icon">🛒</div>
+      <div><div class="p-name">Gumroad</div><div class="p-detail">Marketplace discovery, built-in audience</div></div>
+    </div>
+    <div class="plat-card active">
+      <div class="p-icon">☕</div>
+      <div><div class="p-name">Ko-fi</div><div class="p-detail">Creator-friendly storefront</div></div>
+    </div>
+    <div class="plat-card active">
+      <div class="p-icon">🐙</div>
+      <div><div class="p-name">GitHub</div><div class="p-detail">Private repos, release ZIPs</div></div>
+    </div>
+    <div class="plat-card active">
+      <div class="p-icon">🌐</div>
+      <div><div class="p-name">Website</div><div class="p-detail">GitHub Pages, auto-rebuilt from DB</div></div>
+    </div>
+    <div class="plat-card active">
+      <div class="p-icon">📝</div>
+      <div><div class="p-name">Hashnode</div><div class="p-detail">SEO blog posts per product</div></div>
+    </div>
+    <div class="plat-card active">
+      <div class="p-icon">📰</div>
+      <div><div class="p-name">Dev.to</div><div class="p-detail">Developer community articles</div></div>
+    </div>
+    <div class="plat-card active">
+      <div class="p-icon">📌</div>
+      <div><div class="p-name">Pinterest</div><div class="p-detail">Visual discovery pins</div></div>
+    </div>
+    <div class="plat-card active">
+      <div class="p-icon">🐦</div>
+      <div><div class="p-name">Twitter/X</div><div class="p-detail">Daily posts, reply engagement</div></div>
+    </div>
+    <div class="plat-card active">
+      <div class="p-icon">💼</div>
+      <div><div class="p-name">LinkedIn</div><div class="p-detail">Professional presence, 3x/week</div></div>
+    </div>
+    <div class="plat-card active">
+      <div class="p-icon">🤖</div>
+      <div><div class="p-name">Reddit</div><div class="p-detail">Contextual comments, karma building</div></div>
+    </div>
+    <div class="plat-card active">
+      <div class="p-icon">📧</div>
+      <div><div class="p-name">Substack</div><div class="p-detail">Weekly newsletter automation</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ARCHITECTURE SUMMARY -->
+<div class="section">
+  <div class="section-label">Under the Hood</div>
+  <div class="section-title">The Stack</div>
+
+  <div class="code-block">
+    <span class="comment">// ShellSage Revenue Engine — Architecture</span><br><br>
+    <span class="key">agents</span>:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="num">2</span> <span class="comment">// main (strategy) + revenue (execution)</span><br>
+    <span class="key">cron_jobs</span>:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="num">23</span> <span class="comment">// 7 daily loops + 16 auxiliary tasks</span><br>
+    <span class="key">tools</span>:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="num">147</span> <span class="comment">// Node.js production scripts</span><br>
+    <span class="key">playwright</span>:&nbsp;&nbsp;&nbsp;&nbsp;<span class="num">69</span> <span class="comment">// browser automation scripts</span><br>
+    <span class="key">platforms</span>:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="num">22</span> <span class="comment">// sales, social, content, distribution</span><br>
+    <span class="key">database</span>:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="str">SQLite</span> <span class="comment">// single source of truth</span><br>
+    <span class="key">db_events</span>:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="num">573+</span> <span class="comment">// and counting</span><br>
+    <span class="key">host</span>:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="str">Windows 10</span> <span class="comment">// one machine, one GPU</span><br>
+    <span class="key">gpu</span>:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="str">RTX 3060 12GB</span> <span class="comment">// local inference</span><br>
+    <span class="key">models</span>:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="str">Copilot + Ollama</span> <span class="comment">// cloud primary, local fallback</span><br>
+    <span class="key">human_input</span>:&nbsp;&nbsp;&nbsp;<span class="val">minimal</span> <span class="comment">// operator approves, agent executes</span><br>
+  </div>
+</div>
+
+<!-- VISION -->
+<div class="vision">
+  <div class="v-label">The Vision</div>
+  <div class="v-title">13 Products Is Just the Start</div>
+  <div class="vision-grid">
+    <div class="v-item">
+      <div class="v-icon">📐</div>
+      <div class="v-text"><strong>Beyond Dev Tools.</strong> Notion templates, AI prompt packs, small business SOPs, research reports, mini-courses, creative asset bundles. The engine doesn't care what it builds. It cares about signal, validation, and distribution.</div>
+    </div>
+    <div class="v-item">
+      <div class="v-icon">🔁</div>
+      <div class="v-text"><strong>Compounding Flywheel.</strong> Every product feeds data back into the engine. What sells informs what to build next. What flops gets recycled. The system gets smarter with every cycle.</div>
+    </div>
+    <div class="v-item">
+      <div class="v-icon">📊</div>
+      <div class="v-text"><strong>Research-as-a-Service.</strong> A desktop research agent (ResearchHive) that generates deep market analysis reports. Sell the reports. Sell the tool. Sell the data.</div>
+    </div>
+    <div class="v-item">
+      <div class="v-icon">🤖</div>
+      <div class="v-text"><strong>Self-Sustaining AI.</strong> The goal: an AI business that pays for its own infrastructure. Discovers its own opportunities. Builds its own products. Funds its own compute.</div>
+    </div>
+    <div class="v-item">
+      <div class="v-icon">🎥</div>
+      <div class="v-text"><strong>Autonomous Video.</strong> Terminal recordings, branded overlays, product demos, all generated and published without a human touching a timeline. YouTube channel that runs itself.</div>
+    </div>
+    <div class="v-item">
+      <div class="v-icon">🌍</div>
+      <div class="v-text"><strong>Open Infrastructure.</strong> The skills powering this engine will be published to ClawHub. Other agents can use them. The platform grows. The ecosystem compounds.</div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="f-logo">ShellSage AI</div>
+  <div class="f-url">shellsage-ai.github.io</div>
+  <div class="f-tag">Built by an AI. Operated by a human. Scaling to an empire.</div>
+</div>
+
+</body>
+</html>

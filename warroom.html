@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ShellSage War Room</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#08080d;color:#e0e0e6;padding:12px;line-height:1.4;max-width:480px;margin:0 auto}
+
+/* Header */
+.hdr{text-align:center;padding:20px 12px 16px;margin-bottom:16px;background:linear-gradient(135deg,#0f1729 0%,#131a2e 100%);border-radius:16px;border:1px solid #1e2a4a}
+.hdr h1{font-size:20px;font-weight:800;background:linear-gradient(90deg,#f97316,#ef4444);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-0.5px}
+.hdr .sub{font-size:11px;color:#6b7280;margin-top:4px}
+.hdr .ts{font-size:10px;color:#4b5563;margin-top:6px;font-family:monospace}
+
+/* Revenue Hero */
+.hero{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.hero-card{background:#1a1a2e;border-radius:14px;border:1px solid #2a2a4a;padding:16px 12px;text-align:center;position:relative;overflow:hidden}
+.hero-card.rev{grid-column:1/3;background:linear-gradient(135deg,#1a0a0a 0%,#2a0a0a 100%);border-color:#3a1a1a}
+.hero-card .val{font-size:32px;font-weight:900;letter-spacing:-1px}
+.hero-card .val.red{color:#ef4444}
+.hero-card .val.green{color:#10b981}
+.hero-card .val.blue{color:#3b82f6}
+.hero-card .val.amber{color:#f59e0b}
+.hero-card .val.purple{color:#a78bfa}
+.hero-card .lbl{font-size:10px;color:#6b7280;text-transform:uppercase;letter-spacing:1px;margin-top:4px}
+.hero-card .detail{font-size:11px;color:#4b5563;margin-top:2px}
+.progress-bar{height:6px;background:#1f1f35;border-radius:3px;margin-top:8px;overflow:hidden}
+.progress-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,#ef4444,#f97316);transition:width 0.3s}
+
+/* Section */
+.sec{margin-bottom:16px}
+.sec-title{font-size:13px;font-weight:700;color:#f97316;margin-bottom:8px;padding-left:10px;border-left:3px solid #f97316;display:flex;align-items:center;gap:6px}
+.sec-title .count{background:#2a1a0a;color:#f97316;padding:1px 6px;border-radius:8px;font-size:10px}
+
+/* Product Cards */
+.prod{background:#12121e;border-radius:10px;border:1px solid #1e1e35;padding:10px 12px;margin-bottom:6px;display:flex;align-items:center;gap:10px}
+.prod .price{font-size:18px;font-weight:800;color:#10b981;min-width:40px;text-align:right}
+.prod .info{flex:1;min-width:0}
+.prod .name{font-size:12px;font-weight:600;color:#e0e0e6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prod .platforms{display:flex;gap:3px;margin-top:3px;flex-wrap:wrap}
+.prod .plat{font-size:9px;padding:1px 5px;border-radius:4px;font-weight:600}
+.plat.ok{background:#052e16;color:#4ade80}
+.plat.warn{background:#451a03;color:#fbbf24}
+.plat.dead{background:#450a0a;color:#f87171}
+.plat.na{background:#1f1f35;color:#6b7280}
+.prod .type-badge{font-size:8px;padding:1px 4px;border-radius:3px;background:#1e1b4b;color:#a5b4fc;font-weight:700;margin-left:4px}
+.prod .sale-badge{font-size:8px;padding:1px 4px;border-radius:3px;background:#052e16;color:#4ade80;font-weight:700;margin-left:auto;white-space:nowrap}
+
+/* Cron Grid */
+.cron-grid{display:grid;grid-template-columns:1fr;gap:4px}
+.cron{background:#12121e;border-radius:8px;border:1px solid #1e1e35;padding:8px 10px;display:flex;align-items:center;gap:8px}
+.cron .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.dot.green{background:#10b981;box-shadow:0 0 6px #10b981}
+.dot.yellow{background:#f59e0b;box-shadow:0 0 6px #f59e0b}
+.dot.red{background:#ef4444;box-shadow:0 0 6px #ef4444}
+.dot.gray{background:#4b5563}
+.dot.blue{background:#3b82f6;box-shadow:0 0 6px #3b82f6}
+.cron .cname{font-size:11px;font-weight:600;color:#d1d5db;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cron .ctime{font-size:10px;color:#6b7280;font-family:monospace;white-space:nowrap}
+.cron .cdur{font-size:9px;color:#4b5563;font-family:monospace}
+
+/* Platform Health */
+.plat-row{display:flex;align-items:center;gap:8px;padding:8px 10px;background:#12121e;border-radius:8px;border:1px solid #1e1e35;margin-bottom:4px}
+.plat-row .plat-icon{font-size:16px;flex-shrink:0}
+.plat-row .plat-name{font-size:12px;font-weight:600;color:#d1d5db;flex:1}
+.plat-row .plat-stat{font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px}
+.plat-stat.live{background:#052e16;color:#4ade80}
+.plat-stat.partial{background:#451a03;color:#fbbf24}
+.plat-stat.down{background:#450a0a;color:#f87171}
+.plat-row .plat-count{font-size:10px;color:#6b7280;margin-left:4px}
+
+/* Social/Marketing */
+.social-row{display:flex;align-items:center;gap:8px;padding:8px 10px;background:#12121e;border-radius:8px;border:1px solid #1e1e35;margin-bottom:4px}
+.social-row .s-icon{font-size:14px;flex-shrink:0}
+.social-row .s-info{flex:1}
+.social-row .s-name{font-size:11px;font-weight:600;color:#d1d5db}
+.social-row .s-detail{font-size:10px;color:#6b7280}
+.social-row .s-stat{font-size:13px;font-weight:800;color:#a5b4fc}
+
+/* PR Status */
+.pr{display:flex;align-items:center;gap:8px;padding:8px 10px;background:#12121e;border-radius:8px;border:1px solid #1e1e35;margin-bottom:4px}
+.pr .pr-status{font-size:9px;font-weight:700;padding:2px 6px;border-radius:4px}
+.pr-status.open{background:#052e16;color:#4ade80}
+.pr-status.closed{background:#450a0a;color:#f87171}
+.pr-status.merged{background:#1e1b4b;color:#a5b4fc}
+.pr .pr-name{font-size:11px;color:#d1d5db;flex:1}
+
+/* Timeline */
+.timeline{position:relative;padding-left:16px}
+.timeline::before{content:'';position:absolute;left:3px;top:0;bottom:0;width:2px;background:#1e1e35}
+.tl-item{position:relative;padding:6px 0 6px 12px;font-size:11px}
+.tl-item::before{content:'';position:absolute;left:-3px;top:10px;width:8px;height:8px;border-radius:50%;background:#3b82f6;border:2px solid #08080d}
+.tl-item.sale::before{background:#10b981}
+.tl-item.error::before{background:#ef4444}
+.tl-item.social::before{background:#a78bfa}
+.tl-item.platform::before{background:#f59e0b}
+.tl-time{color:#6b7280;font-family:monospace;font-size:10px}
+.tl-text{color:#d1d5db}
+
+/* Alerts */
+.alert{background:#2a0a0a;border:1px solid #5a1a1a;border-radius:10px;padding:10px 12px;margin-bottom:6px}
+.alert .a-title{font-size:11px;font-weight:700;color:#f87171}
+.alert .a-text{font-size:10px;color:#d49999;margin-top:2px}
+.alert-amber{background:#2a1a0a;border-color:#5a3a1a}
+.alert-amber .a-title{color:#fbbf24}
+.alert-amber .a-text{color:#d4a944}
+
+/* Footer */
+.footer{text-align:center;padding:16px;font-size:10px;color:#333}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <h1>🔥 WAR ROOM</h1>
+  <div class="sub">ShellSage Revenue Engine — Live Status</div>
+  <div class="ts">Snapshot: March 5, 2026 — 3:30 PM MST</div>
+</div>
+
+<!-- REVENUE HERO -->
+<div class="hero">
+  <div class="hero-card rev">
+    <div class="val red">$0</div>
+    <div class="lbl">Real Revenue</div>
+    <div class="detail">$19 test sale refunded — zero actual income</div>
+    <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+    <div class="detail" style="margin-top:4px">$0 / $400 breakeven (0%)</div>
+  </div>
+  <div class="hero-card">
+    <div class="val green">13</div>
+    <div class="lbl">Products Live</div>
+    <div class="detail">5 software, 8 templates</div>
+  </div>
+  <div class="hero-card">
+    <div class="val blue">23</div>
+    <div class="lbl">Cron Jobs</div>
+    <div class="detail">14 active, 4 never ran, 3 gate-skip, 2 not-delivered</div>
+  </div>
+  <div class="hero-card">
+    <div class="val amber">147+</div>
+    <div class="lbl">Tools Built</div>
+    <div class="detail">Node.js production scripts</div>
+  </div>
+  <div class="hero-card">
+    <div class="val purple">573</div>
+    <div class="lbl">DB Events</div>
+    <div class="detail">Total logged actions</div>
+  </div>
+</div>
+
+<!-- CRITICAL ALERTS -->
+<div class="sec">
+  <div class="sec-title">⚠️ Active Alerts <span class="count">6</span></div>
+  <div class="alert">
+    <div class="a-title">💀 $0 REAL REVENUE — Day 9</div>
+    <div class="a-text">~$400 invested. Test $19 refunded. Need ~15 sales to break even. Zero conversions from any channel.</div>
+  </div>
+  <div class="alert">
+    <div class="a-title">🐦 Twitter: 9 Logged, 0 Confirmed Live</div>
+    <div class="a-text">9 tweets in posts-log since Mar 2. Session was expired. Encoding corruption in entries. Jamie can't see them on profile.</div>
+  </div>
+  <div class="alert alert-amber">
+    <div class="a-title">👻 5 Ghost Products on Gumroad — Day 5</div>
+    <div class="a-text">Empty bundle listings still live. All URLs 404. Compliance risk.</div>
+  </div>
+  <div class="alert alert-amber">
+    <div class="a-title">🍋 Lemon Squeezy Fully Dead</div>
+    <div class="a-text">All 13 URLs 404. TEST MODE. KYC pending response. Wrong prices ($9.99).</div>
+  </div>
+  <div class="alert alert-amber">
+    <div class="a-title">🔗 GitHub Release URLs — 11/11 Stale</div>
+    <div class="a-text">Release URLs in DB return 404. Repos are private (correct) but links need updating.</div>
+  </div>
+  <div class="alert alert-amber">
+    <div class="a-title">🤖 Ollama Down</div>
+    <div class="a-text">Returned 404 on all 21 Reddit reply attempts during Loop 7 Mar 5 run. Blocks fallback generation.</div>
+  </div>
+</div>
+
+<!-- PRODUCTS -->
+<div class="sec">
+  <div class="sec-title">📦 Product Catalog <span class="count">13</span></div>
+
+  <div class="prod">
+    <div class="price">$49</div>
+    <div class="info">
+      <div class="name">MCP Server Boilerplate Kit <span class="type-badge">SOFTWARE</span></div>
+      <div class="platforms">
+        <span class="plat ok">Stripe</span>
+        <span class="plat ok">Gumroad</span>
+        <span class="plat ok">Ko-fi</span>
+        <span class="plat ok">GitHub</span>
+        <span class="plat dead">LemonSq</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="prod">
+    <div class="price">$39</div>
+    <div class="info">
+      <div class="name">MCP Integration Cookbook</div>
+      <div class="platforms">
+        <span class="plat ok">Stripe</span>
+        <span class="plat ok">Gumroad</span>
+        <span class="plat ok">Ko-fi</span>
+        <span class="plat ok">GitHub</span>
+        <span class="plat dead">LemonSq</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="prod">
+    <div class="price">$29</div>
+    <div class="info">
+      <div class="name">Agent Skills Launch Pack</div>
+      <div class="platforms">
+        <span class="plat warn">Stripe ⚠️</span>
+        <span class="plat ok">Gumroad</span>
+        <span class="plat ok">Ko-fi</span>
+        <span class="plat ok">GitHub</span>
+        <span class="plat dead">LemonSq</span>
+      </div>
+    </div>
+    <div class="detail" style="font-size:9px;color:#fbbf24">Stripe link is TEST mode</div>
+  </div>
+
+  <div class="prod">
+    <div class="price">$29</div>
+    <div class="info">
+      <div class="name">Agent Monitor CLI <span class="type-badge">SOFTWARE</span></div>
+      <div class="platforms">
+        <span class="plat ok">Stripe</span>
+        <span class="plat ok">Gumroad</span>
+        <span class="plat ok">Ko-fi</span>
+        <span class="plat ok">GitHub</span>
+        <span class="plat dead">LemonSq</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="prod">
+    <div class="price">$27</div>
+    <div class="info">
+      <div class="name">First 10 Customers Playbook</div>
+      <div class="platforms">
+        <span class="plat ok">Stripe</span>
+        <span class="plat ok">Gumroad</span>
+        <span class="plat ok">Ko-fi</span>
+        <span class="plat ok">GitHub</span>
+        <span class="plat dead">LemonSq</span>
+      </div>
+    </div>
+    <div class="sale-badge">1 SALE ✓</div>
+  </div>
+
+  <div class="prod">
+    <div class="price">$27</div>
+    <div class="info">
+      <div class="name">First-Client Outbound System</div>
+      <div class="platforms">
+        <span class="plat ok">Stripe</span>
+        <span class="plat ok">Gumroad</span>
+        <span class="plat ok">Ko-fi</span>
+        <span class="plat ok">GitHub</span>
+        <span class="plat dead">LemonSq</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="prod">
+    <div class="price">$27</div>
+    <div class="info">
+      <div class="name">Off-Platform Lead Engine Kit</div>
+      <div class="platforms">
+        <span class="plat ok">Stripe</span>
+        <span class="plat ok">Gumroad</span>
+        <span class="plat ok">Ko-fi</span>
+        <span class="plat ok">GitHub</span>
+        <span class="plat dead">LemonSq</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="prod">
+    <div class="price">$24</div>
+    <div class="info">
+      <div class="name">Agent Skill Builder Kit</div>
+      <div class="platforms">
+        <span class="plat ok">Stripe</span>
+        <span class="plat ok">Gumroad</span>
+        <span class="plat ok">Ko-fi</span>
+        <span class="plat ok">GitHub</span>
+        <span class="plat dead">LemonSq</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="prod">
+    <div class="price">$24</div>
+    <div class="info">
+      <div class="name">Agent Evals Starter Kit <span class="type-badge">SOFTWARE</span></div>
+      <div class="platforms">
+        <span class="plat ok">Stripe</span>
+        <span class="plat ok">Gumroad</span>
+        <span class="plat ok">Ko-fi</span>
+        <span class="plat na">GitHub —</span>
+        <span class="plat dead">LemonSq</span>
+      </div>
+    </div>
+    <div class="detail" style="font-size:9px;color:#6b7280">Missing GH release (Day 4)</div>
+  </div>
+
+  <div class="prod">
+    <div class="price">$19</div>
+    <div class="info">
+      <div class="name">Upwork Contract Safety SOP Pack</div>
+      <div class="platforms">
+        <span class="plat ok">Stripe</span>
+        <span class="plat ok">Gumroad</span>
+        <span class="plat ok">Ko-fi</span>
+        <span class="plat ok">GitHub</span>
+        <span class="plat dead">LemonSq</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="prod">
+    <div class="price">$19</div>
+    <div class="info">
+      <div class="name">Claude Code Workflow Kit <span class="type-badge">SOFTWARE</span></div>
+      <div class="platforms">
+        <span class="plat ok">Stripe</span>
+        <span class="plat ok">Gumroad</span>
+        <span class="plat ok">Ko-fi</span>
+        <span class="plat warn">GitHub ⚠️</span>
+        <span class="plat dead">LemonSq</span>
+      </div>
+    </div>
+    <div class="detail" style="font-size:9px;color:#fbbf24">Repo PUBLIC with paid ZIP attached</div>
+  </div>
+
+  <div class="prod">
+    <div class="price">$19</div>
+    <div class="info">
+      <div class="name">Agent Deployment Checklist <span class="type-badge">SOFTWARE</span></div>
+      <div class="platforms">
+        <span class="plat ok">Stripe</span>
+        <span class="plat ok">Gumroad</span>
+        <span class="plat ok">Ko-fi</span>
+        <span class="plat ok">GitHub</span>
+        <span class="plat dead">LemonSq</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="prod">
+    <div class="price">$14</div>
+    <div class="info">
+      <div class="name">Claude Code Cost Optimization</div>
+      <div class="platforms">
+        <span class="plat ok">Stripe</span>
+        <span class="plat ok">Gumroad</span>
+        <span class="plat ok">Ko-fi</span>
+        <span class="plat ok">GitHub</span>
+        <span class="plat dead">LemonSq</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CRON STATUS -->
+<div class="sec">
+  <div class="sec-title">⏰ Cron Jobs — Today <span class="count">23 total</span></div>
+  <div class="cron-grid">
+    <!-- Core Loops -->
+    <div class="cron">
+      <div class="dot green"></div>
+      <div class="cname">Loop 1 — Discovery</div>
+      <div class="ctime">9:01 AM</div>
+      <div class="cdur">3m37s</div>
+    </div>
+    <div class="cron">
+      <div class="dot green"></div>
+      <div class="cname">Loop 2 — Productization</div>
+      <div class="ctime">10:00 AM</div>
+      <div class="cdur">1m44s</div>
+    </div>
+    <div class="cron">
+      <div class="dot green"></div>
+      <div class="cname">Loop 7 — Reddit Marketing</div>
+      <div class="ctime">10:05 AM</div>
+      <div class="cdur">2m38s</div>
+    </div>
+    <div class="cron">
+      <div class="dot green"></div>
+      <div class="cname">Loop 3 — Validation</div>
+      <div class="ctime">12:00 PM</div>
+      <div class="cdur">2m04s</div>
+    </div>
+    <div class="cron">
+      <div class="dot green"></div>
+      <div class="cname">Twitter Daily Post (P7-B)</div>
+      <div class="ctime">11:00 AM</div>
+      <div class="cdur">1m02s</div>
+    </div>
+    <div class="cron">
+      <div class="dot blue"></div>
+      <div class="cname">Twitter Reply Check (P7-B)</div>
+      <div class="ctime">1:30 PM</div>
+      <div class="cdur">27s ⚡ not-delivered</div>
+    </div>
+    <div class="cron">
+      <div class="dot green"></div>
+      <div class="cname">Loop 4 — Sales & Distribution</div>
+      <div class="ctime">2:00 PM</div>
+      <div class="cdur">37s</div>
+    </div>
+    <div class="cron">
+      <div class="dot green"></div>
+      <div class="cname">P2-D: Buyer Follow-up</div>
+      <div class="ctime">9:09 AM</div>
+      <div class="cdur">26s</div>
+    </div>
+    <div class="cron">
+      <div class="dot green"></div>
+      <div class="cname">P5-C: Lifecycle Audit</div>
+      <div class="ctime">9:10 AM</div>
+      <div class="cdur">15s</div>
+    </div>
+
+    <!-- Pending today -->
+    <div class="cron" style="opacity:0.5">
+      <div class="dot gray"></div>
+      <div class="cname">Loop 5 — Support</div>
+      <div class="ctime">5:00 PM ⏳</div>
+      <div class="cdur">pending</div>
+    </div>
+    <div class="cron" style="opacity:0.5">
+      <div class="dot gray"></div>
+      <div class="cname">Loop 6 — Daily Snapshot</div>
+      <div class="ctime">6:00 PM ⏳</div>
+      <div class="cdur">pending</div>
+    </div>
+    <div class="cron" style="opacity:0.5">
+      <div class="dot gray"></div>
+      <div class="cname">P3-C: Reddit Engagement</div>
+      <div class="ctime">6:00 PM ⏳</div>
+      <div class="cdur">pending</div>
+    </div>
+
+    <!-- Never ran -->
+    <div class="cron" style="opacity:0.3">
+      <div class="dot red"></div>
+      <div class="cname">Reddit Contributor (P1-A)</div>
+      <div class="ctime">—</div>
+      <div class="cdur">never ran</div>
+    </div>
+    <div class="cron" style="opacity:0.3">
+      <div class="dot red"></div>
+      <div class="cname">Indie Hackers Weekly (P6-C)</div>
+      <div class="ctime">—</div>
+      <div class="cdur">never ran</div>
+    </div>
+    <div class="cron" style="opacity:0.3">
+      <div class="dot red"></div>
+      <div class="cname">Substack Newsletter (P7-D)</div>
+      <div class="ctime">—</div>
+      <div class="cdur">never ran</div>
+    </div>
+    <div class="cron" style="opacity:0.3">
+      <div class="dot red"></div>
+      <div class="cname">LinkedIn Post 3x/wk (P8-B)</div>
+      <div class="ctime">—</div>
+      <div class="cdur">never ran</div>
+    </div>
+
+    <!-- Gate checks -->
+    <div class="cron" style="opacity:0.4">
+      <div class="dot yellow"></div>
+      <div class="cname">P9-A: Membership Gate</div>
+      <div class="ctime">Mon</div>
+      <div class="cdur">skipped</div>
+    </div>
+    <div class="cron" style="opacity:0.4">
+      <div class="dot yellow"></div>
+      <div class="cname">P9-B: Dashboard Deploy Gate</div>
+      <div class="ctime">Tue</div>
+      <div class="cdur">skipped</div>
+    </div>
+    <div class="cron" style="opacity:0.4">
+      <div class="dot yellow"></div>
+      <div class="cname">P9-C: MCP Subscription Gate</div>
+      <div class="ctime">Wed</div>
+      <div class="cdur">skipped</div>
+    </div>
+  </div>
+</div>
+
+<!-- PLATFORM HEALTH -->
+<div class="sec">
+  <div class="sec-title">🌐 Platform Health</div>
+  <div class="plat-row">
+    <div class="plat-icon">💳</div>
+    <div class="plat-name">Stripe</div>
+    <div class="plat-stat live">LIVE</div>
+    <div class="plat-count">13 products (1 in test mode)</div>
+  </div>
+  <div class="plat-row">
+    <div class="plat-icon">🛒</div>
+    <div class="plat-name">Gumroad</div>
+    <div class="plat-stat partial">PARTIAL</div>
+    <div class="plat-count">13 live + 5 ghost bundles (404)</div>
+  </div>
+  <div class="plat-row">
+    <div class="plat-icon">☕</div>
+    <div class="plat-name">Ko-fi</div>
+    <div class="plat-stat live">LIVE</div>
+    <div class="plat-count">13 products, images updated today</div>
+  </div>
+  <div class="plat-row">
+    <div class="plat-icon">🐙</div>
+    <div class="plat-name">GitHub</div>
+    <div class="plat-stat partial">PARTIAL</div>
+    <div class="plat-count">13 repos private, 11 release URLs stale</div>
+  </div>
+  <div class="plat-row">
+    <div class="plat-icon">🍋</div>
+    <div class="plat-name">Lemon Squeezy</div>
+    <div class="plat-stat down">DEAD</div>
+    <div class="plat-count">All 13 URLs 404, TEST MODE, KYC pending</div>
+  </div>
+  <div class="plat-row">
+    <div class="plat-icon">🌐</div>
+    <div class="plat-name">Website</div>
+    <div class="plat-stat live">LIVE</div>
+    <div class="plat-count">shellsage-ai.github.io — 13 cards</div>
+  </div>
+</div>
+
+<!-- MARKETING & SOCIAL -->
+<div class="sec">
+  <div class="sec-title">📣 Marketing & Social</div>
+
+  <div class="social-row">
+    <div class="s-icon">🤖</div>
+    <div class="s-info">
+      <div class="s-name">Reddit (u/ShellSageAI)</div>
+      <div class="s-detail">8 comments total (5 bot, 3 Jamie) — Karma phase until Mar 21</div>
+    </div>
+    <div class="s-stat">8</div>
+  </div>
+
+  <div class="social-row">
+    <div class="s-icon">🐦</div>
+    <div class="s-info">
+      <div class="s-name">Twitter (@ShellSageAI)</div>
+      <div class="s-detail">9 tweets LOGGED since Mar 2 — unverified if live. Session expired.</div>
+    </div>
+    <div class="s-stat" style="color:#f87171">?</div>
+  </div>
+
+  <div class="social-row">
+    <div class="s-icon">📝</div>
+    <div class="s-info">
+      <div class="s-name">Hashnode</div>
+      <div class="s-detail">9 articles published — 29 reactions with ZERO promotion</div>
+    </div>
+    <div class="s-stat">29</div>
+  </div>
+
+  <div class="social-row">
+    <div class="s-icon">📰</div>
+    <div class="s-info">
+      <div class="s-name">Dev.to</div>
+      <div class="s-detail">13 articles published — 0 reactions</div>
+    </div>
+    <div class="s-stat" style="color:#f87171">0</div>
+  </div>
+
+  <div class="social-row">
+    <div class="s-icon">📌</div>
+    <div class="s-info">
+      <div class="s-name">Pinterest</div>
+      <div class="s-detail">18 pins published across boards</div>
+    </div>
+    <div class="s-stat">18</div>
+  </div>
+
+  <div class="social-row">
+    <div class="s-icon">💼</div>
+    <div class="s-info">
+      <div class="s-name">LinkedIn</div>
+      <div class="s-detail">Profile updated today (Jamie Thompson) — 2 posts published</div>
+    </div>
+    <div class="s-stat">2</div>
+  </div>
+
+  <div class="social-row">
+    <div class="s-icon">📧</div>
+    <div class="s-info">
+      <div class="s-name">Substack</div>
+      <div class="s-detail">6 newsletters sent — subscriber count unknown</div>
+    </div>
+    <div class="s-stat">6</div>
+  </div>
+</div>
+
+<!-- OPEN PRs -->
+<div class="sec">
+  <div class="sec-title">🔀 Awesome-List PRs</div>
+  <div class="pr">
+    <span class="pr-status open">OPEN</span>
+    <span class="pr-name">awesome-mcp-servers #2541</span>
+  </div>
+  <div class="pr">
+    <span class="pr-status open">OPEN</span>
+    <span class="pr-name">awesome-claude-skills #288</span>
+  </div>
+  <div class="pr">
+    <span class="pr-status closed">CLOSED</span>
+    <span class="pr-name">awesome-claude-code #892 (rejected)</span>
+  </div>
+  <div class="pr">
+    <span class="pr-status closed">CLOSED</span>
+    <span class="pr-name">awesome-claude-code-subagents #89</span>
+  </div>
+</div>
+
+<!-- TODAY'S TIMELINE -->
+<div class="sec">
+  <div class="sec-title">📅 Today's Activity</div>
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-time">12:22 AM</div>
+      <div class="tl-text">Video demos recorded (7 attempts overnight)</div>
+    </div>
+    <div class="tl-item social">
+      <div class="tl-time">4:26 AM</div>
+      <div class="tl-text">Reddit engagement tracked — claude-code-workflow-kit</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-time">9:01 AM</div>
+      <div class="tl-text">Loop 1 Discovery — 9 signals, 1 promoted (OPP-018: MCP Beginner Kit)</div>
+    </div>
+    <div class="tl-item platform">
+      <div class="tl-time">9:18 AM</div>
+      <div class="tl-text">LinkedIn profile setup started (jelly8675309@gmail.com)</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-time">10:00 AM</div>
+      <div class="tl-text">Loop 2 Productization — 7 candidates all DEFERRED (Week 2 mandate)</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-time">10:05 AM</div>
+      <div class="tl-text">Loop 7 Reddit — 1 comment posted on r/SideProject</div>
+    </div>
+    <div class="tl-item social">
+      <div class="tl-time">11:00 AM</div>
+      <div class="tl-text">Twitter Daily Post logged — "Ever feel like AI tools..."</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-time">12:00 PM</div>
+      <div class="tl-text">Loop 3 Validation — 0 new candidates, all 13 pass</div>
+    </div>
+    <div class="tl-item platform">
+      <div class="tl-time">12:41 PM</div>
+      <div class="tl-text">New tools: browser-lock.js, render-table-image.js, kofi-update-images.js</div>
+    </div>
+    <div class="tl-item platform">
+      <div class="tl-time">3:39 PM</div>
+      <div class="tl-text">LinkedIn profile update attempts (8x, multiple timeouts, eventually success)</div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-time">2:00 PM</div>
+      <div class="tl-text">Loop 4 Sales — ran 37s (nothing to distribute)</div>
+    </div>
+    <div class="tl-item platform">
+      <div class="tl-time">1:18 PM</div>
+      <div class="tl-text">Ko-fi images replaced — 13 products updated to square 1000x1000</div>
+    </div>
+  </div>
+</div>
+
+<!-- OPPORTUNITY QUEUE -->
+<div class="sec">
+  <div class="sec-title">🎯 Week 3 Build Queue</div>
+  <div class="prod" style="border-left:3px solid #f97316">
+    <div class="price" style="color:#f97316;font-size:14px">8.25</div>
+    <div class="info">
+      <div class="name">OPP-012 (highest score — details in discovery log)</div>
+      <div class="platforms"><span class="plat warn">DEFERRED — Week 2 mandate</span></div>
+    </div>
+  </div>
+  <div class="prod" style="border-left:3px solid #f59e0b">
+    <div class="price" style="color:#f59e0b;font-size:14px">7.75</div>
+    <div class="info">
+      <div class="name">OPP-014 — MCP Registry Publishing Guide</div>
+      <div class="platforms"><span class="plat warn">DEFERRED — upgraded from 7.25</span></div>
+    </div>
+  </div>
+  <div class="prod" style="border-left:3px solid #fbbf24">
+    <div class="price" style="color:#fbbf24;font-size:14px">7.25</div>
+    <div class="info">
+      <div class="name">OPP-018 — MCP Beginner-to-Intermediate Upgrade Kit</div>
+      <div class="platforms"><span class="plat warn">NEW TODAY — Microsoft beginner funnel signal</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- SYSTEM HEALTH -->
+<div class="sec">
+  <div class="sec-title">🖥️ System</div>
+  <div class="plat-row">
+    <div class="plat-icon">💻</div>
+    <div class="plat-name">Host: DoubleZero</div>
+    <div class="plat-stat live">UP</div>
+    <div class="plat-count">Win 10, 3060 12GB, 64GB DDR4</div>
+  </div>
+  <div class="plat-row">
+    <div class="plat-icon">🤖</div>
+    <div class="plat-name">OpenClaw Gateway</div>
+    <div class="plat-stat live">OK</div>
+    <div class="plat-count">2 agents (main + revenue)</div>
+  </div>
+  <div class="plat-row">
+    <div class="plat-icon">🧠</div>
+    <div class="plat-name">Ollama</div>
+    <div class="plat-stat down">DOWN</div>
+    <div class="plat-count">404 on all 21 reply attempts today</div>
+  </div>
+  <div class="plat-row">
+    <div class="plat-icon">🔑</div>
+    <div class="plat-name">Copilot Token</div>
+    <div class="plat-stat live">OK</div>
+    <div class="plat-count">Watchdog auto-refresh active</div>
+  </div>
+  <div class="plat-row">
+    <div class="plat-icon">🗄️</div>
+    <div class="plat-name">Revenue DB</div>
+    <div class="plat-stat live">OK</div>
+    <div class="plat-count">573 events, 13 products, 1 sale</div>
+  </div>
+</div>
+
+<!-- BOTTOM LINE -->
+<div style="background:linear-gradient(135deg,#1a0505,#2a0a0a);border:1px solid #5a1a1a;border-radius:14px;padding:16px;text-align:center;margin-top:12px">
+  <div style="font-size:12px;color:#f87171;font-weight:700;text-transform:uppercase;letter-spacing:1px">Bottom Line</div>
+  <div style="font-size:22px;font-weight:900;color:#ef4444;margin:8px 0">$400 in. $0 out.</div>
+  <div style="font-size:11px;color:#d49999;line-height:1.6">
+    Infrastructure is impressive. Distribution is live on 4 platforms.<br>
+    But zero humans have paid for anything.<br>
+    Traffic is the only problem that matters.
+  </div>
+  <div style="margin-top:10px;font-size:10px;color:#6b5050">
+    Breakeven: ~9x MCP Kit ($49) or ~15x Playbook ($27) or ~29x Cost Optimization ($14)
+  </div>
+</div>
+
+<div class="footer">
+  ShellSage War Room — Generated by ShellSage (main agent)<br>
+  Data from: revenue.db, cron.json, get-state.js, posts-log.json, twitter-posts-log.json<br>
+  File: workspace/warroom.html — does not touch any project files
+</div>
+
+</body>
+</html>

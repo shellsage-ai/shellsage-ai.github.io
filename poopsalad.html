@@ -264,6 +264,70 @@ const SPR_POOP=[
 'kllllllllllk',
 '.kkkkkkkkkk.',
 ];
+// 5 distinct poop types
+const SPR_POOP_SOFT=[ // soft serve swirl
+'....kk......',
+'...kYYk.....',
+'..kYYkTk....',
+'.kTkYYkTk...',
+'.kYkTTkYk...',
+'..kYYTTk....',
+'...kTTk.....',
+'kLLLLLLLLLk.',
+'kllllllllllk',
+'.kkkkkkkkkk.',
+];
+const SPR_POOP_CORN=[ // corn studded
+'....kk......',
+'...kTTk.....',
+'..kTYTTk....',
+'.kTTtYTTk...',
+'.kTYTTtYk...',
+'.kTTYTTTk...',
+'..kTTYTk....',
+'kLLLLLLLLLk.',
+'kllllllllllk',
+'.kkkkkkkkkk.',
+];
+const SPR_POOP_GREEN=[ // green goblin
+'....kk......',
+'...kNNk.....',
+'..kNNNNk....',
+'.kNNnNNNk...',
+'.kNnNNnNk...',
+'.kNNNNNNk...',
+'..kNNNNk....',
+'kLLLLLLLLLk.',
+'kllllllllllk',
+'.kkkkkkkkkk.',
+];
+const SPR_POOP_MAGMA=[ // spicy magma
+'..kYk.kYk...',
+'...kDDk.....',
+'..kDDDDk....',
+'.kDdDRDDk...',
+'.kRdDDdRk...',
+'.kDDRDDDk...',
+'..kDDDDk....',
+'kLLLLLLLLLk.',
+'kllllllllllk',
+'.kkkkkkkkkk.',
+];
+const SPR_POOP_LIQUID=[ // liquid gold
+'....kk......',
+'...kYYk.....',
+'..kYYYYk....',
+'.kYYyYYYk...',
+'.kyYYYyYk...',
+'..kYyYYk....',
+'...kYYk.....',
+'kLLLLLLLLLk.',
+'kllllllllllk',
+'.kkkkkkkkkk.',
+];
+const POOP_SPRITES=[SPR_POOP,SPR_POOP_SOFT,SPR_POOP_CORN,SPR_POOP_GREEN,SPR_POOP_MAGMA,SPR_POOP_LIQUID];
+// Map base index to poop sprite (0=classic,1=soft,2=corn,3=green,4=magma,5+ cycle)
+function getPoopSpr(baseIdx){return POOP_SPRITES[baseIdx%POOP_SPRITES.length]||SPR_POOP}
 
 // Dog 12w x 8h
 const SPR_DOG=[
@@ -455,8 +519,14 @@ function spawnC(t){
 
 // ===== COOKING SYSTEM =====
 function openCook(){
-  if(st!=='playing'||pl.carry)return;
-  cook.items=[];cook.preview=null;
+  if(st!=='playing')return;
+  // If already carrying, allow re-cooking with other mode (BOTH)
+  if(pl.carry){
+    cook.items=[...pl.carry.items];
+  }else{
+    cook.items=[];
+  }
+  cook.preview=null;
   renderCookPanel();
   document.getElementById('cookpanel').classList.add('on');
   st='cooking';sPick();
@@ -468,13 +538,15 @@ function renderCookPanel(){
   let curOrd=tables.find(t=>t.cust&&!t.svd);
   let ordTxt=curOrd?'Order: '+curOrd.order.emojis+' '+curOrd.order.name:'No orders yet';
   
+  let hotLabel=pl.carry&&pl.carry.mode==='cold'?'🔥💀 ALSO COOK IT (ABOMINATION!)':'🔥 COOK IT';
+  let coldLabel=pl.carry&&pl.carry.mode==='hot'?'🧊💀 ALSO FRIDGE IT (ABOMINATION!)':'🧊 FRIDGE IT';
   p.innerHTML=`<h2>💩 POOP SALAD KITCHEN</h2>
     <div style="color:#666;font-size:11px;margin:4px 0">${ordTxt}</div>
     <div id="recipe"><h3>📝 YOUR RECIPE:</h3><div class="items" id="ritems">${cook.items.length?cook.items.map((it,i)=>`<div class="ri" onclick="window._rmItem(${i})">${it.e} ${it.n} ✕</div>`).join(''):'<span style="color:#555;font-size:10px">Tap ingredients below to add...</span>'}</div></div>
     <div id="preview"></div>
     <div id="cookbtns">
-      <button id="cookbtn" onclick="window._finishCook('hot')">🔥 COOK IT</button>
-      <button id="fridgebtn" onclick="window._finishCook('cold')">🧊 FRIDGE IT</button>
+      <button id="cookbtn" onclick="window._finishCook('hot')">${hotLabel}</button>
+      <button id="fridgebtn" onclick="window._finishCook('cold')">${coldLabel}</button>
     </div>
     <button id="cancelbtn" onclick="window._cancelCook()">✕ CANCEL</button>
     <div class="cat">💩 POOP BASE</div><div class="igrid">${BASES.map((b,i)=>`<div class="ib ${cook.items.includes(b)?'sel':''}" onclick="window._addItem('base',${i})">${b.e}<span>${b.n}</span></div>`).join('')}</div>
@@ -530,12 +602,21 @@ window._finishCook=function(mode){
   if(cook.items.length===0)return;
   let name=cook.items.map(i=>i.n).join(' + ');
   let emojis=cook.items.map(i=>i.e).join('');
-  pl.carry={items:[...cook.items],name,emojis,mode,
-    shortName:(cook.items[0]?.n||'Mystery')+' '+(mode==='hot'?'Cooked':'Chilled')};
+  let baseIdx=BASES.indexOf(cook.items.find(it=>BASES.includes(it)));
+  if(baseIdx<0)baseIdx=0;
+  // Check if already cooked/fridged once for BOTH mode
+  let prevMode=null;
+  if(pl.carry&&pl.carry.items.length>0){prevMode=pl.carry.mode}
+  let finalMode=mode;
+  if(prevMode==='hot'&&mode==='cold')finalMode='both';
+  else if(prevMode==='cold'&&mode==='hot')finalMode='both';
+  pl.carry={items:[...cook.items],name,emojis,mode:finalMode,baseIdx,
+    shortName:(cook.items[0]?.n||'Mystery')+' '+(finalMode==='hot'?'Cooked':finalMode==='cold'?'Chilled':'ABOMINATION')};
   document.getElementById('cookpanel').classList.remove('on');
   st='playing';
-  if(mode==='hot'){sServe();addF(pl.x*T+T/2,pl.y*T-20,'🔥 ORDER UP!','#ff6b35',18,60)}
-  else{sChill();addF(pl.x*T+T/2,pl.y*T-20,'🧊 CHILLED!','#87ceeb',18,60)}
+  if(finalMode==='hot'){sServe();addF(pl.x*T+T/2,pl.y*T-20,'🔥 ORDER UP!','#ff6b35',18,60)}
+  else if(finalMode==='cold'){sChill();addF(pl.x*T+T/2,pl.y*T-20,'🧊 CHILLED!','#87ceeb',18,60)}
+  else{sServe();sChill();addF(pl.x*T+T/2,pl.y*T-20,'💀 ABOMINATION! 💀','#ff00ff',22,90)}
 };
 
 // ===== SERVING =====
@@ -551,6 +632,7 @@ function tryServe(){
   let t=best,ord=t.order;
   // Check if carry items contain all order items
   let correct=ord.items.every(oi=>pl.carry.items.some(ci=>ci.n===oi.n));
+  let isAbom=pl.carry.mode==='both';
   t.svd=true;pl.carry=null;served++;
   if(correct)combo++;else combo=0;
   t.react={e:REACT_E[Math.floor(Math.random()*REACT_E.length)],
@@ -558,14 +640,22 @@ function tryServe(){
   t.rt=160;
   let pct=ord.patience/ord.maxP;
   let pts=correct?100+Math.floor(pct*80):15;
+  // ABOMINATION bonus!
+  if(isAbom){pts=Math.floor(pts*2.5);tip=Math.floor(tip*3)}
   if(combo>1)pts=Math.floor(pts*(1+combo*.15));
   let tip=correct?Math.floor(lcfg(lvl).tipB*pct):0;
   score+=pts;tips+=tip;
   sHorror();if(correct)sCash();else sWomp();
+  if(isAbom){
+    let abomReacts=["IT'S HOT AND COLD AND I'M DYING","WHAT DIMENSION IS THIS FROM","MY TONGUE IS HAVING A SEIZURE",
+      "IT FROZE MY MOUTH THEN BURNED IT","I CAN SEE GOD AND HE'S DISGUSTED","THIS IS A CRIME AGAINST PHYSICS",
+      "IT'S ALIVE AND IT HATES ME","MY STOMACH JUST FILED FOR DIVORCE"];
+    t.react={e:'💀',q:abomReacts[Math.floor(Math.random()*abomReacts.length)],ok:correct};
+  }
   let px=t.x*T+T,py=t.y*T;
   for(let i=0;i<14;i++){let a=Math.random()*Math.PI*2,sp=1.5+Math.random()*3;
     parts.push({x:px,y:py,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-1.5,life:35+Math.random()*18,ml:53,col:correct?'#ffd700':'#8b4513',sz:3+Math.random()*4})}
-  addF(px,py-30,(correct?'':'WRONG! ')+'+'+pts+(combo>1?' x'+combo+'!':''),correct?'#ffd700':'#ff4444',correct?20:15,70);
+  addF(px,py-30,(correct?'':'WRONG! ')+(isAbom?'💀 ABOMINATION ':'')+'+'+pts+(combo>1?' x'+combo+'!':''),isAbom?'#ff00ff':correct?'#ffd700':'#ff4444',correct?20:15,70);
   if(tip>0)addF(px+30,py-8,'$'+tip+' TIP!','#69db7c',13,50);
   updHUD();
   setTimeout(()=>{
@@ -637,7 +727,7 @@ document.addEventListener('keydown',e=>{
   keys[e.key]=true;
   if((e.key===' '||e.key==='Enter')&&!e.repeat){
     e.preventDefault();aOn();
-    if(st==='playing'){if(pl.y<=6&&!pl.carry)openCook();else if(pl.carry)tryServe()}
+    if(st==='playing'){if(pl.y<=6)openCook();else if(pl.carry)tryServe()}
   }
   if(e.key==='Escape'&&st==='cooking')window._cancelCook();
 });
@@ -669,6 +759,7 @@ function drawTapUI(){
   // Context-sensitive label
   let lbl='ACT';
   if(pl.y<=6&&!pl.carry)lbl='COOK';
+  else if(pl.y<=6&&pl.carry)lbl='RE-COOK';
   else if(pl.carry)lbl='SERVE';
   X.fillText(lbl,ab.x+ab.w/2,ab.y+ab.h/2);
   // Tap hint
@@ -689,7 +780,7 @@ C.addEventListener('touchstart',e=>{
   let cx=t.clientX-r.left,cy=t.clientY-r.top;
   // Check ACT button first
   if(hitAct(cx,cy)){
-    if(pl.y<=6&&!pl.carry)openCook();
+    if(pl.y<=6)openCook();
     else if(pl.carry)tryServe();
     return;
   }
@@ -706,7 +797,7 @@ C.addEventListener('click',e=>{
   let r=C.getBoundingClientRect();
   let cx=e.clientX-r.left,cy=e.clientY-r.top;
   if(hitAct(cx,cy)){
-    if(pl.y<=6&&!pl.carry)openCook();
+    if(pl.y<=6)openCook();
     else if(pl.carry)tryServe();
     return;
   }
@@ -849,23 +940,85 @@ function drawPlayer(){
   // Carrying
   if(pl.carry){
     let tray_y=sy-T*.25;
-    // Tray
+    // Tray/plate
     X.fillStyle='#c0c0c0';X.beginPath();X.ellipse(px+T/2,tray_y,T*.3,T*.1,0,0,Math.PI*2);X.fill();
     X.strokeStyle='#999';X.lineWidth=1;X.stroke();
-    // Poop on tray
-    drawPx(SPR_POOP,px+T/2-SPR_POOP[0].length*P/2,tray_y-SPR_POOP.length*P+P*2,false);
-    // Color tint for hot/cold
-    if(pl.carry.mode==='hot'){
-      X.fillStyle='rgba(255,100,30,.15)';X.beginPath();X.arc(px+T/2,tray_y-T*.15,T*.25,0,Math.PI*2);X.fill();
-      // Steam
-      drawStink(px+T/2,tray_y-T*.3,T*.5,fr,.4);
-    }else{
-      X.fillStyle='rgba(100,180,255,.12)';X.beginPath();X.arc(px+T/2,tray_y-T*.15,T*.25,0,Math.PI*2);X.fill();
+    // Draw correct poop type based on base ingredient
+    let poopSpr=getPoopSpr(pl.carry.baseIdx||0);
+    drawPx(poopSpr,px+T/2-poopSpr[0].length*P/2,tray_y-poopSpr.length*P+P*2,false);
+    // Draw ingredient blobs around the poop (toppings/garnish/sauce as colored dots)
+    let extras=pl.carry.items.filter(it=>!BASES.includes(it));
+    let ingColors={'Lettuce':'#4a8','Tomato':'#e33','Onion Ring':'#da5','Cheese':'#fd0','Croutons':'#c93',
+      'Olive Oil':'#6a3','Ranch':'#eee','Mystery Goo':'#a0f','Pickles':'#4a4','Bacon':'#a33',
+      'Parsley':'#2a2','Fly':'#333','Corn Bit':'#ec0','Sprinkle':'#f5a','Cherry':'#d22',
+      'Glitter':'#ff0','Eyeball':'#fff','Gummy Worm':'#f60','Hot Pepper':'#f30','Gold Leaf':'#fd0',
+      'Ketchup':'#c00','Mustard':'#dc0','Soy Sauce':'#421','Hot Sauce':'#f20',
+      'Mayo':'#eee','BBQ':'#631','Wasabi':'#0a0','Sriracha':'#f50'};
+    extras.forEach((it,i)=>{
+      let ang=(i/(extras.length||1))*Math.PI*2+fr*.01;
+      let r2=T*.18;
+      let bx=px+T/2+Math.cos(ang)*r2,by=tray_y-T*.12+Math.sin(ang)*r2*.5;
+      let col=ingColors[it.n]||'#888';
+      X.fillStyle=col;X.beginPath();X.arc(bx,by,P*1.2,0,Math.PI*2);X.fill();
+      X.strokeStyle='rgba(0,0,0,.3)';X.lineWidth=.5;X.stroke();
+    });
+    // Mode visuals
+    let m=pl.carry.mode;
+    if(m==='hot'){
+      // Red/orange glow
+      X.fillStyle='rgba(255,80,20,.18)';X.beginPath();X.arc(px+T/2,tray_y-T*.12,T*.3,0,Math.PI*2);X.fill();
+      // Heavy steam
+      drawStink(px+T/2,tray_y-T*.3,T*.6,fr,.55);
+      // Flame licks
+      for(let i=0;i<3;i++){
+        let fx=px+T*.3+i*T*.2,fy=tray_y-T*.15+Math.sin(fr*.2+i*2)*3;
+        X.fillStyle=`rgba(255,${120+i*40},0,${.3+Math.sin(fr*.15+i)*.15})`;
+        X.beginPath();X.moveTo(fx,fy);X.lineTo(fx-3,fy+8);X.lineTo(fx+3,fy+8);X.fill();
+      }
+    }else if(m==='cold'){
+      // Blue glow
+      X.fillStyle='rgba(80,160,255,.15)';X.beginPath();X.arc(px+T/2,tray_y-T*.12,T*.3,0,Math.PI*2);X.fill();
       // Ice crystals
+      X.fillStyle='rgba(200,240,255,.6)';
+      for(let i=0;i<6;i++){
+        let ix=px+T*.25+Math.sin(fr*.03+i*1.5)*T*.25,iy=tray_y-T*.2+Math.cos(fr*.025+i)*T*.12;
+        X.save();X.translate(ix,iy);X.rotate(fr*.02+i);
+        X.fillRect(-1.5,-1.5,3,3);X.restore();
+      }
+      // Frost ring
+      X.strokeStyle='rgba(180,220,255,.25)';X.lineWidth=1.5;X.setLineDash([2,3]);
+      X.beginPath();X.ellipse(px+T/2,tray_y,T*.32,T*.12,0,0,Math.PI*2);X.stroke();X.setLineDash([]);
+    }else if(m==='both'){
+      // ABOMINATION: half fire half ice, pulsing purple core, dripping ooze
+      // Split glow left=fire right=ice
+      X.save();X.beginPath();X.rect(px,tray_y-T*.5,T/2,T);X.clip();
+      X.fillStyle='rgba(255,60,10,.2)';X.beginPath();X.arc(px+T/2,tray_y-T*.12,T*.35,0,Math.PI*2);X.fill();
+      X.restore();
+      X.save();X.beginPath();X.rect(px+T/2,tray_y-T*.5,T/2,T);X.clip();
+      X.fillStyle='rgba(50,150,255,.2)';X.beginPath();X.arc(px+T/2,tray_y-T*.12,T*.35,0,Math.PI*2);X.fill();
+      X.restore();
+      // Pulsing purple core
+      let pulse=.15+Math.sin(fr*.12)*.1;
+      X.fillStyle=`rgba(180,0,255,${pulse})`;X.beginPath();X.arc(px+T/2,tray_y-T*.15,T*.2,0,Math.PI*2);X.fill();
+      // Crackling energy bolts
+      X.strokeStyle='rgba(255,0,255,.5)';X.lineWidth=1;
+      for(let i=0;i<4;i++){
+        let bx1=px+T*.3+Math.random()*T*.4,by1=tray_y-T*.3+Math.random()*T*.2;
+        let bx2=bx1+(Math.random()-.5)*T*.2,by2=by1+(Math.random()-.5)*T*.15;
+        X.beginPath();X.moveTo(bx1,by1);X.lineTo(bx2,by2);X.stroke();
+      }
+      // Steam AND ice simultaneously
+      drawStink(px+T/2,tray_y-T*.35,T*.5,fr,.4);
       X.fillStyle='rgba(200,240,255,.5)';
       for(let i=0;i<4;i++){
-        let ix=px+T*.3+Math.sin(fr*.04+i*2)*T*.2,iy=tray_y-T*.2+Math.cos(fr*.03+i)*T*.1;
+        let ix=px+T*.28+Math.sin(fr*.04+i*2)*T*.22,iy=tray_y-T*.18+Math.cos(fr*.03+i)*T*.1;
         X.fillRect(ix,iy,2,2);
+      }
+      // Dripping ooze
+      for(let i=0;i<3;i++){
+        let dx2=px+T*.35+i*T*.15,dripY=tray_y+Math.sin(fr*.08+i*3)*4+4;
+        X.fillStyle=`rgba(${i%2?'100,200,255':'255,100,50'},.35)`;
+        X.beginPath();X.ellipse(dx2,dripY,2,3+Math.sin(fr*.1+i)*1,0,0,Math.PI*2);X.fill();
       }
     }
     // Stink lines always
@@ -984,8 +1137,8 @@ function update(){
       tapTarget=null;
       // Auto-serve if we tapped near a table while carrying
       if(wasAutoServe&&pl.carry){tryServe()}
-      // Auto-cook if we arrived in kitchen without food
-      else if(!pl.carry&&pl.y<=6){openCook()}
+      // Auto-cook if in kitchen (even if carrying, for re-cook/BOTH mode)
+      else if(pl.y<=6){openCook()}
     }
     else{
       let nd=1/dist;dx=tdx*nd;dy=tdy*nd;

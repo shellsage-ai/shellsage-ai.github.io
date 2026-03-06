@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Cascade</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
+html,body{width:100%;height:100%;overflow:hidden;background:#08080d;font-family:'Segoe UI',system-ui,sans-serif}
+canvas{display:block;margin:0 auto;touch-action:none}
+#ui{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;display:flex;flex-direction:column;align-items:center}
+#hud{display:flex;justify-content:space-between;width:100%;max-width:500px;padding:10px 16px;pointer-events:none}
+.hud-box{text-align:center}
+.hud-label{font-size:10px;color:#666;text-transform:uppercase;letter-spacing:1px}
+.hud-val{font-size:20px;font-weight:800;color:#fff}
+#combo-display{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:48px;font-weight:900;color:#fff;text-shadow:0 0 30px currentColor;opacity:0;transition:none;pointer-events:none;z-index:10}
+#overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(8,8,13,0.92);display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:auto;z-index:20}
+#overlay.hidden{display:none}
+#overlay h1{font-size:52px;font-weight:900;letter-spacing:-2px;margin-bottom:4px}
+#overlay h1 .c1{color:#ff6b6b}#overlay h1 .c2{color:#ffa94d}#overlay h1 .c3{color:#69db7c}#overlay h1 .c4{color:#4dabf7}#overlay h1 .c5{color:#cc5de8}#overlay h1 .c6{color:#ff6b6b}#overlay h1 .c7{color:#ffd43b}
+#overlay .sub{color:#666;font-size:14px;margin-bottom:30px}
+.btn{background:linear-gradient(135deg,#f97316,#ef4444);color:#fff;border:none;padding:14px 40px;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;pointer-events:auto;margin:6px;letter-spacing:0.5px;transition:transform 0.1s}
+.btn:active{transform:scale(0.95)}
+.btn.secondary{background:linear-gradient(135deg,#3b82f6,#8b5cf6)}
+.btn.small{padding:8px 20px;font-size:13px}
+#level-info{color:#888;font-size:13px;margin-top:12px}
+#stars{font-size:32px;margin:10px 0}
+#final-score{color:#fff;font-size:24px;font-weight:800;margin:6px 0}
+#pause-btn{position:absolute;top:10px;right:16px;background:none;border:1px solid #333;color:#888;padding:6px 12px;border-radius:8px;font-size:12px;cursor:pointer;pointer-events:auto;z-index:15}
+#pause-btn:active{background:#222}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="ui">
+  <div id="hud">
+    <div class="hud-box"><div class="hud-label">Level</div><div class="hud-val" id="h-level">1</div></div>
+    <div class="hud-box"><div class="hud-label">Score</div><div class="hud-val" id="h-score">0</div></div>
+    <div class="hud-box"><div class="hud-label">Target</div><div class="hud-val" id="h-target">500</div></div>
+    <div class="hud-box"><div class="hud-label">Moves</div><div class="hud-val" id="h-moves">20</div></div>
+  </div>
+  <div id="combo-display"></div>
+  <button id="pause-btn">PAUSE</button>
+</div>
+<div id="overlay">
+  <h1><span class="c1">C</span><span class="c2">A</span><span class="c3">S</span><span class="c4">C</span><span class="c5">A</span><span class="c6">D</span><span class="c7">E</span></h1>
+  <div class="sub">Tap to rotate. Match to shatter. Chain to win.</div>
+  <button class="btn" id="btn-play">PLAY</button>
+  <button class="btn secondary" id="btn-endless" style="display:none">ENDLESS MODE</button>
+  <div id="level-info"></div>
+  <div id="stars"></div>
+  <div id="final-score"></div>
+</div>
+<script>
+(()=>{
+'use strict';
+
+// === AUDIO ENGINE ===
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+let actx = null;
+function ensureAudio(){if(!actx)actx=new AudioCtx()}
+function playTone(freq,dur=0.1,type='sine',vol=0.15){
+  if(!actx)return;
+  const o=actx.createOscillator(),g=actx.createGain();
+  o.type=type;o.frequency.value=freq;
+  g.gain.setValueAtTime(vol,actx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001,actx.currentTime+dur);
+  o.connect(g);g.connect(actx.destination);
+  o.start();o.stop(actx.currentTime+dur);
+}
+function sndMatch(chain){playTone(400+chain*120,0.15,'sine',0.12)}
+function sndRotate(){playTone(280,0.06,'triangle',0.08)}
+function sndLevelUp(){playTone(523,0.12);setTimeout(()=>playTone(659,0.12),100);setTimeout(()=>playTone(784,0.2),200)}
+function sndGameOver(){playTone(200,0.3,'sawtooth',0.1);setTimeout(()=>playTone(150,0.4,'sawtooth',0.1),200)}
+
+// === CANVAS ===
+const canvas=document.getElementById('c');
+const ctx=canvas.getContext('2d');
+let W,H,cellSize,gridX0,gridY0;
+
+const COLS=7, ROWS=9;
+
+// === COLORS ===
+const ORB_COLORS=[
+  {fill:'#ff6b6b',glow:'#ff6b6b',name:'red'},
+  {fill:'#4dabf7',glow:'#4dabf7',name:'blue'},
+  {fill:'#69db7c',glow:'#69db7c',name:'green'},
+  {fill:'#ffa94d',glow:'#ffa94d',name:'orange'},
+  {fill:'#cc5de8',glow:'#cc5de8',name:'purple'},
+  {fill:'#ffd43b',glow:'#ffd43b',name:'yellow'},
+];
+
+// === GAME STATE ===
+let grid=[], particles=[], floatingTexts=[];
+let level=1, score=0, movesLeft=0, targetScore=0;
+let numColors=4, gameState='menu'; // menu,playing,animating,paused,levelComplete,gameOver
+let combo=0, maxCombo=0, totalMatches=0;
+let highScores=JSON.parse(localStorage.getItem('cascade_hs')||'{}');
+let maxLevelUnlocked=parseInt(localStorage.getItem('cascade_ml')||'1');
+let endlessUnlocked=localStorage.getItem('cascade_eu')==='1';
+let endlessMode=false;
+let selectedGroup=null;
+let animQueue=[];
+let shakeTimer=0, shakeMag=0;
+
+// === ORB TYPES ===
+const ORB_NORMAL=0, ORB_STONE=1, ORB_ICE=2, ORB_BOMB=3;
+
+class Orb {
+  constructor(colorIdx,type=ORB_NORMAL){
+    this.color=colorIdx;
+    this.type=type;
+    this.ice=type===ORB_ICE?2:0; // hits needed
+    this.x=0;this.y=0; // pixel positions for animation
+    this.targetX=0;this.targetY=0;
+    this.scale=1;this.alpha=1;
+    this.removing=false;
+    this.shatterTime=0;
+  }
+}
+
+// === LEVEL CONFIG ===
+function getLevelConfig(lv){
+  if(endlessMode) return {colors:6,moves:30,target:2000+lv*500,stones:Math.min(lv,8),ice:Math.min(Math.floor(lv/2),6),bombs:lv>=3?Math.min(Math.floor(lv/3),4):0};
+  let cfg={colors:4,moves:25,target:400,stones:0,ice:0,bombs:0};
+  if(lv<=5){cfg.colors=4;cfg.moves=25-lv;cfg.target=300+lv*100}
+  else if(lv<=15){cfg.colors=5;cfg.moves=22-Math.floor(lv/3);cfg.target=500+lv*150;cfg.stones=Math.min(lv-5,6)}
+  else if(lv<=30){cfg.colors=5;cfg.moves=20-Math.floor(lv/5);cfg.target=800+lv*200;cfg.stones=Math.min(lv-10,8);cfg.ice=Math.min(lv-15,6)}
+  else if(lv<=50){cfg.colors=6;cfg.moves=18;cfg.target=1200+lv*250;cfg.stones=8;cfg.ice=Math.min(lv-25,8);cfg.bombs=Math.min(lv-30,4)}
+  else{cfg.colors=6;cfg.moves=15;cfg.target=2000+lv*300;cfg.stones=10;cfg.ice=8;cfg.bombs=6}
+  cfg.moves=Math.max(cfg.moves,12);
+  return cfg;
+}
+
+// === GRID INIT ===
+function initGrid(){
+  const cfg=getLevelConfig(level);
+  numColors=cfg.colors;
+  movesLeft=cfg.moves;
+  targetScore=cfg.target;
+  score=0;combo=0;maxCombo=0;totalMatches=0;
+  grid=[];
+  for(let r=0;r<ROWS;r++){
+    grid[r]=[];
+    for(let c=0;c<COLS;c++){
+      grid[r][c]=new Orb(Math.floor(Math.random()*numColors));
+    }
+  }
+  // Place special orbs
+  let specials=[];
+  for(let i=0;i<cfg.stones;i++) specials.push(ORB_STONE);
+  for(let i=0;i<cfg.ice;i++) specials.push(ORB_ICE);
+  for(let i=0;i<cfg.bombs;i++) specials.push(ORB_BOMB);
+  // Shuffle and place
+  for(let s of specials){
+    let attempts=0;
+    while(attempts<50){
+      let rr=Math.floor(Math.random()*ROWS);
+      let cc=Math.floor(Math.random()*COLS);
+      if(grid[rr][cc].type===ORB_NORMAL){
+        if(s===ORB_STONE){grid[rr][cc]=new Orb(-1,ORB_STONE)}
+        else if(s===ORB_ICE){grid[rr][cc]=new Orb(Math.floor(Math.random()*numColors),ORB_ICE)}
+        else if(s===ORB_BOMB){grid[rr][cc]=new Orb(Math.floor(Math.random()*numColors),ORB_BOMB)}
+        break;
+      }
+      attempts++;
+    }
+  }
+  // Remove initial matches
+  let safety=0;
+  while(safety<20 && findMatches().length>0){
+    for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){
+      if(grid[r][c].type===ORB_NORMAL)grid[r][c].color=Math.floor(Math.random()*numColors);
+    }
+    safety++;
+  }
+  // Set positions
+  for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){
+    let px=gridX0+c*cellSize+cellSize/2;
+    let py=gridY0+r*cellSize+cellSize/2;
+    grid[r][c].x=px;grid[r][c].y=py;
+    grid[r][c].targetX=px;grid[r][c].targetY=py;
+  }
+  updateHUD();
+}
+
+// === MATCH FINDING ===
+function findMatches(){
+  let matches=[];
+  // Horizontal
+  for(let r=0;r<ROWS;r++){
+    let run=[{r,c:0}];
+    for(let c=1;c<COLS;c++){
+      let prev=grid[r][c-1], cur=grid[r][c];
+      if(cur.color>=0 && prev.color>=0 && cur.color===prev.color && cur.type!==ORB_STONE && prev.type!==ORB_STONE){
+        run.push({r,c});
+      } else {
+        if(run.length>=3) matches.push([...run]);
+        run=[{r,c}];
+      }
+    }
+    if(run.length>=3) matches.push([...run]);
+  }
+  // Vertical
+  for(let c=0;c<COLS;c++){
+    let run=[{r:0,c}];
+    for(let r=1;r<ROWS;r++){
+      let prev=grid[r-1][c], cur=grid[r][c];
+      if(cur.color>=0 && prev.color>=0 && cur.color===prev.color && cur.type!==ORB_STONE && prev.type!==ORB_STONE){
+        run.push({r,c});
+      } else {
+        if(run.length>=3) matches.push([...run]);
+        run=[{r,c}];
+      }
+    }
+    if(run.length>=3) matches.push([...run]);
+  }
+  return matches;
+}
+
+// === PROCESS MATCHES ===
+function processMatches(){
+  let matches=findMatches();
+  if(matches.length===0){
+    combo=0;
+    // Check win/lose
+    if(score>=targetScore){
+      gameState='levelComplete';
+      sndLevelUp();
+      showOverlay('levelComplete');
+    } else if(movesLeft<=0){
+      gameState='gameOver';
+      sndGameOver();
+      showOverlay('gameOver');
+    } else {
+      gameState='playing';
+    }
+    return;
+  }
+  combo++;
+  if(combo>maxCombo) maxCombo=combo;
+  gameState='animating';
+  
+  // Collect unique cells to remove
+  let toRemove=new Set();
+  let bombCells=[];
+  for(let m of matches){
+    for(let cell of m){
+      let orb=grid[cell.r][cell.c];
+      if(orb.type===ORB_ICE && orb.ice>1){
+        orb.ice--;
+      } else {
+        toRemove.add(cell.r+','+cell.c);
+        if(orb.type===ORB_BOMB) bombCells.push(cell);
+      }
+    }
+  }
+  
+  // Bomb explosions
+  for(let bc of bombCells){
+    for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){
+      let nr=bc.r+dr, nc=bc.c+dc;
+      if(nr>=0&&nr<ROWS&&nc>=0&&nc<COLS){
+        toRemove.add(nr+','+nc);
+      }
+    }
+  }
+  
+  // Break stones adjacent to matches
+  for(let key of toRemove){
+    let [r,c]=key.split(',').map(Number);
+    for(let [dr,dc] of [[-1,0],[1,0],[0,-1],[0,1]]){
+      let nr=r+dr,nc=c+dc;
+      if(nr>=0&&nr<ROWS&&nc>=0&&nc<COLS&&grid[nr][nc].type===ORB_STONE){
+        toRemove.add(nr+','+nc);
+      }
+    }
+  }
+  
+  let pts=toRemove.size * 10 * combo;
+  score+=pts;
+  totalMatches+=toRemove.size;
+  sndMatch(combo);
+  
+  // Show combo
+  if(combo>=2){
+    showComboText(combo+'x COMBO!', combo>=4?'#ffd43b':combo>=3?'#cc5de8':'#4dabf7');
+    shakeMag=Math.min(combo*2,12);shakeTimer=15;
+  }
+  
+  // Spawn particles & floating score
+  let sumX=0,sumY=0,cnt=0;
+  for(let key of toRemove){
+    let [r,c]=key.split(',').map(Number);
+    let orb=grid[r][c];
+    let px=gridX0+c*cellSize+cellSize/2;
+    let py=gridY0+r*cellSize+cellSize/2;
+    sumX+=px;sumY+=py;cnt++;
+    let clr=orb.color>=0?ORB_COLORS[orb.color].fill:'#888';
+    for(let i=0;i<8;i++){
+      let angle=Math.random()*Math.PI*2;
+      let speed=2+Math.random()*4;
+      particles.push({x:px,y:py,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed,life:30+Math.random()*20,maxLife:50,color:clr,size:3+Math.random()*3});
+    }
+  }
+  if(cnt>0){
+    floatingTexts.push({x:sumX/cnt,y:sumY/cnt,text:'+'+pts,life:40,maxLife:40,color:'#fff',size:combo>=3?22:16});
+  }
+  
+  // Remove orbs
+  for(let key of toRemove){
+    let [r,c]=key.split(',').map(Number);
+    grid[r][c]=null;
+  }
+  
+  updateHUD();
+  
+  // After short delay, gravity + refill
+  setTimeout(()=>{
+    applyGravity();
+    refillGrid();
+    updatePositions();
+    setTimeout(()=>processMatches(),350);
+  },300);
+}
+
+// === GRAVITY ===
+function applyGravity(){
+  for(let c=0;c<COLS;c++){
+    let writeRow=ROWS-1;
+    for(let r=ROWS-1;r>=0;r--){
+      if(grid[r][c]!==null){
+        if(writeRow!==r){
+          grid[writeRow][c]=grid[r][c];
+          grid[r][c]=null;
+        }
+        writeRow--;
+      }
+    }
+  }
+}
+
+// === REFILL ===
+function refillGrid(){
+  for(let c=0;c<COLS;c++){
+    for(let r=0;r<ROWS;r++){
+      if(grid[r][c]===null){
+        let orb=new Orb(Math.floor(Math.random()*numColors));
+        orb.x=gridX0+c*cellSize+cellSize/2;
+        orb.y=gridY0-cellSize*(ROWS-r); // start above
+        grid[r][c]=orb;
+      }
+    }
+  }
+}
+
+// === UPDATE POSITIONS ===
+function updatePositions(){
+  for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){
+    if(grid[r][c]){
+      grid[r][c].targetX=gridX0+c*cellSize+cellSize/2;
+      grid[r][c].targetY=gridY0+r*cellSize+cellSize/2;
+    }
+  }
+}
+
+// === ROTATE GROUP ===
+function rotateGroup(row,col){
+  if(gameState!=='playing') return;
+  if(row<0||row>=ROWS-1||col<0||col>=COLS-1) return;
+  
+  // Check if any in group are stone
+  let cells=[[row,col],[row,col+1],[row+1,col+1],[row+1,col]];
+  for(let [r,c] of cells){
+    if(!grid[r][c]||grid[r][c].type===ORB_STONE) return;
+  }
+  
+  ensureAudio();
+  sndRotate();
+  
+  // Rotate clockwise: TL->TR->BR->BL->TL
+  let tmp=grid[row][col];
+  grid[row][col]=grid[row+1][col];
+  grid[row+1][col]=grid[row+1][col+1];
+  grid[row+1][col+1]=grid[row][col+1];
+  grid[row][col+1]=tmp;
+  
+  movesLeft--;
+  updatePositions();
+  updateHUD();
+  
+  gameState='animating';
+  setTimeout(()=>processMatches(),250);
+}
+
+// === HUD ===
+function updateHUD(){
+  document.getElementById('h-level').textContent=endlessMode?'E'+level:level;
+  document.getElementById('h-score').textContent=score;
+  document.getElementById('h-target').textContent=targetScore;
+  document.getElementById('h-moves').textContent=movesLeft;
+}
+
+// === COMBO TEXT ===
+let comboAnim={text:'',color:'#fff',timer:0,maxTimer:0};
+function showComboText(text,color){
+  comboAnim={text,color,timer:50,maxTimer:50};
+}
+
+// === OVERLAY ===
+function showOverlay(type){
+  const ov=document.getElementById('overlay');
+  const h1=ov.querySelector('h1');
+  const sub=ov.querySelector('.sub');
+  const btnPlay=document.getElementById('btn-play');
+  const btnEndless=document.getElementById('btn-endless');
+  const lvlInfo=document.getElementById('level-info');
+  const starsEl=document.getElementById('stars');
+  const finalScore=document.getElementById('final-score');
+  
+  ov.classList.remove('hidden');
+  starsEl.textContent='';
+  finalScore.textContent='';
+  lvlInfo.textContent='';
+  
+  if(type==='menu'){
+    h1.innerHTML='<span class="c1">C</span><span class="c2">A</span><span class="c3">S</span><span class="c4">C</span><span class="c5">A</span><span class="c6">D</span><span class="c7">E</span>';
+    sub.textContent='Tap to rotate. Match to shatter. Chain to win.';
+    btnPlay.textContent='PLAY';
+    btnPlay.onclick=()=>{startLevel(1);ov.classList.add('hidden')};
+    if(maxLevelUnlocked>1){
+      lvlInfo.textContent='Continue from Level '+maxLevelUnlocked;
+      btnPlay.textContent='LEVEL '+maxLevelUnlocked;
+      // Add level 1 restart
+      let extra=document.createElement('button');
+      extra.className='btn small secondary';
+      extra.textContent='RESTART LVL 1';
+      extra.onclick=()=>{startLevel(1);ov.classList.add('hidden');extra.remove()};
+      lvlInfo.after(extra);
+      setTimeout(()=>{if(extra.parentNode)extra.remove()},99999);
+    }
+    btnEndless.style.display=endlessUnlocked?'inline-block':'none';
+    btnEndless.onclick=()=>{endlessMode=true;startLevel(1);ov.classList.add('hidden')};
+  } else if(type==='levelComplete'){
+    let stars=score>=targetScore*2.5?3:score>=targetScore*1.5?2:1;
+    h1.innerHTML='<span class="c3">CLEAR!</span>';
+    sub.textContent='Level '+(endlessMode?'E':'')+level+' Complete';
+    starsEl.textContent='★'.repeat(stars)+'☆'.repeat(3-stars);
+    starsEl.style.color=['','#ffa94d','#ffd43b','#ffd43b'][stars];
+    finalScore.textContent='Score: '+score;
+    
+    // Save progress
+    let key=(endlessMode?'e':'l')+level;
+    if(!highScores[key]||score>highScores[key])highScores[key]=score;
+    localStorage.setItem('cascade_hs',JSON.stringify(highScores));
+    if(!endlessMode&&level>=maxLevelUnlocked){maxLevelUnlocked=level+1;localStorage.setItem('cascade_ml',maxLevelUnlocked)}
+    if(!endlessMode&&level>=50){endlessUnlocked=true;localStorage.setItem('cascade_eu','1')}
+    
+    btnPlay.textContent='NEXT LEVEL';
+    btnPlay.onclick=()=>{startLevel(level+1);ov.classList.add('hidden')};
+    btnEndless.style.display='none';
+  } else if(type==='gameOver'){
+    h1.innerHTML='<span class="c1">GAME OVER</span>';
+    sub.textContent=endlessMode?'Endless Level '+level:'Level '+level+' Failed';
+    finalScore.textContent='Score: '+score+' / '+targetScore;
+    lvlInfo.textContent='Best combo: '+maxCombo+'x | Matched: '+totalMatches+' orbs';
+    
+    btnPlay.textContent='RETRY';
+    btnPlay.onclick=()=>{startLevel(level);ov.classList.add('hidden')};
+    btnEndless.style.display='none';
+  } else if(type==='paused'){
+    h1.innerHTML='<span class="c4">PAUSED</span>';
+    sub.textContent='Level '+(endlessMode?'E':'')+level;
+    finalScore.textContent='Score: '+score;
+    btnPlay.textContent='RESUME';
+    btnPlay.onclick=()=>{gameState='playing';ov.classList.add('hidden')};
+    btnEndless.style.display='inline-block';
+    btnEndless.textContent='QUIT';
+    btnEndless.onclick=()=>{gameState='menu';showOverlay('menu')};
+  }
+}
+
+function startLevel(lv){
+  level=lv;
+  endlessMode=endlessMode; // keep mode
+  initGrid();
+  gameState='playing';
+  selectedGroup=null;
+}
+
+// === RESIZE ===
+function resize(){
+  W=window.innerWidth;
+  H=window.innerHeight;
+  let maxGridW=Math.min(W-20,500);
+  let maxGridH=H-100;
+  cellSize=Math.floor(Math.min(maxGridW/COLS,maxGridH/ROWS));
+  let gridW=cellSize*COLS;
+  let gridH=cellSize*ROWS;
+  canvas.width=W;canvas.height=H;
+  gridX0=Math.floor((W-gridW)/2);
+  gridY0=Math.floor((H-gridH)/2)+30;
+  // Update orb positions if game active
+  if(gameState==='playing'||gameState==='animating') updatePositions();
+}
+window.addEventListener('resize',resize);
+
+// === INPUT ===
+function getGridCell(px,py){
+  let c=Math.floor((px-gridX0)/cellSize);
+  let r=Math.floor((py-gridY0)/cellSize);
+  return {r,c};
+}
+
+function handleTap(px,py){
+  if(gameState!=='playing') return;
+  ensureAudio();
+  let {r,c}=getGridCell(px,py);
+  // Find which 2x2 group center is closest
+  let bestR=-1,bestC=-1,bestD=Infinity;
+  for(let gr=0;gr<ROWS-1;gr++){
+    for(let gc=0;gc<COLS-1;gc++){
+      let cx=gridX0+(gc+1)*cellSize;
+      let cy=gridY0+(gr+1)*cellSize;
+      let d=Math.hypot(px-cx,py-cy);
+      if(d<bestD&&d<cellSize*1.2){bestD=d;bestR=gr;bestC=gc}
+    }
+  }
+  if(bestR>=0) rotateGroup(bestR,bestC);
+}
+
+canvas.addEventListener('pointerdown',(e)=>{
+  e.preventDefault();
+  handleTap(e.offsetX,e.offsetY);
+});
+
+document.getElementById('pause-btn').addEventListener('click',()=>{
+  if(gameState==='playing'){gameState='paused';showOverlay('paused')}
+});
+
+// Keyboard: arrow keys or WASD to select, space to rotate
+let kbRow=Math.floor(ROWS/2)-1, kbCol=Math.floor(COLS/2)-1;
+document.addEventListener('keydown',(e)=>{
+  if(gameState!=='playing') return;
+  if(e.key==='ArrowUp'||e.key==='w'){kbRow=Math.max(0,kbRow-1);selectedGroup={r:kbRow,c:kbCol}}
+  else if(e.key==='ArrowDown'||e.key==='s'){kbRow=Math.min(ROWS-2,kbRow+1);selectedGroup={r:kbRow,c:kbCol}}
+  else if(e.key==='ArrowLeft'||e.key==='a'){kbCol=Math.max(0,kbCol-1);selectedGroup={r:kbRow,c:kbCol}}
+  else if(e.key==='ArrowRight'||e.key==='d'){kbCol=Math.min(COLS-2,kbCol+1);selectedGroup={r:kbRow,c:kbCol}}
+  else if(e.key===' '||e.key==='Enter'){rotateGroup(kbRow,kbCol)}
+  else if(e.key==='Escape'){
+    if(gameState==='playing'){gameState='paused';showOverlay('paused')}
+  }
+});
+
+// === RENDER ===
+function drawOrb(orb,r,c){
+  if(!orb) return;
+  let x=orb.x, y=orb.y;
+  let radius=cellSize*0.38*orb.scale;
+  
+  if(orb.type===ORB_STONE){
+    ctx.fillStyle='#444';
+    ctx.strokeStyle='#666';
+    ctx.lineWidth=2;
+    ctx.beginPath();
+    // Draw rough stone shape
+    for(let i=0;i<8;i++){
+      let angle=i*Math.PI/4;
+      let r2=radius*(0.85+Math.sin(i*3)*0.15);
+      let sx=x+Math.cos(angle)*r2;
+      let sy=y+Math.sin(angle)*r2;
+      i===0?ctx.moveTo(sx,sy):ctx.lineTo(sx,sy);
+    }
+    ctx.closePath();
+    ctx.fill();ctx.stroke();
+    // X crack
+    ctx.strokeStyle='#555';ctx.lineWidth=1.5;
+    ctx.beginPath();ctx.moveTo(x-radius*0.3,y-radius*0.3);ctx.lineTo(x+radius*0.3,y+radius*0.3);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(x+radius*0.3,y-radius*0.3);ctx.lineTo(x-radius*0.3,y+radius*0.3);ctx.stroke();
+    return;
+  }
+  
+  if(orb.color<0) return;
+  let clr=ORB_COLORS[orb.color];
+  
+  // Glow
+  ctx.save();
+  ctx.globalAlpha=orb.alpha*0.3;
+  ctx.shadowColor=clr.glow;
+  ctx.shadowBlur=cellSize*0.4;
+  ctx.beginPath();ctx.arc(x,y,radius,0,Math.PI*2);
+  ctx.fillStyle=clr.fill;ctx.fill();
+  ctx.restore();
+  
+  // Main orb
+  ctx.save();
+  ctx.globalAlpha=orb.alpha;
+  let grad=ctx.createRadialGradient(x-radius*0.3,y-radius*0.3,radius*0.1,x,y,radius);
+  grad.addColorStop(0,'rgba(255,255,255,0.4)');
+  grad.addColorStop(0.4,clr.fill);
+  grad.addColorStop(1,clr.fill+'88');
+  ctx.beginPath();ctx.arc(x,y,radius,0,Math.PI*2);
+  ctx.fillStyle=grad;ctx.fill();
+  
+  // Highlight
+  ctx.beginPath();ctx.arc(x-radius*0.2,y-radius*0.2,radius*0.25,0,Math.PI*2);
+  ctx.fillStyle='rgba(255,255,255,0.25)';ctx.fill();
+  
+  // Ice overlay
+  if(orb.type===ORB_ICE){
+    ctx.strokeStyle='rgba(180,230,255,0.7)';
+    ctx.lineWidth=3;
+    ctx.beginPath();ctx.arc(x,y,radius+2,0,Math.PI*2);ctx.stroke();
+    if(orb.ice>=2){
+      ctx.strokeStyle='rgba(180,230,255,0.4)';
+      ctx.beginPath();ctx.arc(x,y,radius+5,0,Math.PI*2);ctx.stroke();
+    }
+    // Crystal lines
+    ctx.strokeStyle='rgba(200,240,255,0.3)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.moveTo(x-radius,y);ctx.lineTo(x+radius,y);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(x,y-radius);ctx.lineTo(x,y+radius);ctx.stroke();
+  }
+  
+  // Bomb marker
+  if(orb.type===ORB_BOMB){
+    ctx.fillStyle='rgba(0,0,0,0.5)';
+    ctx.beginPath();ctx.arc(x,y,radius*0.4,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#fff';ctx.font=`bold ${Math.floor(radius*0.6)}px sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText('💣',x,y+1);
+  }
+  
+  ctx.restore();
+}
+
+function drawGrid(){
+  // Grid background
+  ctx.fillStyle='#0c0c14';
+  ctx.strokeStyle='#1a1a2e';
+  ctx.lineWidth=1;
+  let gw=COLS*cellSize, gh=ROWS*cellSize;
+  ctx.fillRect(gridX0-2,gridY0-2,gw+4,gh+4);
+  
+  // Grid lines
+  ctx.strokeStyle='#141422';
+  for(let r=0;r<=ROWS;r++){
+    ctx.beginPath();ctx.moveTo(gridX0,gridY0+r*cellSize);ctx.lineTo(gridX0+gw,gridY0+r*cellSize);ctx.stroke();
+  }
+  for(let c=0;c<=COLS;c++){
+    ctx.beginPath();ctx.moveTo(gridX0+c*cellSize,gridY0);ctx.lineTo(gridX0+c*cellSize,gridY0+gh);ctx.stroke();
+  }
+  
+  // Keyboard selection highlight
+  if(selectedGroup&&gameState==='playing'){
+    let sg=selectedGroup;
+    ctx.strokeStyle='rgba(255,255,255,0.3)';
+    ctx.lineWidth=2;
+    ctx.setLineDash([4,4]);
+    ctx.strokeRect(gridX0+sg.c*cellSize+2,gridY0+sg.r*cellSize+2,cellSize*2-4,cellSize*2-4);
+    ctx.setLineDash([]);
+  }
+  
+  // Orbs
+  for(let r=0;r<ROWS;r++){
+    for(let c=0;c<COLS;c++){
+      if(grid[r]&&grid[r][c]) drawOrb(grid[r][c],r,c);
+    }
+  }
+}
+
+function drawParticles(){
+  for(let p of particles){
+    let t=p.life/p.maxLife;
+    ctx.globalAlpha=t;
+    ctx.fillStyle=p.color;
+    ctx.beginPath();ctx.arc(p.x,p.y,p.size*t,0,Math.PI*2);ctx.fill();
+  }
+  ctx.globalAlpha=1;
+}
+
+function drawFloatingTexts(){
+  for(let ft of floatingTexts){
+    let t=ft.life/ft.maxLife;
+    ctx.globalAlpha=t;
+    ctx.fillStyle=ft.color;
+    ctx.font=`bold ${ft.size}px sans-serif`;
+    ctx.textAlign='center';
+    ctx.textBaseline='middle';
+    ctx.fillText(ft.text,ft.x,ft.y);
+  }
+  ctx.globalAlpha=1;
+}
+
+function drawCombo(){
+  if(comboAnim.timer<=0) return;
+  let t=comboAnim.timer/comboAnim.maxTimer;
+  let el=document.getElementById('combo-display');
+  el.textContent=comboAnim.text;
+  el.style.color=comboAnim.color;
+  el.style.opacity=t;
+  el.style.transform=`translate(-50%,-50%) scale(${1+0.3*(1-t)})`;
+}
+
+// === UPDATE ===
+function update(){
+  // Animate orb positions
+  for(let r=0;r<ROWS;r++){
+    for(let c=0;c<COLS;c++){
+      let orb=grid[r]&&grid[r][c];
+      if(!orb) continue;
+      orb.x+=(orb.targetX-orb.x)*0.2;
+      orb.y+=(orb.targetY-orb.y)*0.2;
+    }
+  }
+  
+  // Particles
+  for(let i=particles.length-1;i>=0;i--){
+    let p=particles[i];
+    p.x+=p.vx;p.y+=p.vy;
+    p.vy+=0.15; // gravity
+    p.life--;
+    if(p.life<=0) particles.splice(i,1);
+  }
+  
+  // Floating texts
+  for(let i=floatingTexts.length-1;i>=0;i--){
+    let ft=floatingTexts[i];
+    ft.y-=1.2;
+    ft.life--;
+    if(ft.life<=0) floatingTexts.splice(i,1);
+  }
+  
+  // Combo
+  if(comboAnim.timer>0) comboAnim.timer--;
+  
+  // Shake
+  if(shakeTimer>0) shakeTimer--;
+}
+
+// === MAIN LOOP ===
+function frame(){
+  update();
+  
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  
+  ctx.save();
+  if(shakeTimer>0){
+    let mag=shakeMag*(shakeTimer/15);
+    ctx.translate(Math.random()*mag-mag/2, Math.random()*mag-mag/2);
+  }
+  
+  if(gameState!=='menu'){
+    drawGrid();
+    drawParticles();
+    drawFloatingTexts();
+  }
+  
+  ctx.restore();
+  
+  drawCombo();
+  
+  requestAnimationFrame(frame);
+}
+
+// === INIT ===
+resize();
+showOverlay('menu');
+frame();
+
+})();
+</script>
+</body>
+</html>

@@ -28,6 +28,9 @@ canvas{display:block;margin:0 auto;touch-action:none}
 #final-score{color:#fff;font-size:24px;font-weight:800;margin:6px 0}
 #pause-btn{position:absolute;top:10px;right:16px;background:none;border:1px solid #333;color:#888;padding:6px 12px;border-radius:8px;font-size:12px;cursor:pointer;pointer-events:auto;z-index:15}
 #pause-btn:active{background:#222}
+#hint-btn{position:absolute;top:10px;left:16px;background:none;border:1px solid #333;color:#888;padding:6px 12px;border-radius:8px;font-size:12px;cursor:pointer;pointer-events:auto;z-index:15}
+#hint-btn:active{background:#222}
+#hint-btn.on{border-color:#f97316;color:#f97316}
 </style>
 </head>
 <body>
@@ -41,6 +44,7 @@ canvas{display:block;margin:0 auto;touch-action:none}
   </div>
   <div id="combo-display"></div>
   <button id="pause-btn">PAUSE</button>
+  <button id="hint-btn" class="on">HINTS</button>
 </div>
 <div id="overlay">
   <h1><span class="c1">C</span><span class="c2">A</span><span class="c3">S</span><span class="c4">C</span><span class="c5">A</span><span class="c6">D</span><span class="c7">E</span></h1>
@@ -103,6 +107,7 @@ let selectedGroup=null;
 let animQueue=[];
 let shakeTimer=0, shakeMag=0;
 let hintTimer=0, hintGroup=null, hintFrame=0;
+let hintsEnabled=localStorage.getItem('cascade_hints')!=='off';
 const HINT_DELAY=180; // ~3 seconds at 60fps
 
 // === ORB TYPES ===
@@ -577,6 +582,13 @@ document.getElementById('pause-btn').addEventListener('click',()=>{
   if(gameState==='playing'){gameState='paused';showOverlay('paused')}
 });
 
+document.getElementById('hint-btn').addEventListener('click',()=>{
+  hintsEnabled=!hintsEnabled;
+  localStorage.setItem('cascade_hints',hintsEnabled?'on':'off');
+  document.getElementById('hint-btn').className=hintsEnabled?'on':'';
+  if(!hintsEnabled){hintTimer=0;hintGroup=null}
+});
+
 // Keyboard: arrow keys or WASD to select, space to rotate
 let kbRow=Math.floor(ROWS/2)-1, kbCol=Math.floor(COLS/2)-1;
 document.addEventListener('keydown',(e)=>{
@@ -825,7 +837,7 @@ function update(){
   if(shakeTimer>0) shakeTimer--;
   
   // Hint timer
-  if(gameState==='playing'){
+  if(gameState==='playing' && hintsEnabled){
     hintTimer++;
     hintFrame++;
     if(hintTimer===HINT_DELAY){
@@ -863,6 +875,7 @@ function frame(){
 
 // === INIT ===
 resize();
+document.getElementById('hint-btn').className=hintsEnabled?'on':'';
 showOverlay('menu');
 frame();
 

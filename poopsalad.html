@@ -8,33 +8,25 @@
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
 html,body{width:100%;height:100%;overflow:hidden;background:#1a0a05;font-family:'Courier New',monospace}
 canvas{display:block;margin:0 auto;touch-action:none}
-#ui{position:absolute;top:0;left:0;width:100%;pointer-events:none;display:flex;justify-content:space-between;padding:6px 12px;z-index:10}
-.hud-box{text-align:center;background:rgba(0,0,0,0.6);border-radius:8px;padding:4px 10px;border:1px solid #4a3020}
-.hud-label{font-size:9px;color:#a08060;text-transform:uppercase;letter-spacing:1px}
-.hud-val{font-size:16px;font-weight:800;color:#ffd700}
-#order-queue{position:absolute;top:50px;right:8px;pointer-events:none;z-index:10;display:flex;flex-direction:column;gap:4px}
-.order-ticket{background:rgba(255,240,200,0.9);color:#2a1a0a;font-size:10px;font-weight:700;padding:4px 8px;border-radius:4px;border-left:3px solid #ff6b35;max-width:140px;font-family:'Courier New',monospace}
-.order-ticket.urgent{border-left-color:#ff0000;animation:ticketPulse 0.5s infinite}
-@keyframes ticketPulse{0%,100%{opacity:1}50%{opacity:0.6}}
+#ui{position:absolute;top:0;left:0;width:100%;pointer-events:none;display:flex;justify-content:space-between;padding:8px 14px;z-index:10}
+.hud-box{text-align:center;background:rgba(0,0,0,0.7);border-radius:10px;padding:6px 14px;border:2px solid #4a3020}
+.hud-label{font-size:10px;color:#a08060;text-transform:uppercase;letter-spacing:1px}
+.hud-val{font-size:20px;font-weight:800;color:#ffd700}
 #overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(26,10,5,0.95);display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:auto;z-index:20;text-align:center}
 #overlay.hidden{display:none}
-#overlay h1{font-size:36px;color:#ffd700;text-shadow:0 0 20px #ff6b35;margin-bottom:4px}
-#overlay .sub{color:#a08060;font-size:13px;margin-bottom:20px;padding:0 20px;line-height:1.4}
-.btn{background:linear-gradient(135deg,#8B4513,#D2691E);color:#ffd700;border:2px solid #ffd700;padding:12px 36px;border-radius:8px;font-size:16px;font-weight:700;cursor:pointer;pointer-events:auto;margin:6px;font-family:'Courier New',monospace;text-transform:uppercase;letter-spacing:2px}
-.btn:active{transform:scale(0.95);background:linear-gradient(135deg,#D2691E,#8B4513)}
-.btn.small{padding:8px 20px;font-size:12px}
-#level-title{color:#ff6b35;font-size:18px;margin:8px 0}
-#recipe-panel{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);pointer-events:auto;z-index:10;display:flex;gap:6px;flex-wrap:wrap;justify-content:center;max-width:95%}
-#recipe-panel.hidden{display:none}
-.ingr-btn{width:52px;height:52px;border-radius:10px;border:2px solid #4a3020;background:#2a1a0a;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform 0.1s,border-color 0.2s;position:relative}
-.ingr-btn:active{transform:scale(0.9)}
-.ingr-btn.selected{border-color:#ffd700;box-shadow:0 0 12px rgba(255,215,0,0.4)}
-.ingr-btn .ingr-name{position:absolute;bottom:-14px;font-size:7px;color:#a08060;white-space:nowrap}
-#serve-btn{position:absolute;bottom:70px;left:50%;transform:translateX(-50%);pointer-events:auto;z-index:10;display:none}
-#serve-btn.show{display:block}
-#mobile-dpad{position:absolute;bottom:80px;left:15px;pointer-events:auto;z-index:10;display:none}
-.dpad-btn{width:44px;height:44px;border-radius:50%;background:rgba(255,215,0,0.15);border:1px solid rgba(255,215,0,0.3);color:#ffd700;font-size:18px;display:flex;align-items:center;justify-content:center;cursor:pointer;position:absolute}
+#overlay h1{font-size:40px;color:#ffd700;text-shadow:0 0 20px #ff6b35;margin-bottom:6px}
+#overlay .sub{color:#a08060;font-size:14px;margin-bottom:24px;padding:0 20px;line-height:1.5}
+.btn{background:linear-gradient(135deg,#8B4513,#D2691E);color:#ffd700;border:2px solid #ffd700;padding:14px 40px;border-radius:10px;font-size:18px;font-weight:700;cursor:pointer;pointer-events:auto;margin:8px;font-family:'Courier New',monospace;text-transform:uppercase;letter-spacing:2px}
+.btn:active{transform:scale(0.95)}
+#level-title{color:#ff6b35;font-size:20px;margin:10px 0}
+#end-stats{color:#a08060;font-size:13px;margin-top:12px}
+#stars-display{font-size:36px;margin:8px 0}
+#final-score{color:#ffd700;font-size:22px;font-weight:800;margin:6px 0}
+#dpad{position:fixed;bottom:20px;left:20px;pointer-events:auto;z-index:30;display:none}
+.dpad-btn{width:56px;height:56px;border-radius:50%;background:rgba(255,215,0,0.12);border:2px solid rgba(255,215,0,0.25);color:#ffd700;font-size:22px;display:flex;align-items:center;justify-content:center;cursor:pointer;position:absolute}
 .dpad-btn:active{background:rgba(255,215,0,0.35)}
+#action-btn{position:fixed;bottom:35px;right:25px;pointer-events:auto;z-index:30;display:none;width:70px;height:70px;border-radius:50%;background:rgba(255,107,53,0.2);border:2px solid rgba(255,107,53,0.5);color:#ff6b35;font-size:14px;font-weight:800;font-family:'Courier New',monospace;cursor:pointer;text-align:center;line-height:1.2;padding-top:12px}
+#action-btn:active{background:rgba(255,107,53,0.4)}
 </style>
 </head>
 <body>
@@ -45,761 +37,710 @@ canvas{display:block;margin:0 auto;touch-action:none}
   <div class="hud-box"><div class="hud-label">Tips</div><div class="hud-val" id="h-tips">$0</div></div>
   <div class="hud-box"><div class="hud-label">Served</div><div class="hud-val" id="h-served">0/5</div></div>
 </div>
-<div id="order-queue"></div>
-<div id="recipe-panel" class="hidden"></div>
-<button class="btn" id="serve-btn" style="display:none">🍽️ SERVE IT</button>
-<div id="mobile-dpad">
-  <div class="dpad-btn" style="left:22px;top:0" data-dir="up">▲</div>
-  <div class="dpad-btn" style="left:0;top:22px" data-dir="left">◀</div>
-  <div class="dpad-btn" style="left:44px;top:22px" data-dir="right">▶</div>
-  <div class="dpad-btn" style="left:22px;top:44px" data-dir="down">▼</div>
+<div id="dpad">
+  <div class="dpad-btn" style="left:28px;top:0" data-dir="up">▲</div>
+  <div class="dpad-btn" style="left:0;top:28px" data-dir="left">◀</div>
+  <div class="dpad-btn" style="left:56px;top:28px" data-dir="right">▶</div>
+  <div class="dpad-btn" style="left:28px;top:56px" data-dir="down">▼</div>
 </div>
+<button id="action-btn">ACT</button>
 <div id="overlay">
   <h1>💩🥗 POOP SALAD</h1>
-  <div class="sub">Welcome to the worst restaurant in town!<br>Cook poop salads, dodge obstacles, serve horrified customers!</div>
+  <div class="sub">Welcome to the worst restaurant in town!<br>Cook disgusting salads. Serve horrified customers.<br>Try not to get fired.<br><br>WASD/Arrows = move &nbsp; SPACE = interact</div>
   <div id="level-title"></div>
   <button class="btn" id="btn-play">START SHIFT</button>
-  <div id="end-stats" style="color:#a08060;font-size:12px;margin-top:10px"></div>
+  <div id="stars-display"></div>
+  <div id="final-score"></div>
+  <div id="end-stats"></div>
 </div>
 <script>
 (()=>{
 'use strict';
 
-// === AUDIO ENGINE (retro 8-bit/16-bit style) ===
+// ========== AUDIO (retro 8/16-bit) ==========
 const AudioCtx=window.AudioContext||window.webkitAudioContext;
 let actx=null;
 function ensureAudio(){if(!actx){actx=new AudioCtx();if(actx.state==='suspended')actx.resume()}}
-function playTone(f,d=0.1,t='square',v=0.1){if(!actx)return;try{const o=actx.createOscillator(),g=actx.createGain();o.type=t;o.frequency.value=f;g.gain.setValueAtTime(v,actx.currentTime);g.gain.exponentialRampToValueAtTime(0.001,actx.currentTime+d);o.connect(g);g.connect(actx.destination);o.start();o.stop(actx.currentTime+d)}catch(e){}}
+function tone(f,d=0.1,t='square',v=0.08){if(!actx)return;try{const o=actx.createOscillator(),g=actx.createGain();o.type=t;o.frequency.value=f;g.gain.setValueAtTime(v,actx.currentTime);g.gain.exponentialRampToValueAtTime(0.001,actx.currentTime+d);o.connect(g);g.connect(actx.destination);o.start();o.stop(actx.currentTime+d)}catch(e){}}
+function sndStep(){tone(160,0.03,'square',0.03)}
+function sndPickup(){tone(500,0.05);setTimeout(()=>tone(700,0.05),35);setTimeout(()=>tone(900,0.07),70)}
+function sndServe(){tone(523,0.07);setTimeout(()=>tone(659,0.07),50);setTimeout(()=>tone(784,0.07),100);setTimeout(()=>tone(1047,0.12),150)}
+function sndHorror(){tone(220,0.12,'sawtooth',0.06);setTimeout(()=>tone(160,0.18,'sawtooth',0.05),80)}
+function sndFart(){if(!actx)return;try{const o=actx.createOscillator(),g=actx.createGain(),f=actx.createBiquadFilter();o.type='sawtooth';o.frequency.setValueAtTime(140,actx.currentTime);o.frequency.exponentialRampToValueAtTime(55,actx.currentTime+0.45);f.type='lowpass';f.frequency.value=280;g.gain.setValueAtTime(0.1,actx.currentTime);g.gain.exponentialRampToValueAtTime(0.001,actx.currentTime+0.5);o.connect(f);f.connect(g);g.connect(actx.destination);o.start();o.stop(actx.currentTime+0.5)}catch(e){}}
+function sndBark(){tone(420,0.04,'square',0.06);setTimeout(()=>tone(520,0.04,'square',0.06),50);setTimeout(()=>tone(360,0.08,'square',0.05),100)}
+function sndBubble(){tone(800+Math.random()*300,0.07,'sine',0.03)}
+function sndCash(){tone(1200,0.025);setTimeout(()=>tone(1500,0.025),25);setTimeout(()=>tone(1800,0.04),50);setTimeout(()=>tone(2400,0.08),75)}
+function sndLevelUp(){for(let i=0;i<6;i++)setTimeout(()=>tone(400+i*100,0.08,'square',0.06),i*70)}
+function sndGameOver(){tone(300,0.2,'sawtooth',0.08);setTimeout(()=>tone(200,0.25,'sawtooth',0.06),180);setTimeout(()=>tone(100,0.4,'sawtooth',0.05),360)}
+function sndSplat(){if(!actx)return;try{const buf=actx.createBuffer(1,actx.sampleRate*0.12,actx.sampleRate),d=buf.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.exp(-i/d.length*5)*0.1;const s=actx.createBufferSource();s.buffer=buf;s.connect(actx.destination);s.start()}catch(e){}}
+function sndWomp(){tone(280,0.12,'triangle',0.06);setTimeout(()=>tone(140,0.25,'triangle',0.05),80)}
+function sndBoing(){tone(300,0.04,'sine',0.06);setTimeout(()=>tone(550,0.04,'sine',0.06),25);setTimeout(()=>tone(400,0.08,'sine',0.05),50)}
+function sndStir(){tone(200,0.06,'triangle',0.04);setTimeout(()=>tone(250,0.04,'triangle',0.03),40)}
+function sndChop(){tone(800,0.02,'square',0.05);setTimeout(()=>tone(600,0.03,'square',0.04),30)}
+function sndPlate(){tone(1000,0.03,'sine',0.04);setTimeout(()=>tone(1200,0.05,'sine',0.03),30)}
 
-// Retro sound library
-function sndStep(){playTone(180,0.04,'square',0.04)}
-function sndPickup(){playTone(440,0.06);setTimeout(()=>playTone(660,0.06),40);setTimeout(()=>playTone(880,0.08),80)}
-function sndServe(){playTone(523,0.08);setTimeout(()=>playTone(659,0.08),60);setTimeout(()=>playTone(784,0.08),120);setTimeout(()=>playTone(1047,0.15),180)}
-function sndHorror(){playTone(200,0.15,'sawtooth',0.08);setTimeout(()=>playTone(150,0.2,'sawtooth',0.06),100)}
-function sndFart(){// Classic fart: descending noise
-  if(!actx)return;try{const o=actx.createOscillator(),g=actx.createGain(),f=actx.createBiquadFilter();
-  o.type='sawtooth';o.frequency.setValueAtTime(150,actx.currentTime);o.frequency.exponentialRampToValueAtTime(60,actx.currentTime+0.4);
-  f.type='lowpass';f.frequency.value=300;g.gain.setValueAtTime(0.12,actx.currentTime);g.gain.exponentialRampToValueAtTime(0.001,actx.currentTime+0.5);
-  o.connect(f);f.connect(g);g.connect(actx.destination);o.start();o.stop(actx.currentTime+0.5)}catch(e){}}
-function sndBark(){playTone(400,0.05,'square',0.08);setTimeout(()=>playTone(500,0.05,'square',0.08),60);setTimeout(()=>playTone(350,0.1,'square',0.06),120)}
-function sndBubble(){playTone(800+Math.random()*400,0.08,'sine',0.04)}
-function sndCashRegister(){playTone(1200,0.03);setTimeout(()=>playTone(1500,0.03),30);setTimeout(()=>playTone(1800,0.05),60);setTimeout(()=>playTone(2400,0.1),90)}
-function sndLevelUp(){for(let i=0;i<6;i++)setTimeout(()=>playTone(400+i*100,0.1,'square',0.07),i*80)}
-function sndGameOver(){playTone(300,0.2,'sawtooth',0.1);setTimeout(()=>playTone(200,0.3,'sawtooth',0.08),200);setTimeout(()=>playTone(100,0.5,'sawtooth',0.06),400)}
-function sndSplat(){if(!actx)return;try{const buf=actx.createBuffer(1,actx.sampleRate*0.15,actx.sampleRate),d=buf.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*Math.exp(-i/d.length*5)*0.15;const s=actx.createBufferSource();s.buffer=buf;s.connect(actx.destination);s.start()}catch(e){}}
-function sndWomp(){playTone(300,0.15,'triangle',0.08);setTimeout(()=>playTone(150,0.3,'triangle',0.06),100)}
-function sndBoing(){playTone(300,0.05,'sine',0.08);setTimeout(()=>playTone(600,0.05,'sine',0.08),30);setTimeout(()=>playTone(400,0.1,'sine',0.06),60)}
-function sndSlurp(){playTone(600,0.05,'sine',0.05);setTimeout(()=>playTone(800,0.04,'sine',0.05),40);setTimeout(()=>playTone(500,0.06,'sine',0.04),80)}
-
-// === CANVAS ===
+// ========== CANVAS ==========
 const canvas=document.getElementById('c');
 const ctx=canvas.getContext('2d');
 let W,H;
 
-// === GAME CONSTANTS ===
-const TILE=32;
-const PLAYER_SPEED=2.2;
-const KITCHEN_ROWS=3;
+// ========== TILE SIZE (BIG for zoom) ==========
+const TILE=64; // was 32 — doubled for zoom
+const PLAYER_SPEED=1.6; // slower pace
 
-// === POOP SALAD VARIETIES (100 combos from base x topping x garnish) ===
-const BASES=['Classic Log','Soft Serve','Corn Studded','Green Goblin','Spicy Magma',
-  'Frozen Fudge','Chunky Monkey','Liquid Gold','Pebble Pile','The Anaconda'];
-const TOPPINGS=['Lettuce Wrap','Tomato Dice','Onion Ring','Cheese Shred','Crouton Crumble',
-  'Olive Oil Drizzle','Ranch Splash','Mystery Sauce','Pickle Chip','Bacon Bit'];
-const GARNISHES=['Parsley','Fly','Corn Kernel','Sprinkle','Cherry On Top',
-  'Glitter','Eyeball','Gummy Worm','Hot Pepper','Gold Leaf'];
-const INGR_EMOJIS={
-  base:['💩','🍦','🌽','🤢','🌶️','🧊','🐵','✨','⚫','🐍'],
-  topping:['🥬','🍅','🧅','🧀','🍞','🫒','🥛','❓','🥒','🥓'],
-  garnish:['🌿','🪰','🌽','🎊','🍒','✨','👁️','🪱','🔥','⭐']
-};
+// ========== MAP ==========
+const COLS=12,ROWS=14;
+const KITCHEN_H=3; // kitchen rows at top
 
-function getSaladName(b,t,g){return BASES[b]+' w/ '+TOPPINGS[t]+' & '+GARNISHES[g]}
-function getSaladEmojis(b,t,g){return INGR_EMOJIS.base[b]+INGR_EMOJIS.topping[t]+INGR_EMOJIS.garnish[g]}
+// ========== POOP SALAD VARIETIES ==========
+const BASES=['Classic Log','Soft Serve','Corn Studded','Green Goblin','Spicy Magma','Frozen Fudge','Chunky Monkey','Liquid Gold','Pebble Pile','The Anaconda'];
+const TOPPINGS=['Lettuce Wrap','Tomato Dice','Onion Ring','Cheese Shred','Crouton Crumble','Olive Oil','Ranch Splash','Mystery Sauce','Pickle Chip','Bacon Bit'];
+const GARNISHES=['Parsley','Fly','Corn Kernel','Sprinkle','Cherry Top','Glitter','Eyeball','Gummy Worm','Hot Pepper','Gold Leaf'];
+const BASE_EMOJI=['💩','🍦','🌽','🤢','🌶️','🧊','🐵','✨','⚫','🐍'];
+const TOP_EMOJI=['🥬','🍅','🧅','🧀','🍞','🫒','🥛','❓','🥒','🥓'];
+const GARN_EMOJI=['🌿','🪰','🌽','🎊','🍒','✨','👁️','🪱','🔥','⭐'];
 
-// === CUSTOMER REACTIONS ===
-const REACTIONS_HORROR=['😱','🤮','😨','🤢','😰','💀','🫣','😵'];
-const REACTIONS_DISGUST=['🤮','😖','🤢','😬','🥴','😤','😩','🫠'];
-const REACTIONS_SHOCK=['😳','😲','😧','🫨','😶','😦','🫢','😮'];
-const REACTION_QUOTES=[
-  "WHAT IS THIS?!","IS THAT...?!","OH NO...","I ORDERED A CAESAR!",
-  "THIS SMELLS LIKE...","MY LAWYER WILL HEAR ABOUT THIS","CALL 911!",
-  "WHY IS IT MOVING?!","IT'S LOOKING AT ME","I THINK I'M GONNA...",
-  "5 STARS ON YELP THEY SAID","THIS IS A HATE CRIME","IT'S WARM...",
-  "I WANT MY MONEY BACK","THERE'S A FLY IN MY... OH WAIT",
-  "MY DIET STARTS TOMORROW","*SCREAMS IN ITALIAN*","THE HEALTH INSPECTOR!",
-  "I'VE SEEN THINGS...","THAT'S NOT RANCH...","IT HAS A PULSE!",
-  "THE PROPHECY IS TRUE","MAMA MIA!","NOPE NOPE NOPE",
-  "I TRUSTED YOU","SIR, THIS IS A WENDY'S","WHERE'S THE MANAGER?!",
-  "IT WINKED AT ME","*FAINTS*","GORDON RAMSAY WOULD CRY"
+// ========== CUSTOMER CHATTER (crass, jokes, reactions) ==========
+const IDLE_CHATTER=[
+  "This place smells like a sewer on fire",
+  "I heard the chef doesn't wash his hands",
+  "My Uber driver warned me about this",
+  "Just shut up and eat your poop",
+  "5 stars on Yelp? More like 5 flies",
+  "Do they even have a health permit?",
+  "I bet the cockroaches have a union",
+  "My therapist said to try new things",
+  "The ambiance screams 'food poisoning'",
+  "Is that a turd or the special?",
+  "This is what rock bottom looks like",
+  "I've seen cleaner dumpsters",
+  "The toilet has better food than this",
+  "My dog eats better. Literally.",
+  "At least the prices are crap too",
+  "I'm only here for the WiFi password",
+  "Plot twist: the salad IS the bathroom",
+  "Gordon Ramsay would torch this place",
+  "I can feel my stomach filing a lawsuit",
+  "Is the cook a raccoon? Be honest.",
+  "Why does the lettuce have a heartbeat?",
+  "Fun fact: this violates the Geneva Convention",
+  "My food just blinked at me",
+  "I'd rather eat at an actual sewer",
+  "The special today is regret with a side of nausea",
+  "I'm writing a Yelp review in all caps",
+  "Do you take insurance as payment?",
+  "The flies are the freshest thing here",
+  "I thought 'crappy food' was a metaphor",
+  "Even the rats won't eat here",
+];
+const SERVE_REACTIONS=[
+  "WHAT THE ACTUAL...?!","IS THAT REAL POOP?!","OH SWEET MOTHER OF...","I ORDERED A CAESAR!!",
+  "THIS IS LITERALLY S**T","MY LAWYER. NOW.","CALL THE POLICE!","WHY. IS. IT. WARM.",
+  "IT'S LOOKING AT ME","I THINK I'M GONNA HURL","*SCREAMS IN ITALIAN*","THE HEALTH INSPECTOR!",
+  "I'VE MADE A HUGE MISTAKE","THAT'S NOT RANCH DRESSING","IT HAS A PULSE!","NOPE NOPE NOPE NOPE",
+  "SIR THIS IS A HATE CRIME","DID IT JUST MOVE?!","*AGGRESSIVE GAGGING*","MAMA MIA THAT'S A SPICY TURD",
+  "I WANT TO SPEAK TO THE MANAGER","THERE'S A FLY... oh that's a garnish","MY EYES! MY BEAUTIFUL EYES!",
+  "I TRUSTED THE REVIEWS","*FAINTS INTO SALAD*","GORDON RAMSAY WOULD WEEP",
+  "THIS SMELLS LIKE SATAN'S GYM BAG","I PAID MONEY FOR THIS?!","YOU MONSTER.",
+  "MY STOMACH JUST FILED FOR DIVORCE",
+];
+const REACTION_EMOJIS=['😱','🤮','😨','🤢','😰','💀','🫣','😵','😳','🤮','😖','🥴','😤','😩','🫠','😧'];
+
+// ========== CUSTOMER TYPES ==========
+const CUST_TYPES=[
+  {name:'Business Guy',hair:'#2a2a2a',shirt:'#1a3a6a',skin:'#deb887',patience:1.0},
+  {name:'Karen',hair:'#daa520',shirt:'#ff69b4',skin:'#f5deb3',patience:0.6},
+  {name:'Grandma',hair:'#d3d3d3',shirt:'#8fbc8f',skin:'#f0d0b0',patience:1.4},
+  {name:'Teenager',hair:'#8b4513',shirt:'#ff4500',skin:'#deb887',patience:0.8},
+  {name:'Food Critic',hair:'#1a1a1a',shirt:'#4a0080',skin:'#e8c8a0',patience:0.5},
+  {name:'Tourist',hair:'#f5deb3',shirt:'#ff6347',skin:'#f5deb3',patience:1.2},
+  {name:'Bodybuilder',hair:'#2a1a0a',shirt:'#222',skin:'#cd8c52',patience:0.9},
+  {name:'Hipster',hair:'#654321',shirt:'#556b2f',skin:'#deb887',patience:0.7},
+  {name:'Little Kid',hair:'#ffd700',shirt:'#87ceeb',skin:'#ffe0c0',patience:1.3},
+  {name:'Alien',hair:'#00cc00',shirt:'#1a1a3a',skin:'#90ee90',patience:2.0},
 ];
 
-// === CUSTOMER TYPES ===
-const CUSTOMER_TYPES=[
-  {name:'Business Guy',emoji:'👔',hair:'#2a2a2a',shirt:'#1a3a6a',patience:1.0},
-  {name:'Karen',emoji:'💇‍♀️',hair:'#daa520',shirt:'#ff69b4',patience:0.6},
-  {name:'Grandma',emoji:'👵',hair:'#d3d3d3',shirt:'#8fbc8f',patience:1.5},
-  {name:'Teenager',emoji:'🧑',hair:'#8b4513',shirt:'#ff4500',patience:0.8},
-  {name:'Food Critic',emoji:'🧐',hair:'#1a1a1a',shirt:'#4a0080',patience:0.4},
-  {name:'Tourist',emoji:'📸',hair:'#f5deb3',shirt:'#ff6347',patience:1.2},
-  {name:'Body Builder',emoji:'💪',hair:'#2a1a0a',shirt:'#222',patience:0.9},
-  {name:'Hipster',emoji:'🧔',hair:'#654321',shirt:'#556b2f',patience:0.7},
-  {name:'Little Kid',emoji:'👶',hair:'#ffd700',shirt:'#87ceeb',patience:1.3},
-  {name:'Alien',emoji:'👽',hair:'#00ff00',shirt:'#1a1a3a',patience:2.0},
-];
+// ========== COOKING STATION STEPS ==========
+const COOK_STEPS=['base','topping','garnish','stir','plate'];
+const COOK_STEP_NAMES=['Pick Base','Topping','Garnish','Stir It','Plate Up'];
+const COOK_STEP_TIME=[0,0,0,120,60]; // frames required for stir/plate (timed steps)
 
-// === GAME STATE ===
-let gameState='menu'; // menu, playing, cooking, delivering, reaction, levelComplete, gameOver
-let level=1,score=0,tips=0,served=0,totalToServe=5;
-let player={x:0,y:0,dir:0,carrying:null,frame:0,moving:false};
-let customers=[];
-let orders=[];
-let obstacles=[];
-let particles=[];
-let floatingTexts=[];
-let events=[]; // random events (fart clouds, dogs, etc)
-let bubbleGirl={x:0,y:0,bubbles:[],blowTimer:0};
-let currentRecipe={base:-1,topping:-1,garnish:-1};
-let cookingForOrder=null;
-let mapW=0,mapH=0;
-let tables=[];
-let kitchenArea={x:0,y:0,w:0,h:0};
+// ========== STATE ==========
+let state='menu';
+let level=1,score=0,tips=0,served=0,toServe=5;
+let player={x:0,y:0,dir:2,carrying:null,moving:false};
+let tables=[],obstacles=[],particles=[],floats=[],events=[];
+let chatBubbles=[];
+let bubbleGirl={x:0,y:0,bubbles:[],timer:0};
 let camera={x:0,y:0};
-let frameCount=0;
-let comboCount=0;
-let dpadDir={up:false,down:false,left:false,right:false};
+let frame=0,combo=0;
 let isMobile=false;
+let keys={},dpad={up:false,down:false,left:false,right:false};
 
-// === LEVEL CONFIG ===
-function getLevelConfig(lv){
+// Cooking state
+let cooking={active:false,step:0,recipe:{base:-1,topping:-1,garnish:-1},timer:0,forOrder:null,scroll:0};
+
+// ========== LEVEL CONFIG ==========
+function lvlCfg(lv){
   return{
-    customers:Math.min(3+Math.floor(lv/2),8),
-    toServe:Math.min(4+lv,15),
-    orderComplexity:Math.min(1+Math.floor(lv/3),3), // 1=base only, 2=base+top, 3=all
-    patience:Math.max(1.0-lv*0.04,0.3),
-    obstacleCount:Math.min(2+Math.floor(lv/2),10),
-    eventFrequency:Math.max(600-lv*20,150),
-    dogChance:Math.min(0.05+lv*0.01,0.2),
-    fartChance:Math.min(0.08+lv*0.01,0.25),
-    tips:Math.floor(5+lv*2),
+    seats:Math.min(2+Math.floor(lv/2),6),
+    toServe:Math.min(4+lv,12),
+    complexity:Math.min(1+Math.floor(lv/3),3),
+    patienceMult:Math.max(1.0-lv*0.03,0.4),
+    obstacles:Math.min(1+Math.floor(lv/2),8),
+    eventRate:Math.max(500-lv*15,200),
+    dogChance:Math.min(0.04+lv*0.008,0.15),
+    fartChance:Math.min(0.06+lv*0.01,0.2),
+    tipBase:Math.floor(5+lv*2),
+    chatRate:Math.max(300-lv*10,120),
   };
 }
 
-// === MAP GENERATION ===
-function generateMap(){
-  const cfg=getLevelConfig(level);
-  mapW=14;mapH=16;
+// ========== MAP GEN ==========
+function genMap(){
+  let cfg=lvlCfg(level);
   tables=[];obstacles=[];
 
-  // Kitchen at top (rows 0-2)
-  kitchenArea={x:1,y:0,w:mapW-2,h:KITCHEN_ROWS};
-
-  // Place tables in dining area (rows 4-14)
-  let numTables=cfg.customers;
+  // Place tables in dining area (rows KITCHEN_H+2 to ROWS-2)
   let spots=[];
-  for(let r=5;r<mapH-2;r+=3)for(let c=2;c<mapW-3;c+=4)spots.push({x:c,y:r});
-  // Shuffle
-  for(let i=spots.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[spots[i],spots[j]]=[spots[j],spots[i]]}
-  for(let i=0;i<Math.min(numTables,spots.length);i++){
-    tables.push({x:spots[i].x,y:spots[i].y,w:2,h:1,customer:null,order:null,served:false,reactionTimer:0,reaction:null});
+  for(let r=KITCHEN_H+2;r<ROWS-1;r+=3)for(let c=1;c<COLS-2;c+=4)spots.push({x:c,y:r});
+  shuffle(spots);
+  for(let i=0;i<Math.min(cfg.seats,spots.length);i++){
+    tables.push({x:spots[i].x,y:spots[i].y,w:2,cust:null,order:null,served:false,
+      reactTimer:0,react:null,chatTimer:60+Math.floor(Math.random()*200),chatText:''});
   }
 
-  // Obstacles (booths, planters, spills)
-  const obstacleTypes=['booth','planter','spill','trashcan'];
-  for(let i=0;i<cfg.obstacleCount;i++){
-    let attempts=0,ox,oy;
-    do{ox=1+Math.floor(Math.random()*(mapW-2));oy=KITCHEN_ROWS+2+Math.floor(Math.random()*(mapH-KITCHEN_ROWS-4));attempts++}
-    while(attempts<50&&isBlocked(ox,oy));
-    if(attempts<50)obstacles.push({x:ox,y:oy,type:obstacleTypes[i%obstacleTypes.length]});
+  // Obstacles
+  let oTypes=['booth','planter','spill','trashcan'];
+  for(let i=0;i<cfg.obstacles;i++){
+    let att=0,ox,oy;
+    do{ox=1+Math.floor(Math.random()*(COLS-2));oy=KITCHEN_H+2+Math.floor(Math.random()*(ROWS-KITCHEN_H-4));att++}
+    while(att<50&&blocked(ox,oy));
+    if(att<50)obstacles.push({x:ox,y:oy,type:oTypes[i%oTypes.length]});
   }
 
-  // Bubble girl position (near entrance)
-  bubbleGirl.x=mapW-2;bubbleGirl.y=mapH-2;bubbleGirl.bubbles=[];bubbleGirl.blowTimer=0;
+  // Bubble girl
+  bubbleGirl.x=COLS-2;bubbleGirl.y=ROWS-2;bubbleGirl.bubbles=[];bubbleGirl.timer=0;
 
-  // Player start
-  player.x=Math.floor(mapW/2);player.y=1;player.carrying=null;player.dir=2;
+  // Player in kitchen
+  player.x=Math.floor(COLS/2);player.y=1;player.carrying=null;player.dir=2;
 }
 
-function isBlocked(tx,ty){
-  if(tx<0||ty<0||tx>=mapW||ty>=mapH)return true;
-  if(ty<KITCHEN_ROWS+1)return true; // kitchen wall
-  for(let t of tables)if(tx>=t.x&&tx<t.x+t.w&&ty>=t.y&&ty<t.y+t.h)return true;
+function shuffle(a){for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}}
+
+function blocked(tx,ty){
+  if(tx<0||ty<0||tx>=COLS||ty>=ROWS)return true;
+  for(let t of tables)if(tx>=t.x&&tx<t.x+t.w&&ty===t.y)return true;
   for(let o of obstacles)if(o.x===tx&&o.y===ty)return true;
   return false;
 }
 
-function isWalkable(px,py){
+function walkable(px,py){
+  if(px<0.3||py<0.3||px>COLS-0.7||py>ROWS-0.7)return false;
+  // Kitchen wall at row KITCHEN_H except door
   let tx=Math.floor(px),ty=Math.floor(py);
-  if(tx<0||ty<0||tx>=mapW||ty>=mapH)return false;
-  // Kitchen counter wall at row KITCHEN_ROWS (except door at center)
-  if(ty===KITCHEN_ROWS&&(tx<Math.floor(mapW/2)-1||tx>Math.floor(mapW/2)+1))return false;
-  for(let o of obstacles)if(o.x===tx&&o.y===ty)return true===false; // obstacles block
-  for(let t of tables)if(px+0.3>t.x&&px-0.3<t.x+t.w&&py+0.3>t.y&&py-0.3<t.y+t.h)return false;
-  for(let o of obstacles)if(Math.abs(px-o.x-0.5)<0.7&&Math.abs(py-o.y-0.5)<0.7)return false;
+  let doorL=Math.floor(COLS/2)-1,doorR=Math.floor(COLS/2)+1;
+  if(ty===KITCHEN_H&&(tx<doorL||tx>doorR))return false;
+  for(let o of obstacles)if(Math.abs(px-o.x-0.5)<0.65&&Math.abs(py-o.y-0.5)<0.65)return false;
+  for(let t of tables)if(px+0.3>t.x&&px-0.3<t.x+t.w&&Math.abs(py-t.y-0.5)<0.6)return false;
   return true;
 }
 
-// === CUSTOMER / ORDER MANAGEMENT ===
-function spawnCustomer(table){
-  let type=CUSTOMER_TYPES[Math.floor(Math.random()*CUSTOMER_TYPES.length)];
-  let cfg=getLevelConfig(level);
+// ========== CUSTOMERS ==========
+function spawnCust(table){
+  let type=CUST_TYPES[Math.floor(Math.random()*CUST_TYPES.length)];
+  let cfg=lvlCfg(level);
   let b=Math.floor(Math.random()*BASES.length);
-  let t=cfg.orderComplexity>=2?Math.floor(Math.random()*TOPPINGS.length):0;
-  let g=cfg.orderComplexity>=3?Math.floor(Math.random()*GARNISHES.length):0;
-  let order={base:b,topping:t,garnish:g,name:getSaladName(b,t,g),emojis:getSaladEmojis(b,t,g),
-    patience:800*cfg.patience*type.patience,maxPatience:800*cfg.patience*type.patience,
-    complexity:cfg.orderComplexity};
-  table.customer=type;table.order=order;table.served=false;table.reactionTimer=0;table.reaction=null;
-  orders.push({table:table,order:order});
-  updateOrderQueue();
+  let t=cfg.complexity>=2?Math.floor(Math.random()*TOPPINGS.length):0;
+  let g=cfg.complexity>=3?Math.floor(Math.random()*GARNISHES.length):0;
+  let maxP=1200*cfg.patienceMult*type.patience;
+  table.cust=type;
+  table.order={base:b,topping:t,garnish:g,patience:maxP,maxP:maxP,complexity:cfg.complexity,
+    emojis:BASE_EMOJI[b]+(cfg.complexity>=2?TOP_EMOJI[t]:'')+(cfg.complexity>=3?GARN_EMOJI[g]:''),
+    name:BASES[b]+(cfg.complexity>=2?' + '+TOPPINGS[t]:'')+(cfg.complexity>=3?' + '+GARNISHES[g]:'')};
+  table.served=false;table.reactTimer=0;table.react=null;
+  table.chatTimer=80+Math.floor(Math.random()*150);table.chatText='';
 }
 
-function updateOrderQueue(){
-  let el=document.getElementById('order-queue');
-  el.innerHTML='';
-  for(let o of orders){
-    if(o.table.served)continue;
-    let pct=o.order.patience/o.order.maxPatience;
-    let cls=pct<0.25?'order-ticket urgent':'order-ticket';
-    let div=document.createElement('div');div.className=cls;
-    div.innerHTML=o.order.emojis+'<br>'+o.table.customer.name;
-    el.appendChild(div);
-  }
-}
-
-// === COOKING ===
+// ========== COOKING SYSTEM ==========
 function enterKitchen(){
-  if(gameState!=='playing')return;
-  gameState='cooking';
-  currentRecipe={base:-1,topping:-1,garnish:-1};
-  cookingForOrder=orders.find(o=>!o.table.served);
-  showRecipePanel();
+  if(state!=='playing'||player.carrying)return;
+  if(player.y>KITCHEN_H+1)return;
+  cooking.active=true;cooking.step=0;cooking.timer=0;cooking.scroll=0;
+  cooking.recipe={base:-1,topping:-1,garnish:-1};
+  // Find first unserved order
+  cooking.forOrder=tables.find(t=>t.cust&&!t.served);
+  state='cooking';
+  sndPickup();
 }
 
-function showRecipePanel(){
-  let panel=document.getElementById('recipe-panel');
-  panel.classList.remove('hidden');
-  panel.innerHTML='';
-  let order=cookingForOrder?cookingForOrder.order:null;
-
-  // Base ingredients
-  let label=document.createElement('div');label.style.cssText='width:100%;color:#ffd700;font-size:11px;text-align:center;font-weight:bold';
-  label.textContent='💩 PICK YOUR POOP BASE:';panel.appendChild(label);
-  for(let i=0;i<BASES.length;i++){
-    let btn=document.createElement('div');btn.className='ingr-btn';btn.textContent=INGR_EMOJIS.base[i];
-    btn.innerHTML+=`<span class="ingr-name">${BASES[i].substring(0,8)}</span>`;
-    let idx=i;btn.onclick=()=>{currentRecipe.base=idx;sndPickup();updateRecipeHighlights();
-      if(cookingForOrder&&cookingForOrder.order.complexity<2)finishCooking();};
-    panel.appendChild(btn);
+function cookSelect(idx){
+  let s=cooking.step;
+  if(s===0){cooking.recipe.base=idx;sndChop();cooking.step=cooking.recipe.base>=0?1:0;}
+  else if(s===1){
+    let cfg=lvlCfg(level);
+    if(cfg.complexity<2){cooking.recipe.topping=0;cooking.step=3;}
+    else{cooking.recipe.topping=idx;sndChop();cooking.step=2;}
   }
-
-  if(!order||order.complexity>=2){
-    let label2=document.createElement('div');label2.style.cssText='width:100%;color:#69db7c;font-size:11px;text-align:center;font-weight:bold;margin-top:4px';
-    label2.textContent='🥗 ADD TOPPING:';panel.appendChild(label2);
-    for(let i=0;i<TOPPINGS.length;i++){
-      let btn=document.createElement('div');btn.className='ingr-btn';btn.textContent=INGR_EMOJIS.topping[i];
-      btn.innerHTML+=`<span class="ingr-name">${TOPPINGS[i].substring(0,8)}</span>`;
-      let idx=i;btn.onclick=()=>{currentRecipe.topping=idx;sndPickup();updateRecipeHighlights();
-        if(cookingForOrder&&cookingForOrder.order.complexity<3)finishCooking();};
-      panel.appendChild(btn);
-    }
+  else if(s===2){
+    let cfg=lvlCfg(level);
+    if(cfg.complexity<3){cooking.recipe.garnish=0;cooking.step=3;}
+    else{cooking.recipe.garnish=idx;sndChop();cooking.step=3;}
   }
+  cooking.timer=0;cooking.scroll=0;
+}
 
-  if(!order||order.complexity>=3){
-    let label3=document.createElement('div');label3.style.cssText='width:100%;color:#ffa94d;font-size:11px;text-align:center;font-weight:bold;margin-top:4px';
-    label3.textContent='✨ GARNISH:';panel.appendChild(label3);
-    for(let i=0;i<GARNISHES.length;i++){
-      let btn=document.createElement('div');btn.className='ingr-btn';btn.textContent=INGR_EMOJIS.garnish[i];
-      btn.innerHTML+=`<span class="ingr-name">${GARNISHES[i].substring(0,8)}</span>`;
-      let idx=i;btn.onclick=()=>{currentRecipe.garnish=idx;sndPickup();updateRecipeHighlights();finishCooking()};
-      panel.appendChild(btn);
-    }
+function cookTick(){
+  if(!cooking.active)return;
+  cooking.timer++;
+  let s=cooking.step;
+  // Stir step: hold for 120 frames
+  if(s===3){
+    if(cooking.timer%15===0)sndStir();
+    if(cooking.timer>=COOK_STEP_TIME[3]){cooking.step=4;cooking.timer=0}
+  }
+  // Plate step: hold for 60 frames
+  if(s===4){
+    if(cooking.timer===1)sndPlate();
+    if(cooking.timer>=COOK_STEP_TIME[4])finishCook();
   }
 }
 
-function updateRecipeHighlights(){
-  let btns=document.querySelectorAll('.ingr-btn');
-  btns.forEach(b=>b.classList.remove('selected'));
-}
-
-function finishCooking(){
-  if(currentRecipe.base<0)return;
-  let cfg=getLevelConfig(level);
-  if(cfg.orderComplexity>=2&&currentRecipe.topping<0)return;
-  if(cfg.orderComplexity>=3&&currentRecipe.garnish<0)return;
-
-  player.carrying={...currentRecipe,name:getSaladName(currentRecipe.base,currentRecipe.topping>=0?currentRecipe.topping:0,currentRecipe.garnish>=0?currentRecipe.garnish:0),
-    emojis:getSaladEmojis(currentRecipe.base,currentRecipe.topping>=0?currentRecipe.topping:0,currentRecipe.garnish>=0?currentRecipe.garnish:0)};
-  document.getElementById('recipe-panel').classList.add('hidden');
+function finishCook(){
+  let r=cooking.recipe;
+  player.carrying={base:r.base,topping:r.topping>=0?r.topping:0,garnish:r.garnish>=0?r.garnish:0,
+    emojis:BASE_EMOJI[r.base]+TOP_EMOJI[r.topping>=0?r.topping:0]+GARN_EMOJI[r.garnish>=0?r.garnish:0],
+    name:BASES[r.base]+' + '+TOPPINGS[r.topping>=0?r.topping:0]+' + '+GARNISHES[r.garnish>=0?r.garnish:0]};
+  cooking.active=false;
+  state='playing';
   sndServe();
-  gameState='playing';
-
-  floatingTexts.push({x:player.x*TILE+TILE/2,y:player.y*TILE-10,text:'ORDER UP!',color:'#ffd700',life:50,maxLife:50,size:14});
+  addFloat(player.x*TILE+TILE/2,player.y*TILE-20,'ORDER UP! 💩',{color:'#ffd700',size:18,life:60});
 }
 
-// === SERVING ===
+function cancelCook(){
+  cooking.active=false;state='playing';
+}
+
+// ========== SERVING ==========
 function tryServe(){
-  if(!player.carrying||gameState!=='playing')return;
+  if(!player.carrying||state!=='playing')return;
+  let best=null,bestD=99;
   for(let t of tables){
-    if(!t.customer||t.served)continue;
-    let dx=Math.abs(player.x-(t.x+0.5)),dy=Math.abs(player.y-(t.y+0.5));
-    if(dx<2&&dy<2){
-      // Serve!
-      let order=t.order;
-      let correct=player.carrying.base===order.base;
-      if(order.complexity>=2)correct=correct&&player.carrying.topping===order.topping;
-      if(order.complexity>=3)correct=correct&&player.carrying.garnish===order.garnish;
-
-      t.served=true;
-      player.carrying=null;
-      served++;
-
-      // Customer reaction
-      gameState='reaction';
-      let patiencePct=order.patience/order.maxPatience;
-      let reactionSet=correct?REACTIONS_HORROR:REACTIONS_DISGUST;
-      if(patiencePct<0.25)reactionSet=REACTIONS_SHOCK;
-      t.reaction={
-        emoji:reactionSet[Math.floor(Math.random()*reactionSet.length)],
-        quote:REACTION_QUOTES[Math.floor(Math.random()*REACTION_QUOTES.length)],
-        correct:correct
-      };
-      t.reactionTimer=120;
-
-      // Scoring
-      let pts=correct?100+Math.floor(patiencePct*50):25;
-      if(comboCount>0)pts=Math.floor(pts*(1+comboCount*0.2));
-      let tipAmt=correct?Math.floor(getLevelConfig(level).tips*patiencePct):1;
-      score+=pts;tips+=tipAmt;
-      if(correct)comboCount++;else comboCount=0;
-
-      sndHorror();
-      if(correct)sndCashRegister();
-      else sndWomp();
-
-      // Particles
-      let px=t.x*TILE+TILE,py=t.y*TILE+TILE/2;
-      for(let i=0;i<15;i++){
-        let a=Math.random()*Math.PI*2,sp=2+Math.random()*3;
-        particles.push({x:px,y:py,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-2,life:30+Math.random()*20,maxLife:50,
-          color:correct?'#ffd700':'#8b4513',size:3+Math.random()*3});
-      }
-      floatingTexts.push({x:px,y:py-20,text:(correct?'':'WRONG! ')+'+'+pts+(comboCount>1?' x'+comboCount+' COMBO!':''),
-        color:correct?'#ffd700':'#ff4444',life:60,maxLife:60,size:correct?16:13});
-      if(tipAmt>0)floatingTexts.push({x:px+20,y:py,text:'$'+tipAmt+' TIP',color:'#69db7c',life:40,maxLife:40,size:11});
-
-      updateHUD();updateOrderQueue();
-
-      // After reaction, continue or end level
-      setTimeout(()=>{
-        if(gameState==='reaction')gameState='playing';
-        t.customer=null;t.order=null;
-        if(served>=totalToServe){levelComplete()}
-        else{
-          // Spawn new customer after delay
-          setTimeout(()=>{
-            if(gameState==='playing'){
-              let empty=tables.filter(tt=>!tt.customer);
-              if(empty.length>0)spawnCustomer(empty[Math.floor(Math.random()*empty.length)]);
-            }
-          },1000);
-        }
-      },2000);
-
-      return;
-    }
+    if(!t.cust||t.served)continue;
+    let dx=Math.abs(player.x-(t.x+1)),dy=Math.abs(player.y-t.y);
+    let d=Math.sqrt(dx*dx+dy*dy);
+    if(d<2.5&&d<bestD){bestD=d;best=t}
   }
-  // Not near a table
-  sndBoing();
-  floatingTexts.push({x:player.x*TILE+TILE/2,y:player.y*TILE-10,text:'GET CLOSER!',color:'#ff6b35',life:30,maxLife:30,size:12});
-}
+  if(!best){sndBoing();addFloat(player.x*TILE+TILE/2,player.y*TILE-20,'GET CLOSER!',{color:'#ff6b35',size:16,life:30});return}
 
-// === RANDOM EVENTS ===
-function spawnRandomEvent(){
-  let cfg=getLevelConfig(level);
-  let roll=Math.random();
-  if(roll<cfg.fartChance){
-    // Fart cloud!
-    let fx=2+Math.random()*(mapW-4),fy=KITCHEN_ROWS+2+Math.random()*(mapH-KITCHEN_ROWS-4);
-    events.push({type:'fart',x:fx*TILE,y:fy*TILE,life:180,maxLife:180,radius:TILE*1.5});
-    sndFart();
-    floatingTexts.push({x:fx*TILE,y:fy*TILE-20,text:'*PFFFFFFT*',color:'#90EE90',life:40,maxLife:40,size:14});
-  }else if(roll<cfg.fartChance+cfg.dogChance){
-    // Random dog!
-    let side=Math.random()<0.5?0:mapW-1;
-    let dy2=KITCHEN_ROWS+3+Math.floor(Math.random()*(mapH-KITCHEN_ROWS-5));
-    events.push({type:'dog',x:side*TILE,y:dy2*TILE,targetX:(mapW-1-side)*TILE,life:300,maxLife:300,speed:1.5+Math.random()});
-    sndBark();
-    floatingTexts.push({x:side*TILE+TILE/2,y:dy2*TILE-10,text:'WOOF!',color:'#DEB887',life:30,maxLife:30,size:16});
-  }
-}
+  let t=best,order=t.order;
+  let correct=player.carrying.base===order.base;
+  if(order.complexity>=2)correct=correct&&player.carrying.topping===order.topping;
+  if(order.complexity>=3)correct=correct&&player.carrying.garnish===order.garnish;
 
-// === LEVEL FLOW ===
-function startLevel(lv){
-  level=lv;score=0;tips=0;served=0;comboCount=0;
-  let cfg=getLevelConfig(level);
-  totalToServe=cfg.toServe;
-  particles=[];floatingTexts=[];events=[];orders=[];
-  generateMap();
-  // Spawn initial customers
-  let initial=Math.min(cfg.customers,tables.length);
-  let shuffledTables=[...tables];
-  for(let i=shuffledTables.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[shuffledTables[i],shuffledTables[j]]=[shuffledTables[j],shuffledTables[i]]}
-  for(let i=0;i<initial;i++)spawnCustomer(shuffledTables[i]);
-  gameState='playing';
+  t.served=true;player.carrying=null;served++;
+  if(correct)combo++;else combo=0;
+
+  // Reaction
+  t.react={emoji:REACTION_EMOJIS[Math.floor(Math.random()*REACTION_EMOJIS.length)],
+    quote:SERVE_REACTIONS[Math.floor(Math.random()*SERVE_REACTIONS.length)],correct};
+  t.reactTimer=150;
+
+  let pct=order.patience/order.maxP;
+  let pts=correct?100+Math.floor(pct*80):20;
+  if(combo>1)pts=Math.floor(pts*(1+combo*0.15));
+  let tip=correct?Math.floor(lvlCfg(level).tipBase*pct):0;
+  score+=pts;tips+=tip;
+
+  sndHorror();if(correct)sndCash();else sndWomp();
+
+  let px=t.x*TILE+TILE,py=t.y*TILE;
+  for(let i=0;i<12;i++){let a=Math.random()*Math.PI*2,sp=1.5+Math.random()*3;
+    particles.push({x:px,y:py,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-1.5,life:35+Math.random()*20,maxL:55,color:correct?'#ffd700':'#8b4513',size:3+Math.random()*4})}
+  addFloat(px,py-30,(correct?'':'WRONG! ')+'+'+pts+(combo>1?' x'+combo+'!':''),{color:correct?'#ffd700':'#ff4444',size:correct?20:16,life:70});
+  if(tip>0)addFloat(px+30,py-10,'$'+tip+' TIP!',{color:'#69db7c',size:14,life:50});
+
   updateHUD();
-  document.getElementById('recipe-panel').classList.add('hidden');
-  document.getElementById('overlay').classList.add('hidden');
-  if(isMobile)document.getElementById('mobile-dpad').style.display='block';
+
+  setTimeout(()=>{
+    t.cust=null;t.order=null;
+    if(served>=toServe){state='levelComplete';sndLevelUp();setTimeout(()=>showOverlay('levelComplete'),400)}
+    else setTimeout(()=>{
+      if(state==='playing'){let empty=tables.filter(tt=>!tt.cust);if(empty.length>0)spawnCust(empty[Math.floor(Math.random()*empty.length)])}
+    },800);
+  },2200);
 }
 
-function levelComplete(){
-  gameState='levelComplete';sndLevelUp();
-  setTimeout(()=>showOverlay('levelComplete'),500);
-}
-
-function checkGameOver(){
-  // Check if all orders timed out
-  let activeOrders=orders.filter(o=>!o.table.served&&o.table.customer);
-  for(let o of activeOrders){
-    if(o.order.patience<=0){
-      o.table.served=true;served++;
-      o.table.reaction={emoji:'😤',quote:'I AM LEAVING!',correct:false};
-      o.table.reactionTimer=60;
-      sndGameOver();
-      floatingTexts.push({x:o.table.x*TILE+TILE,y:o.table.y*TILE-10,text:'CUSTOMER LEFT!',color:'#ff0000',life:50,maxLife:50,size:13});
-      comboCount=0;
-      setTimeout(()=>{
-        o.table.customer=null;o.table.order=null;
-        if(served>=totalToServe)showOverlay('levelComplete');
-        else{
-          let empty=tables.filter(t=>!t.customer);
-          if(empty.length>0)spawnCustomer(empty[Math.floor(Math.random()*empty.length)]);
-        }
-      },1500);
-      updateOrderQueue();
-    }
+// ========== RANDOM EVENTS ==========
+function spawnEvent(){
+  let cfg=lvlCfg(level),roll=Math.random();
+  if(roll<cfg.fartChance){
+    let fx=(2+Math.random()*(COLS-4))*TILE,fy=(KITCHEN_H+2+Math.random()*(ROWS-KITCHEN_H-4))*TILE;
+    events.push({type:'fart',x:fx,y:fy,life:200,maxL:200,r:TILE*2});
+    sndFart();addFloat(fx,fy-30,'*PFFFFFFFT*',{color:'#90ee90',size:18,life:50});
+  }else if(roll<cfg.fartChance+cfg.dogChance){
+    let side=Math.random()<0.5?-TILE:(COLS+1)*TILE;
+    let dy=(KITCHEN_H+3+Math.floor(Math.random()*(ROWS-KITCHEN_H-5)))*TILE;
+    events.push({type:'dog',x:side,y:dy,target:side<0?(COLS+1)*TILE:-TILE,life:350,maxL:350,spd:1.2+Math.random()*0.8});
+    sndBark();
   }
 }
 
-// === HUD ===
+// ========== CHAT BUBBLES ==========
+function spawnChat(table){
+  if(!table.cust||table.served)return;
+  let text=IDLE_CHATTER[Math.floor(Math.random()*IDLE_CHATTER.length)];
+  chatBubbles.push({x:table.x*TILE+TILE,y:table.y*TILE-TILE*0.3,text,life:200,maxL:200});
+}
+
+// ========== HELPERS ==========
+function addFloat(x,y,text,opts){
+  floats.push({x,y,text,color:opts.color||'#fff',size:opts.size||14,life:opts.life||40,maxL:opts.life||40});
+}
+
 function updateHUD(){
   document.getElementById('h-level').textContent=level;
   document.getElementById('h-score').textContent=score;
   document.getElementById('h-tips').textContent='$'+tips;
-  document.getElementById('h-served').textContent=served+'/'+totalToServe;
+  document.getElementById('h-served').textContent=served+'/'+toServe;
 }
 
-// === OVERLAY ===
+// ========== LEVEL FLOW ==========
+function startLevel(lv){
+  level=lv;let cfg=lvlCfg(level);
+  score=0;tips=0;served=0;combo=0;toServe=cfg.toServe;
+  particles=[];floats=[];events=[];chatBubbles=[];
+  cooking.active=false;
+  genMap();
+  let shuffT=[...tables];shuffle(shuffT);
+  for(let i=0;i<Math.min(cfg.seats,shuffT.length);i++)spawnCust(shuffT[i]);
+  state='playing';updateHUD();
+  document.getElementById('overlay').classList.add('hidden');
+  if(isMobile){document.getElementById('dpad').style.display='block';document.getElementById('action-btn').style.display='block'}
+}
+
 function showOverlay(type){
-  const ov=document.getElementById('overlay'),h1=ov.querySelector('h1'),sub=ov.querySelector('.sub');
-  const btn=document.getElementById('btn-play'),lvlTitle=document.getElementById('level-title'),stats=document.getElementById('end-stats');
-  ov.classList.remove('hidden');stats.textContent='';lvlTitle.textContent='';
-  if(isMobile)document.getElementById('mobile-dpad').style.display='none';
-  document.getElementById('recipe-panel').classList.add('hidden');
+  let ov=document.getElementById('overlay');ov.classList.remove('hidden');
+  let h1=ov.querySelector('h1'),sub=ov.querySelector('.sub'),btn=document.getElementById('btn-play');
+  let lt=document.getElementById('level-title'),stars=document.getElementById('stars-display'),fs=document.getElementById('final-score'),es=document.getElementById('end-stats');
+  stars.textContent='';fs.textContent='';es.textContent='';lt.textContent='';
+  if(isMobile){document.getElementById('dpad').style.display='none';document.getElementById('action-btn').style.display='none'}
 
   if(type==='menu'){
     h1.innerHTML='💩🥗 POOP SALAD';
-    sub.innerHTML='Welcome to the worst restaurant in town!<br>Cook poop salads, dodge obstacles, serve horrified customers!<br><br>WASD/Arrows to move | SPACE near kitchen to cook | SPACE near table to serve';
-    btn.textContent='START SHIFT';btn.onclick=()=>startLevel(1);
+    sub.innerHTML='Welcome to the worst restaurant in town!<br>Cook disgusting salads. Serve horrified customers.<br>Try not to get fired.<br><br>WASD/Arrows = move &nbsp; SPACE = interact';
+    btn.textContent='START SHIFT';btn.onclick=()=>{ensureAudio();startLevel(1)};
   }else if(type==='levelComplete'){
-    let stars=tips>=getLevelConfig(level).tips*totalToServe*0.6?3:tips>=getLevelConfig(level).tips*totalToServe*0.3?2:1;
-    h1.innerHTML=stars>=2?'💩 SHIFT COMPLETE!':'💩 BARELY SURVIVED!';
-    lvlTitle.textContent='Level '+level;
-    sub.innerHTML='Score: '+score+' | Tips: $'+tips;
-    stats.textContent='\u2B50'.repeat(stars)+' '.repeat(3-stars)+' | Combo: x'+comboCount;
+    let s=tips>=lvlCfg(level).tipBase*toServe*0.5?3:tips>0?2:1;
+    h1.innerHTML=s>=2?'💩 SHIFT COMPLETE!':'💩 BARELY SURVIVED!';
+    lt.textContent='Level '+level+' Done';
+    stars.textContent='\u2B50'.repeat(s);
+    fs.textContent='Score: '+score+' | Tips: $'+tips;
+    es.textContent='Best combo: x'+combo;
     btn.textContent='NEXT SHIFT';btn.onclick=()=>startLevel(level+1);
-  }else if(type==='gameOver'){
-    h1.innerHTML='💩 FIRED!';sub.textContent='The health inspector shut you down!';
-    stats.textContent='Final Score: '+score+' | Tips: $'+tips;
-    btn.textContent='TRY AGAIN';btn.onclick=()=>startLevel(level);
   }
 }
 
-// === INPUT ===
-let keys={};
+// ========== INPUT ==========
 document.addEventListener('keydown',(e)=>{
   keys[e.key]=true;
-  if(e.key===' '||e.key==='Enter'){
-    e.preventDefault();
-    if(gameState==='playing'){
-      ensureAudio();
-      // Near kitchen?
-      if(player.y<=KITCHEN_ROWS+1&&!player.carrying)enterKitchen();
+  if((e.key===' '||e.key==='Enter')&&!e.repeat){
+    e.preventDefault();ensureAudio();
+    if(state==='playing'){
+      if(player.y<=KITCHEN_H+1&&!player.carrying)enterKitchen();
       else if(player.carrying)tryServe();
+    }else if(state==='cooking'&&cooking.step>=3){
+      // timed steps auto-advance
     }
   }
-  if(e.key==='Escape'&&gameState==='cooking'){
-    gameState='playing';document.getElementById('recipe-panel').classList.add('hidden');
-  }
+  if(e.key==='Escape'&&state==='cooking')cancelCook();
 });
 document.addEventListener('keyup',(e)=>{keys[e.key]=false});
 
-// Mobile D-pad
-document.querySelectorAll('.dpad-btn').forEach(btn=>{
-  let dir=btn.dataset.dir;
-  btn.addEventListener('touchstart',(e)=>{e.preventDefault();dpadDir[dir]=true;ensureAudio()});
-  btn.addEventListener('touchend',(e)=>{e.preventDefault();dpadDir[dir]=false});
-  btn.addEventListener('mousedown',(e)=>{dpadDir[dir]=true;ensureAudio()});
-  btn.addEventListener('mouseup',(e)=>{dpadDir[dir]=false});
+// Mobile controls
+document.querySelectorAll('.dpad-btn').forEach(b=>{
+  let dir=b.dataset.dir;
+  const on=()=>{dpad[dir]=true;ensureAudio()};
+  const off=()=>{dpad[dir]=false};
+  b.addEventListener('touchstart',(e)=>{e.preventDefault();on()});
+  b.addEventListener('touchend',(e)=>{e.preventDefault();off()});
+  b.addEventListener('mousedown',on);b.addEventListener('mouseup',off);
 });
-
-// Tap to interact on mobile
-canvas.addEventListener('pointerdown',(e)=>{
-  e.preventDefault();ensureAudio();
-  if(gameState==='playing'){
-    let rect=canvas.getBoundingClientRect();
-    let tx=(e.clientX-rect.left+camera.x)/TILE;
-    let ty=(e.clientY-rect.top+camera.y)/TILE;
-    // Tap kitchen area?
-    if(ty<=KITCHEN_ROWS+1&&!player.carrying){enterKitchen();return}
-    // Tap near table while carrying?
-    if(player.carrying){tryServe();return}
-    // Otherwise try to move toward tap
-    let dx=tx-player.x,dy=ty-player.y;
-    if(Math.abs(dx)>Math.abs(dy)){dpadDir.left=dx<0;dpadDir.right=dx>0;dpadDir.up=false;dpadDir.down=false}
-    else{dpadDir.up=dy<0;dpadDir.down=dy>0;dpadDir.left=false;dpadDir.right=false}
-    setTimeout(()=>{dpadDir.up=dpadDir.down=dpadDir.left=dpadDir.right=false},200);
+document.getElementById('action-btn').addEventListener('click',()=>{
+  ensureAudio();
+  if(state==='playing'){
+    if(player.y<=KITCHEN_H+1&&!player.carrying)enterKitchen();
+    else if(player.carrying)tryServe();
   }
 });
 
-// === RESIZE ===
+// Canvas tap for cooking ingredient selection
+canvas.addEventListener('pointerdown',(e)=>{
+  e.preventDefault();ensureAudio();
+  if(state==='cooking'&&cooking.step<3){
+    let rect=canvas.getBoundingClientRect();
+    let cx=e.clientX-rect.left,cy=e.clientY-rect.top;
+    handleCookTap(cx,cy);
+  }
+});
+
+function handleCookTap(cx,cy){
+  // The cooking UI is drawn on canvas — detect which ingredient was tapped
+  let s=cooking.step;
+  let items=s===0?BASES:s===1?TOPPINGS:GARNISHES;
+  let cols=5,btnS=Math.min(TILE*1.1,W/5.5),gap=8;
+  let totalW=cols*(btnS+gap)-gap;
+  let startX=(W-totalW)/2,startY=H*0.4;
+  for(let i=0;i<items.length;i++){
+    let col=i%cols,row=Math.floor(i/cols);
+    let bx=startX+col*(btnS+gap),by=startY+row*(btnS+gap+18)-cooking.scroll;
+    if(cx>=bx&&cx<=bx+btnS&&cy>=by&&cy<=by+btnS){
+      cookSelect(i);return;
+    }
+  }
+}
+
+// ========== RESIZE ==========
 function resize(){
   W=window.innerWidth;H=window.innerHeight;
   canvas.width=W;canvas.height=H;
-  isMobile=W<700||'ontouchstart'in window;
-  if(isMobile&&gameState==='playing')document.getElementById('mobile-dpad').style.display='block';
+  isMobile=W<768||'ontouchstart'in window;
 }
 window.addEventListener('resize',resize);
 
-// === DRAWING FUNCTIONS ===
+// ========== DRAWING ==========
 function drawFloor(){
-  for(let r=0;r<mapH;r++)for(let c=0;c<mapW;c++){
+  for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){
     let px=c*TILE-camera.x,py=r*TILE-camera.y;
-    if(r<KITCHEN_ROWS){
-      // Kitchen floor
-      ctx.fillStyle=(c+r)%2===0?'#3a2a1a':'#4a3020';
-    }else if(r===KITCHEN_ROWS){
-      // Counter
-      ctx.fillStyle='#6b4226';
-    }else{
-      // Dining floor - checkered diner style
-      ctx.fillStyle=(c+r)%2===0?'#2a1a0f':'#352010';
-    }
+    if(px>W+TILE||py>H+TILE||px<-TILE||py<-TILE)continue;
+    ctx.fillStyle=r<KITCHEN_H?((c+r)%2===0?'#3a2a1a':'#4a3020'):
+      r===KITCHEN_H?'#6b4226':((c+r)%2===0?'#2a1a0f':'#352010');
     ctx.fillRect(px,py,TILE+1,TILE+1);
   }
-  // Kitchen counter detail
-  let cy=KITCHEN_ROWS*TILE-camera.y;
-  ctx.fillStyle='#8B4513';ctx.fillRect(0,cy,mapW*TILE,TILE);
-  ctx.fillStyle='#A0522D';ctx.fillRect(0,cy+2,mapW*TILE,4);
-  // Door gap
-  let doorX=Math.floor(mapW/2)-1;
-  ctx.fillStyle='#352010';ctx.fillRect(doorX*TILE-camera.x,cy,3*TILE,TILE);
-  ctx.fillStyle='#ffd700';ctx.font='bold 10px monospace';ctx.textAlign='center';
-  ctx.fillText('KITCHEN',doorX*TILE+TILE*1.5-camera.x,cy+TILE*0.65);
-
+  // Counter
+  let cy=KITCHEN_H*TILE-camera.y;
+  ctx.fillStyle='#8B4513';ctx.fillRect(-camera.x,cy,COLS*TILE,TILE);
+  ctx.fillStyle='#A0522D';ctx.fillRect(-camera.x,cy+3,COLS*TILE,5);
+  // Door
+  let dl=Math.floor(COLS/2)-1,dr=Math.floor(COLS/2)+1;
+  ctx.fillStyle='#352010';ctx.fillRect(dl*TILE-camera.x,cy,(dr-dl+1)*TILE,TILE);
+  ctx.fillStyle='#ffd700';ctx.font='bold 14px monospace';ctx.textAlign='center';
+  ctx.fillText('KITCHEN',Math.floor(COLS/2)*TILE+TILE/2-camera.x,cy+TILE*0.65);
   // Kitchen equipment
-  ctx.fillStyle='#555';
-  ctx.fillRect(1*TILE-camera.x,0.2*TILE-camera.y,2*TILE,1.5*TILE); // stove
-  ctx.fillStyle='#888';
-  ctx.fillRect((mapW-3)*TILE-camera.x,0.2*TILE-camera.y,2*TILE,1.5*TILE); // fridge
-  ctx.fillStyle='#ffd700';ctx.font='9px monospace';ctx.textAlign='center';
-  ctx.fillText('STOVE',2*TILE-camera.x,1.2*TILE-camera.y);
-  ctx.fillText('FRIDGE',(mapW-2)*TILE-camera.x,1.2*TILE-camera.y);
+  ctx.fillStyle='#555';ctx.fillRect(1*TILE-camera.x,0.3*TILE-camera.y,2.5*TILE,2*TILE);
+  ctx.fillStyle='#666';ctx.fillRect((COLS-3.5)*TILE-camera.x,0.3*TILE-camera.y,2.5*TILE,2*TILE);
+  ctx.fillStyle='#ffd700';ctx.font='bold 11px monospace';ctx.textAlign='center';
+  ctx.fillText('🔥 STOVE',2.25*TILE-camera.x,1.6*TILE-camera.y);
+  ctx.fillText('🧊 FRIDGE',(COLS-2.25)*TILE-camera.x,1.6*TILE-camera.y);
+  // Cooking station
+  ctx.fillStyle='#5a3a1a';ctx.fillRect(Math.floor(COLS/2)*TILE-TILE*0.8-camera.x,0.5*TILE-camera.y,TILE*1.6,TILE*1.8);
+  ctx.strokeStyle='#8B6914';ctx.lineWidth=2;ctx.strokeRect(Math.floor(COLS/2)*TILE-TILE*0.8-camera.x,0.5*TILE-camera.y,TILE*1.6,TILE*1.8);
+  ctx.fillStyle='#ffd700';ctx.font='bold 10px monospace';
+  ctx.fillText('🍽️ PREP',Math.floor(COLS/2)*TILE-camera.x,2*TILE-camera.y);
 }
 
-function drawTables(){
-  for(let t of tables){
-    let px=t.x*TILE-camera.x,py=t.y*TILE-camera.y;
-    // Table
-    ctx.fillStyle='#8B6914';
-    ctx.fillRect(px+2,py+2,t.w*TILE-4,t.h*TILE-4);
-    ctx.strokeStyle='#6B4914';ctx.lineWidth=2;
-    ctx.strokeRect(px+2,py+2,t.w*TILE-4,t.h*TILE-4);
+function drawTable(t){
+  let px=t.x*TILE-camera.x,py=t.y*TILE-camera.y;
+  // Table top
+  ctx.fillStyle='#8B6914';
+  ctx.beginPath();ctx.roundRect(px+4,py+4,t.w*TILE-8,TILE-8,6);ctx.fill();
+  ctx.strokeStyle='#6B4914';ctx.lineWidth=2;ctx.stroke();
+  // Chairs
+  ctx.fillStyle='#A0522D';
+  ctx.beginPath();ctx.roundRect(px+TILE*0.2,py-TILE*0.45,TILE*0.55,TILE*0.4,4);ctx.fill();
+  if(t.w>1){ctx.beginPath();ctx.roundRect(px+TILE*1.2,py-TILE*0.45,TILE*0.55,TILE*0.4,4);ctx.fill()}
 
-    // Chair
-    ctx.fillStyle='#A0522D';
-    ctx.fillRect(px+TILE*0.3,py-TILE*0.4,TILE*0.4,TILE*0.35);
-    ctx.fillRect(px+TILE*1.3,py-TILE*0.4,TILE*0.4,TILE*0.35);
+  if(!t.cust)return;
+  let cx2=px+TILE,cy2=py-TILE*0.15;
+  // Customer body
+  ctx.fillStyle=t.cust.shirt;
+  ctx.beginPath();ctx.ellipse(cx2,cy2+TILE*0.05,TILE*0.38,TILE*0.28,0,0,Math.PI*2);ctx.fill();
+  // Head
+  ctx.fillStyle=t.cust.skin;
+  ctx.beginPath();ctx.arc(cx2,cy2-TILE*0.3,TILE*0.24,0,Math.PI*2);ctx.fill();
+  // Hair
+  ctx.fillStyle=t.cust.hair;
+  ctx.beginPath();ctx.arc(cx2,cy2-TILE*0.38,TILE*0.2,Math.PI,Math.PI*2);ctx.fill();
+  // Eyes
+  ctx.fillStyle='#1a1a1a';
+  ctx.beginPath();ctx.arc(cx2-TILE*0.08,cy2-TILE*0.3,3,0,Math.PI*2);ctx.fill();
+  ctx.beginPath();ctx.arc(cx2+TILE*0.08,cy2-TILE*0.3,3,0,Math.PI*2);ctx.fill();
+  // Mouth
+  ctx.strokeStyle='#8a4a3a';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.arc(cx2,cy2-TILE*0.2,TILE*0.06,0,Math.PI);ctx.stroke();
+  // Name
+  ctx.fillStyle='#a08060';ctx.font='bold 10px monospace';ctx.textAlign='center';
+  ctx.fillText(t.cust.name,cx2,cy2+TILE*0.45);
 
-    if(t.customer){
-      // Draw customer
-      let cx2=px+TILE,cy2=py-TILE*0.1;
-      // Body
-      ctx.fillStyle=t.customer.shirt;
-      ctx.beginPath();ctx.ellipse(cx2,cy2,TILE*0.35,TILE*0.25,0,0,Math.PI*2);ctx.fill();
-      // Head
-      ctx.fillStyle='#f0c8a0';
-      ctx.beginPath();ctx.arc(cx2,cy2-TILE*0.3,TILE*0.22,0,Math.PI*2);ctx.fill();
-      // Hair
-      ctx.fillStyle=t.customer.hair;
-      ctx.beginPath();ctx.arc(cx2,cy2-TILE*0.38,TILE*0.18,Math.PI,Math.PI*2);ctx.fill();
+  if(!t.served&&t.order){
+    // Order bubble
+    let bx=cx2+TILE*0.7,by=cy2-TILE*0.85;
+    ctx.fillStyle='rgba(255,245,220,0.92)';
+    ctx.beginPath();ctx.roundRect(bx-TILE*0.5,by-TILE*0.25,TILE*1,TILE*0.5,8);ctx.fill();
+    ctx.strokeStyle='#8B4513';ctx.lineWidth=1.5;ctx.stroke();
+    // Bubble tail
+    ctx.fillStyle='rgba(255,245,220,0.92)';
+    ctx.beginPath();ctx.moveTo(bx-TILE*0.1,by+TILE*0.25);ctx.lineTo(bx-TILE*0.2,by+TILE*0.45);ctx.lineTo(bx+TILE*0.05,by+TILE*0.25);ctx.fill();
+    // Order text
+    ctx.font='18px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle='#000';
+    ctx.fillText(t.order.emojis,bx,by);
 
-      // Order bubble
-      if(!t.served&&t.order){
-        let bx=cx2+TILE*0.6,by=cy2-TILE*0.8;
-        ctx.fillStyle='rgba(255,240,200,0.9)';
-        ctx.beginPath();ctx.arc(bx,by,TILE*0.35,0,Math.PI*2);ctx.fill();
-        ctx.strokeStyle='#8B4513';ctx.lineWidth=1;ctx.stroke();
-        ctx.font='12px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
-        ctx.fillStyle='#000';ctx.fillText(t.order.emojis.substring(0,4),bx,by);
+    // Patience bar
+    let pct=t.order.patience/t.order.maxP;
+    let bw=t.w*TILE-12;
+    ctx.fillStyle='#222';ctx.beginPath();ctx.roundRect(px+6,py+TILE+4,bw,6,3);ctx.fill();
+    ctx.fillStyle=pct>0.5?'#69db7c':pct>0.25?'#ffa94d':'#ff4444';
+    ctx.beginPath();ctx.roundRect(px+6,py+TILE+4,bw*pct,6,3);ctx.fill();
+  }
 
-        // Patience bar
-        let pct=t.order.patience/t.order.maxPatience;
-        let bw=t.w*TILE-8;
-        ctx.fillStyle='#333';ctx.fillRect(px+4,py+t.h*TILE+2,bw,4);
-        ctx.fillStyle=pct>0.5?'#69db7c':pct>0.25?'#ffa94d':'#ff4444';
-        ctx.fillRect(px+4,py+t.h*TILE+2,bw*pct,4);
-      }
-
-      // Reaction
-      if(t.reaction&&t.reactionTimer>0){
-        let ra=t.reactionTimer/120;
-        ctx.font=`${24+Math.sin(frameCount*0.3)*4}px sans-serif`;ctx.textAlign='center';
-        ctx.globalAlpha=Math.min(ra*2,1);
-        ctx.fillText(t.reaction.emoji,cx2,cy2-TILE*0.9-Math.sin(frameCount*0.1)*5);
-        ctx.font='bold 9px monospace';ctx.fillStyle=t.reaction.correct?'#ffd700':'#ff4444';
-        ctx.fillText(t.reaction.quote.substring(0,25),cx2,cy2-TILE*1.4);
-        ctx.globalAlpha=1;
-      }
-    }
+  // Reaction
+  if(t.react&&t.reactTimer>0){
+    let a=Math.min(t.reactTimer/40,1);
+    ctx.globalAlpha=a;
+    ctx.font=`${32+Math.sin(frame*0.25)*4}px sans-serif`;ctx.textAlign='center';
+    ctx.fillText(t.react.emoji,cx2,cy2-TILE*1.1-Math.sin(frame*0.08)*6);
+    ctx.font='bold 11px monospace';ctx.fillStyle=t.react.correct?'#ffd700':'#ff4444';
+    let qt=t.react.quote;if(qt.length>28)qt=qt.substring(0,28)+'...';
+    ctx.fillText(qt,cx2,cy2-TILE*1.55);
+    ctx.globalAlpha=1;
   }
 }
 
-function drawObstacles(){
-  for(let o of obstacles){
-    let px=o.x*TILE-camera.x,py=o.y*TILE-camera.y;
-    if(o.type==='booth'){
-      ctx.fillStyle='#8B0000';ctx.fillRect(px+2,py+2,TILE-4,TILE-4);
-      ctx.fillStyle='#A52A2A';ctx.fillRect(px+4,py+4,TILE-8,TILE*0.4);
-      ctx.fillStyle='#ffd700';ctx.font='8px monospace';ctx.textAlign='center';ctx.fillText('BOOTH',px+TILE/2,py+TILE*0.8);
-    }else if(o.type==='planter'){
-      ctx.fillStyle='#556B2F';ctx.beginPath();ctx.arc(px+TILE/2,py+TILE/2,TILE*0.4,0,Math.PI*2);ctx.fill();
-      ctx.fillStyle='#228B22';ctx.font='18px sans-serif';ctx.textAlign='center';ctx.fillText('🌿',px+TILE/2,py+TILE*0.7);
-    }else if(o.type==='spill'){
-      ctx.fillStyle='rgba(100,200,255,0.3)';ctx.beginPath();ctx.ellipse(px+TILE/2,py+TILE/2,TILE*0.45,TILE*0.3,0.3,0,Math.PI*2);ctx.fill();
-      ctx.fillStyle='#87CEEB';ctx.font='7px monospace';ctx.textAlign='center';ctx.fillText('SPILL',px+TILE/2,py+TILE*0.6);
-    }else{
-      ctx.fillStyle='#444';ctx.fillRect(px+6,py+4,TILE-12,TILE-6);
-      ctx.fillStyle='#666';ctx.font='16px sans-serif';ctx.textAlign='center';ctx.fillText('🗑️',px+TILE/2,py+TILE*0.7);
-    }
+function drawObstacle(o){
+  let px=o.x*TILE-camera.x,py=o.y*TILE-camera.y;
+  if(o.type==='booth'){
+    ctx.fillStyle='#8B0000';ctx.beginPath();ctx.roundRect(px+3,py+3,TILE-6,TILE-6,5);ctx.fill();
+    ctx.fillStyle='#CD5C5C';ctx.beginPath();ctx.roundRect(px+6,py+6,TILE-12,TILE*0.35,3);ctx.fill();
+    ctx.fillStyle='#ffd700';ctx.font='bold 9px monospace';ctx.textAlign='center';ctx.fillText('BOOTH',px+TILE/2,py+TILE*0.85);
+  }else if(o.type==='planter'){
+    ctx.fillStyle='#556B2F';ctx.beginPath();ctx.arc(px+TILE/2,py+TILE/2,TILE*0.42,0,Math.PI*2);ctx.fill();
+    ctx.font='28px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('🌿',px+TILE/2,py+TILE/2);
+  }else if(o.type==='spill'){
+    ctx.fillStyle='rgba(100,200,255,0.25)';ctx.beginPath();ctx.ellipse(px+TILE/2,py+TILE/2,TILE*0.45,TILE*0.3,0.3,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#87ceeb';ctx.font='bold 10px monospace';ctx.textAlign='center';ctx.fillText('WET FLOOR',px+TILE/2,py+TILE*0.6);
+  }else{
+    ctx.fillStyle='#444';ctx.beginPath();ctx.roundRect(px+8,py+6,TILE-16,TILE-8,4);ctx.fill();
+    ctx.font='24px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('🗑️',px+TILE/2,py+TILE/2);
   }
 }
 
 function drawPlayer(){
   let px=player.x*TILE-camera.x,py=player.y*TILE-camera.y;
-  let bob=player.moving?Math.sin(frameCount*0.3)*2:0;
-
+  let bob=player.moving?Math.sin(frame*0.25)*3:0;
   // Shadow
   ctx.fillStyle='rgba(0,0,0,0.3)';
-  ctx.beginPath();ctx.ellipse(px+TILE/2,py+TILE*0.85,TILE*0.3,TILE*0.08,0,0,Math.PI*2);ctx.fill();
-
-  // Body (waiter outfit)
-  ctx.fillStyle='#1a1a1a'; // black pants
-  ctx.fillRect(px+TILE*0.25,py+TILE*0.55+bob,TILE*0.5,TILE*0.35);
-  ctx.fillStyle='#fff'; // white shirt
-  ctx.beginPath();ctx.ellipse(px+TILE/2,py+TILE*0.4+bob,TILE*0.28,TILE*0.22,0,0,Math.PI*2);ctx.fill();
+  ctx.beginPath();ctx.ellipse(px+TILE/2,py+TILE*0.9,TILE*0.35,TILE*0.08,0,0,Math.PI*2);ctx.fill();
+  // Pants
+  ctx.fillStyle='#1a1a1a';ctx.fillRect(px+TILE*0.2,py+TILE*0.55+bob,TILE*0.6,TILE*0.38);
+  // Shirt
+  ctx.fillStyle='#fff';ctx.beginPath();ctx.ellipse(px+TILE/2,py+TILE*0.38+bob,TILE*0.32,TILE*0.24,0,0,Math.PI*2);ctx.fill();
   // Bow tie
   ctx.fillStyle='#ff0000';
-  ctx.beginPath();ctx.moveTo(px+TILE*0.4,py+TILE*0.32+bob);ctx.lineTo(px+TILE/2,py+TILE*0.36+bob);ctx.lineTo(px+TILE*0.6,py+TILE*0.32+bob);
-  ctx.lineTo(px+TILE/2,py+TILE*0.28+bob);ctx.closePath();ctx.fill();
+  ctx.beginPath();ctx.moveTo(px+TILE*0.38,py+TILE*0.3+bob);ctx.lineTo(px+TILE/2,py+TILE*0.35+bob);
+  ctx.lineTo(px+TILE*0.62,py+TILE*0.3+bob);ctx.lineTo(px+TILE/2,py+TILE*0.25+bob);ctx.closePath();ctx.fill();
   // Head
-  ctx.fillStyle='#f0c8a0';
-  ctx.beginPath();ctx.arc(px+TILE/2,py+TILE*0.2+bob,TILE*0.2,0,Math.PI*2);ctx.fill();
-  // Eyes (direction based)
+  ctx.fillStyle='#f0c8a0';ctx.beginPath();ctx.arc(px+TILE/2,py+TILE*0.15+bob,TILE*0.22,0,Math.PI*2);ctx.fill();
+  // Eyes
+  let ex=player.dir===1?-4:player.dir===3?4:0;
+  let ey=player.dir===0?-3:player.dir===2?3:0;
   ctx.fillStyle='#1a1a1a';
-  let ex=player.dir===1?-3:player.dir===3?3:0;
-  let ey=player.dir===0?-2:player.dir===2?2:0;
-  ctx.beginPath();ctx.arc(px+TILE*0.42+ex,py+TILE*0.18+bob+ey,2,0,Math.PI*2);ctx.fill();
-  ctx.beginPath();ctx.arc(px+TILE*0.58+ex,py+TILE*0.18+bob+ey,2,0,Math.PI*2);ctx.fill();
-  // Mustache (it's a fancy waiter)
-  ctx.strokeStyle='#4a3020';ctx.lineWidth=1.5;
-  ctx.beginPath();ctx.moveTo(px+TILE*0.38,py+TILE*0.25+bob);ctx.quadraticCurveTo(px+TILE/2,py+TILE*0.22+bob,px+TILE*0.62,py+TILE*0.25+bob);ctx.stroke();
-
-  // Carrying indicator
-  if(player.carrying){
-    ctx.fillStyle='rgba(139,69,19,0.8)';
-    ctx.beginPath();ctx.arc(px+TILE/2,py-TILE*0.15+bob,TILE*0.28,0,Math.PI*2);ctx.fill();
-    ctx.fillStyle='#ffd700';ctx.font='16px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.fillText('💩',px+TILE/2,py-TILE*0.15+bob);
-    // Stink lines
-    let stinkWave=Math.sin(frameCount*0.1);
-    ctx.strokeStyle='rgba(144,238,144,0.4)';ctx.lineWidth=1;
-    for(let i=0;i<3;i++){
-      let sx=px+TILE*0.3+i*TILE*0.2;
-      ctx.beginPath();ctx.moveTo(sx,py-TILE*0.3+bob);
-      ctx.quadraticCurveTo(sx+stinkWave*3,py-TILE*0.5+bob,sx-stinkWave*2,py-TILE*0.7+bob);
-      ctx.stroke();
-    }
-  }
-
-  // Walking legs animation
+  ctx.beginPath();ctx.arc(px+TILE*0.4+ex,py+TILE*0.13+bob+ey,3,0,Math.PI*2);ctx.fill();
+  ctx.beginPath();ctx.arc(px+TILE*0.6+ex,py+TILE*0.13+bob+ey,3,0,Math.PI*2);ctx.fill();
+  // Mustache
+  ctx.strokeStyle='#4a3020';ctx.lineWidth=2;ctx.lineCap='round';
+  ctx.beginPath();ctx.moveTo(px+TILE*0.35,py+TILE*0.22+bob);ctx.quadraticCurveTo(px+TILE/2,py+TILE*0.19+bob,px+TILE*0.65,py+TILE*0.22+bob);ctx.stroke();
+  // Legs
   if(player.moving){
-    let legSwing=Math.sin(frameCount*0.4)*TILE*0.08;
+    let ls=Math.sin(frame*0.35)*TILE*0.08;
     ctx.fillStyle='#1a1a1a';
-    ctx.fillRect(px+TILE*0.3+legSwing,py+TILE*0.8+bob,TILE*0.12,TILE*0.12);
-    ctx.fillRect(px+TILE*0.55-legSwing,py+TILE*0.8+bob,TILE*0.12,TILE*0.12);
+    ctx.fillRect(px+TILE*0.28+ls,py+TILE*0.85+bob,TILE*0.14,TILE*0.12);
+    ctx.fillRect(px+TILE*0.56-ls,py+TILE*0.85+bob,TILE*0.14,TILE*0.12);
+  }
+  // Carrying
+  if(player.carrying){
+    // Tray
+    ctx.fillStyle='#c0c0c0';ctx.beginPath();ctx.ellipse(px+TILE/2,py-TILE*0.12+bob,TILE*0.35,TILE*0.12,0,0,Math.PI*2);ctx.fill();
+    ctx.strokeStyle='#999';ctx.lineWidth=1;ctx.stroke();
+    // Poop salad on tray
+    ctx.font='24px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText('💩',px+TILE/2,py-TILE*0.2+bob);
+    // Stink lines
+    ctx.strokeStyle='rgba(144,238,144,0.35)';ctx.lineWidth=1.5;
+    for(let i=0;i<3;i++){
+      let sx=px+TILE*0.3+i*TILE*0.2,sw=Math.sin(frame*0.08+i);
+      ctx.beginPath();ctx.moveTo(sx,py-TILE*0.3+bob);
+      ctx.quadraticCurveTo(sx+sw*5,py-TILE*0.5+bob,sx-sw*3,py-TILE*0.7+bob);ctx.stroke();
+    }
   }
 }
 
 function drawBubbleGirl(){
   let px=bubbleGirl.x*TILE-camera.x,py=bubbleGirl.y*TILE-camera.y;
-
-  // 50s diner outfit
-  ctx.fillStyle='#ff69b4'; // pink skirt
-  ctx.beginPath();ctx.moveTo(px+TILE*0.2,py+TILE*0.5);ctx.lineTo(px+TILE*0.1,py+TILE*0.9);
-  ctx.lineTo(px+TILE*0.9,py+TILE*0.9);ctx.lineTo(px+TILE*0.8,py+TILE*0.5);ctx.closePath();ctx.fill();
-  ctx.fillStyle='#fff'; // white top
-  ctx.beginPath();ctx.ellipse(px+TILE/2,py+TILE*0.35,TILE*0.22,TILE*0.18,0,0,Math.PI*2);ctx.fill();
+  // Skirt
+  ctx.fillStyle='#ff69b4';
+  ctx.beginPath();ctx.moveTo(px+TILE*0.15,py+TILE*0.5);ctx.lineTo(px+TILE*0.05,py+TILE*0.95);
+  ctx.lineTo(px+TILE*0.95,py+TILE*0.95);ctx.lineTo(px+TILE*0.85,py+TILE*0.5);ctx.closePath();ctx.fill();
+  // White top
+  ctx.fillStyle='#fff';ctx.beginPath();ctx.ellipse(px+TILE/2,py+TILE*0.35,TILE*0.25,TILE*0.2,0,0,Math.PI*2);ctx.fill();
   // Apron
-  ctx.fillStyle='#ffe4e1';
-  ctx.fillRect(px+TILE*0.35,py+TILE*0.38,TILE*0.3,TILE*0.2);
+  ctx.fillStyle='#ffe4e1';ctx.fillRect(px+TILE*0.33,py+TILE*0.4,TILE*0.34,TILE*0.22);
   // Head
-  ctx.fillStyle='#f5deb3';
-  ctx.beginPath();ctx.arc(px+TILE/2,py+TILE*0.18,TILE*0.18,0,Math.PI*2);ctx.fill();
-  // Ponytail
+  ctx.fillStyle='#f5deb3';ctx.beginPath();ctx.arc(px+TILE/2,py+TILE*0.15,TILE*0.2,0,Math.PI*2);ctx.fill();
+  // Hair
   ctx.fillStyle='#daa520';
-  ctx.beginPath();ctx.arc(px+TILE/2,py+TILE*0.1,TILE*0.15,Math.PI+0.3,Math.PI*2-0.3);ctx.fill();
-  ctx.beginPath();ctx.ellipse(px+TILE*0.7,py+TILE*0.15,TILE*0.06,TILE*0.12,0.5,0,Math.PI*2);ctx.fill();
-  // Eyes (sassy)
+  ctx.beginPath();ctx.arc(px+TILE/2,py+TILE*0.08,TILE*0.17,Math.PI+0.3,Math.PI*2-0.3);ctx.fill();
+  ctx.beginPath();ctx.ellipse(px+TILE*0.75,py+TILE*0.13,TILE*0.06,TILE*0.13,0.5,0,Math.PI*2);ctx.fill();
+  // Eyes
   ctx.fillStyle='#1a1a1a';
-  ctx.beginPath();ctx.arc(px+TILE*0.42,py+TILE*0.16,2,0,Math.PI*2);ctx.fill();
-  ctx.beginPath();ctx.arc(px+TILE*0.58,py+TILE*0.16,2,0,Math.PI*2);ctx.fill();
+  ctx.beginPath();ctx.arc(px+TILE*0.42,py+TILE*0.13,2.5,0,Math.PI*2);ctx.fill();
+  ctx.beginPath();ctx.arc(px+TILE*0.58,py+TILE*0.13,2.5,0,Math.PI*2);ctx.fill();
   // Smirk
-  ctx.strokeStyle='#cc4477';ctx.lineWidth=1.2;
-  ctx.beginPath();ctx.arc(px+TILE*0.55,py+TILE*0.22,TILE*0.06,0,Math.PI*0.6);ctx.stroke();
+  ctx.strokeStyle='#cc4477';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.arc(px+TILE*0.55,py+TILE*0.2,TILE*0.07,0,Math.PI*0.6);ctx.stroke();
   // Bubblegum
-  let bubSize=Math.sin(frameCount*0.03)*TILE*0.08+TILE*0.12;
-  ctx.fillStyle='rgba(255,105,180,0.6)';
-  ctx.beginPath();ctx.arc(px+TILE*0.5,py+TILE*0.28,bubSize,0,Math.PI*2);ctx.fill();
+  let bs=Math.sin(frame*0.025)*TILE*0.1+TILE*0.15;
+  ctx.fillStyle='rgba(255,105,180,0.55)';ctx.beginPath();ctx.arc(px+TILE*0.5,py+TILE*0.28,bs,0,Math.PI*2);ctx.fill();
   ctx.strokeStyle='rgba(255,182,193,0.4)';ctx.lineWidth=1;ctx.stroke();
-  // Highlight on bubble
-  ctx.fillStyle='rgba(255,255,255,0.3)';
-  ctx.beginPath();ctx.arc(px+TILE*0.47,py+TILE*0.25,bubSize*0.3,0,Math.PI*2);ctx.fill();
-
-  // Floating bubbles
-  bubbleGirl.blowTimer++;
-  if(bubbleGirl.blowTimer%60===0){
+  ctx.fillStyle='rgba(255,255,255,0.3)';ctx.beginPath();ctx.arc(px+TILE*0.47,py+TILE*0.25,bs*0.3,0,Math.PI*2);ctx.fill();
+  // Floating soap bubbles
+  bubbleGirl.timer++;
+  if(bubbleGirl.timer%70===0){
     sndBubble();
-    bubbleGirl.bubbles.push({x:px+TILE/2,y:py+TILE*0.1,vx:(Math.random()-0.5)*0.8,vy:-0.5-Math.random()*0.3,
-      size:4+Math.random()*8,life:120+Math.random()*60,color:`hsla(${Math.random()*360},80%,70%,0.5)`});
+    bubbleGirl.bubbles.push({x:px+TILE/2,y:py+TILE*0.1,vx:(Math.random()-0.5)*0.6,vy:-0.4-Math.random()*0.3,
+      sz:5+Math.random()*10,life:140+Math.random()*60,color:`hsla(${Math.random()*360},70%,70%,0.45)`});
   }
-  // Draw & update bubbles
   for(let i=bubbleGirl.bubbles.length-1;i>=0;i--){
-    let b=bubbleGirl.bubbles[i];
-    b.x+=b.vx+Math.sin(frameCount*0.05+i)*0.3;b.y+=b.vy;b.life--;
+    let b=bubbleGirl.bubbles[i];b.x+=b.vx+Math.sin(frame*0.04+i)*0.2;b.y+=b.vy;b.life--;
     if(b.life<=0){bubbleGirl.bubbles.splice(i,1);continue}
-    ctx.fillStyle=b.color;ctx.beginPath();ctx.arc(b.x,b.y,b.size,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=b.color;ctx.beginPath();ctx.arc(b.x,b.y,b.sz,0,Math.PI*2);ctx.fill();
     ctx.strokeStyle='rgba(255,255,255,0.3)';ctx.lineWidth=0.5;ctx.stroke();
-    ctx.fillStyle='rgba(255,255,255,0.4)';ctx.beginPath();ctx.arc(b.x-b.size*0.25,b.y-b.size*0.25,b.size*0.25,0,Math.PI*2);ctx.fill();
   }
+  // Quips
+  let quips=["Like, whatever...","*pop*","Nice apron, loser","This job sucks","Ew.","Is that poop?!","Gag me with a spoon","*eyeroll*","Gross.","You call that food?"];
+  if(frame%500<40){
+    ctx.fillStyle='rgba(255,105,180,0.85)';ctx.font='bold 11px monospace';ctx.textAlign='center';
+    ctx.fillText(quips[Math.floor(frame/500)%quips.length],px+TILE/2,py-TILE*0.25+Math.sin(frame*0.08)*3);
+  }
+}
 
-  // Snarky comment occasionally
-  if(frameCount%400<30){
-    let quips=["Like, whatever...","*pop*","Nice apron, loser","This job sucks","*blows bubble*","Ew.","Is that poop?!","Gag me with a spoon"];
-    let q=quips[Math.floor(frameCount/400)%quips.length];
-    ctx.fillStyle='rgba(255,105,180,0.8)';ctx.font='bold 8px monospace';ctx.textAlign='center';
-    ctx.fillText(q,px+TILE/2,py-TILE*0.2+Math.sin(frameCount*0.1)*2);
+function drawChatBubbles(){
+  for(let i=chatBubbles.length-1;i>=0;i--){
+    let cb=chatBubbles[i];cb.life--;
+    if(cb.life<=0){chatBubbles.splice(i,1);continue}
+    let a=Math.min(cb.life/30,1);
+    let bx=cb.x-camera.x,by=cb.y-camera.y-((cb.maxL-cb.life)*0.15);
+    ctx.globalAlpha=a;
+    // Background
+    let tw=ctx.measureText?12:100;
+    ctx.font='bold 10px monospace';
+    let metrics=ctx.measureText(cb.text);tw=metrics.width+16;
+    ctx.fillStyle='rgba(40,25,15,0.85)';
+    ctx.beginPath();ctx.roundRect(bx-tw/2,by-12,tw,22,6);ctx.fill();
+    ctx.strokeStyle='#8B6914';ctx.lineWidth=1;ctx.stroke();
+    // Text
+    ctx.fillStyle='#ffd700';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(cb.text,bx,by);
+    ctx.globalAlpha=1;
   }
 }
 
@@ -807,64 +748,47 @@ function drawEvents(){
   for(let i=events.length-1;i>=0;i--){
     let ev=events[i];ev.life--;
     if(ev.life<=0){events.splice(i,1);continue}
-    let alpha=Math.min(ev.life/30,1);
 
     if(ev.type==='fart'){
-      // Green cloud
-      ctx.globalAlpha=alpha*0.5;
-      let cloudR=ev.radius*(1+(1-ev.life/ev.maxLife)*0.5);
-      let gradient=ctx.createRadialGradient(ev.x-camera.x,ev.y-camera.y,0,ev.x-camera.x,ev.y-camera.y,cloudR);
-      gradient.addColorStop(0,'rgba(100,180,50,0.5)');gradient.addColorStop(1,'rgba(100,180,50,0)');
-      ctx.fillStyle=gradient;ctx.beginPath();ctx.arc(ev.x-camera.x,ev.y-camera.y,cloudR,0,Math.PI*2);ctx.fill();
-      // Stink waves
-      ctx.strokeStyle='rgba(150,220,80,0.3)';ctx.lineWidth=1.5;
-      for(let w=0;w<3;w++){
-        let wa=frameCount*0.05+w*2;
-        ctx.beginPath();
-        ctx.arc(ev.x-camera.x,ev.y-camera.y,cloudR*0.5+Math.sin(wa)*cloudR*0.2,w,w+Math.PI*0.8);
-        ctx.stroke();
-      }
+      let a=Math.min(ev.life/40,1)*0.5;
+      let cr=ev.r*(1+(1-ev.life/ev.maxL)*0.4);
+      let gx=ev.x-camera.x,gy=ev.y-camera.y;
+      ctx.globalAlpha=a;
+      let grad=ctx.createRadialGradient(gx,gy,0,gx,gy,cr);
+      grad.addColorStop(0,'rgba(100,180,50,0.5)');grad.addColorStop(1,'rgba(100,180,50,0)');
+      ctx.fillStyle=grad;ctx.beginPath();ctx.arc(gx,gy,cr,0,Math.PI*2);ctx.fill();
       ctx.globalAlpha=1;
-      // Slow player if nearby
-      let pdx=player.x*TILE-ev.x,pdy=player.y*TILE-ev.y;
-      if(Math.sqrt(pdx*pdx+pdy*pdy)<cloudR)player.moving=false; // stun briefly
     }
     else if(ev.type==='dog'){
-      // Running dog
-      let t=1-ev.life/ev.maxLife;
-      ev.x+=(ev.targetX>ev.x?1:-1)*ev.speed;
+      ev.x+=(ev.target>ev.x?1:-1)*ev.spd;
       let dx=ev.x-camera.x,dy=ev.y-camera.y;
-      let legBob=Math.sin(frameCount*0.5)*3;
+      let lb=Math.sin(frame*0.45)*3;
+      let facing=ev.target>ev.x?1:-1;
       // Body
-      ctx.fillStyle='#c8a87c';
-      ctx.beginPath();ctx.ellipse(dx+TILE/2,dy+TILE*0.5,TILE*0.4,TILE*0.2,0,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle='#c8a87c';ctx.beginPath();ctx.ellipse(dx+TILE/2,dy+TILE*0.5,TILE*0.45,TILE*0.22,0,0,Math.PI*2);ctx.fill();
       // Head
-      ctx.fillStyle='#b89868';
-      ctx.beginPath();ctx.arc(dx+(ev.targetX>ev.x?TILE*0.85:TILE*0.15),dy+TILE*0.35,TILE*0.18,0,Math.PI*2);ctx.fill();
-      // Ears
-      ctx.fillStyle='#a08050';
-      ctx.beginPath();ctx.ellipse(dx+(ev.targetX>ev.x?TILE*0.95:TILE*0.05),dy+TILE*0.22,TILE*0.08,TILE*0.12,ev.targetX>ev.x?0.3:-0.3,0,Math.PI*2);ctx.fill();
+      ctx.fillStyle='#b89868';ctx.beginPath();ctx.arc(dx+TILE/2+facing*TILE*0.35,dy+TILE*0.35,TILE*0.2,0,Math.PI*2);ctx.fill();
+      // Ear
+      ctx.fillStyle='#a08050';ctx.beginPath();ctx.ellipse(dx+TILE/2+facing*TILE*0.45,dy+TILE*0.2,TILE*0.08,TILE*0.14,facing*0.3,0,Math.PI*2);ctx.fill();
       // Legs
       ctx.fillStyle='#b89868';
-      ctx.fillRect(dx+TILE*0.2,dy+TILE*0.65+legBob,TILE*0.1,TILE*0.2);
-      ctx.fillRect(dx+TILE*0.65,dy+TILE*0.65-legBob,TILE*0.1,TILE*0.2);
-      // Tail wag
+      ctx.fillRect(dx+TILE*0.2,dy+TILE*0.68+lb,TILE*0.12,TILE*0.2);
+      ctx.fillRect(dx+TILE*0.65,dy+TILE*0.68-lb,TILE*0.12,TILE*0.2);
+      // Tail
       ctx.strokeStyle='#c8a87c';ctx.lineWidth=3;ctx.lineCap='round';
-      let tailWag=Math.sin(frameCount*0.4)*0.5;
-      ctx.beginPath();ctx.moveTo(dx+(ev.targetX>ev.x?TILE*0.1:TILE*0.9),dy+TILE*0.4);
-      ctx.quadraticCurveTo(dx+(ev.targetX>ev.x?-TILE*0.1:TILE*1.1),dy+TILE*0.2+tailWag*10,
-        dx+(ev.targetX>ev.x?-TILE*0.05:TILE*1.05),dy+TILE*0.1);ctx.stroke();
+      let tw2=Math.sin(frame*0.35)*0.5;
+      ctx.beginPath();ctx.moveTo(dx+TILE/2-facing*TILE*0.4,dy+TILE*0.4);
+      ctx.quadraticCurveTo(dx+TILE/2-facing*TILE*0.55,dy+TILE*0.15+tw2*12,dx+TILE/2-facing*TILE*0.45,dy+TILE*0.08);ctx.stroke();
       // Eye
-      ctx.fillStyle='#1a1a1a';
-      ctx.beginPath();ctx.arc(dx+(ev.targetX>ev.x?TILE*0.9:TILE*0.1),dy+TILE*0.32,2,0,Math.PI*2);ctx.fill();
-      // Bark occasionally
-      if(ev.life%80===0){sndBark();floatingTexts.push({x:ev.x+TILE/2,y:ev.y-10,text:'WOOF!',color:'#DEB887',life:20,maxLife:20,size:12})}
+      ctx.fillStyle='#1a1a1a';ctx.beginPath();ctx.arc(dx+TILE/2+facing*TILE*0.4,dy+TILE*0.32,2.5,0,Math.PI*2);ctx.fill();
+      // Bark
+      if(ev.life%90===0){sndBark();addFloat(ev.x+TILE/2,ev.y-10,'WOOF!',{color:'#DEB887',size:16,life:25})}
       // Bump player
-      if(Math.abs(player.x*TILE-ev.x)<TILE&&Math.abs(player.y*TILE-ev.y)<TILE){
-        player.x+=ev.targetX>ev.x?-0.3:0.3;sndBoing();
-        if(player.carrying&&Math.random()<0.2){
+      if(Math.abs(player.x*TILE-ev.x)<TILE*0.8&&Math.abs(player.y*TILE-ev.y)<TILE*0.8){
+        player.x+=(ev.target>ev.x?-0.3:0.3);sndBoing();
+        if(player.carrying&&Math.random()<0.15){
           player.carrying=null;sndSplat();
-          floatingTexts.push({x:player.x*TILE+TILE/2,y:player.y*TILE-20,text:'DROPPED IT!',color:'#ff4444',life:40,maxLife:40,size:14});
+          addFloat(player.x*TILE+TILE/2,player.y*TILE-20,'DROPPED IT!',{color:'#ff4444',size:18,life:45});
         }
       }
     }
@@ -872,129 +796,221 @@ function drawEvents(){
 }
 
 function drawParticles(){
-  for(let p of particles){let t=p.life/p.maxLife;ctx.globalAlpha=t;ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(p.x-camera.x,p.y-camera.y,p.size*t,0,Math.PI*2);ctx.fill()}ctx.globalAlpha=1;
+  for(let p of particles){let t=p.life/p.maxL;ctx.globalAlpha=t;ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(p.x-camera.x,p.y-camera.y,p.size*t,0,Math.PI*2);ctx.fill()}ctx.globalAlpha=1;
+}
+function drawFloats(){
+  for(let f of floats){let t=f.life/f.maxL;ctx.globalAlpha=t;ctx.fillStyle=f.color;ctx.font=`bold ${f.size}px monospace`;ctx.textAlign='center';ctx.fillText(f.text,f.x-camera.x,f.y-camera.y);ctx.globalAlpha=1}
 }
 
-function drawFloatingTexts(){
-  for(let ft of floatingTexts){let t=ft.life/ft.maxLife;ctx.globalAlpha=t;ctx.fillStyle=ft.color;ctx.font=`bold ${ft.size}px monospace`;ctx.textAlign='center';ctx.fillText(ft.text,ft.x-camera.x,ft.y-camera.y);ctx.globalAlpha=1}
-}
+// ========== COOKING UI (on canvas, BIG buttons) ==========
+function drawCookingUI(){
+  // Dim background
+  ctx.fillStyle='rgba(26,10,5,0.8)';ctx.fillRect(0,0,W,H);
 
-// === UPDATE ===
-function update(){
-  if(gameState!=='playing'&&gameState!=='reaction')return;
-  frameCount++;
+  let s=cooking.step;
+  // Title
+  ctx.fillStyle='#ffd700';ctx.font='bold 22px monospace';ctx.textAlign='center';
+  ctx.fillText('COOKING POOP SALAD',W/2,75);
+  ctx.fillStyle='#a08060';ctx.font='bold 14px monospace';
+  ctx.fillText(COOK_STEP_NAMES[s],W/2,100);
 
-  // Player movement
-  let dx2=0,dy2=0;
-  if(keys['ArrowUp']||keys['w']||keys['W']||dpadDir.up)dy2=-1;
-  if(keys['ArrowDown']||keys['s']||keys['S']||dpadDir.down)dy2=1;
-  if(keys['ArrowLeft']||keys['a']||keys['A']||dpadDir.left)dx2=-1;
-  if(keys['ArrowRight']||keys['d']||keys['D']||dpadDir.right)dx2=1;
-
-  player.moving=dx2!==0||dy2!==0;
-  if(player.moving){
-    ensureAudio();
-    if(dy2<0)player.dir=0;else if(dx2>0)player.dir=1;else if(dy2>0)player.dir=2;else if(dx2<0)player.dir=3;
-    let nx=player.x+dx2*PLAYER_SPEED/TILE;
-    let ny=player.y+dy2*PLAYER_SPEED/TILE;
-    if(isWalkable(nx,player.y))player.x=nx;
-    if(isWalkable(player.x,ny))player.y=ny;
-    player.x=Math.max(0.3,Math.min(mapW-0.7,player.x));
-    player.y=Math.max(0.3,Math.min(mapH-0.7,player.y));
-    if(frameCount%8===0)sndStep();
+  // Current order reference
+  if(cooking.forOrder&&cooking.forOrder.order){
+    ctx.fillStyle='#666';ctx.font='11px monospace';
+    ctx.fillText('Order: '+cooking.forOrder.order.emojis+' '+cooking.forOrder.order.name.substring(0,35),W/2,120);
   }
 
-  // Camera
+  if(s<3){
+    // Ingredient selection
+    let items=s===0?BASES:s===1?TOPPINGS:GARNISHES;
+    let emojis=s===0?BASE_EMOJI:s===1?TOP_EMOJI:GARN_EMOJI;
+    let cols=5;
+    let btnS=Math.min(TILE*1.1,W/5.5),gap=10;
+    let totalW=cols*(btnS+gap)-gap;
+    let startX=(W-totalW)/2,startY=H*0.25;
+
+    for(let i=0;i<items.length;i++){
+      let col=i%cols,row=Math.floor(i/cols);
+      let bx=startX+col*(btnS+gap),by=startY+row*(btnS+gap+20);
+      // Button bg
+      ctx.fillStyle='#2a1a0a';ctx.strokeStyle='#4a3020';ctx.lineWidth=2;
+      ctx.beginPath();ctx.roundRect(bx,by,btnS,btnS,10);ctx.fill();ctx.stroke();
+      // Emoji
+      ctx.font=`${btnS*0.5}px sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText(emojis[i],bx+btnS/2,by+btnS*0.4);
+      // Name
+      ctx.fillStyle='#a08060';ctx.font=`bold ${Math.min(9,btnS*0.14)}px monospace`;ctx.textAlign='center';ctx.textBaseline='top';
+      ctx.fillText(items[i].substring(0,10),bx+btnS/2,by+btnS+2);
+    }
+
+    // Progress
+    drawCookProgress();
+  }else if(s===3){
+    // Stir animation
+    let pct=cooking.timer/COOK_STEP_TIME[3];
+    let stirAngle=frame*0.15;
+    // Big bowl
+    ctx.fillStyle='#5a3a1a';ctx.beginPath();ctx.ellipse(W/2,H*0.45,TILE*2,TILE*1.2,0,0,Math.PI*2);ctx.fill();
+    ctx.strokeStyle='#8B6914';ctx.lineWidth=3;ctx.stroke();
+    // Goop
+    ctx.fillStyle='#6b5020';ctx.beginPath();ctx.ellipse(W/2,H*0.45,TILE*1.7,TILE,0,0,Math.PI*2);ctx.fill();
+    // Spoon
+    let sx=W/2+Math.cos(stirAngle)*TILE*1.2,sy=H*0.45+Math.sin(stirAngle)*TILE*0.6;
+    ctx.strokeStyle='#c0c0c0';ctx.lineWidth=4;ctx.lineCap='round';
+    ctx.beginPath();ctx.moveTo(sx,sy);ctx.lineTo(sx+Math.cos(stirAngle+1)*TILE*0.8,sy-TILE*1.2);ctx.stroke();
+    ctx.fillStyle='#ddd';ctx.beginPath();ctx.ellipse(sx,sy,TILE*0.2,TILE*0.12,stirAngle,0,Math.PI*2);ctx.fill();
+    // Progress bar
+    ctx.fillStyle='#222';ctx.beginPath();ctx.roundRect(W/2-TILE*2,H*0.7,TILE*4,TILE*0.4,6);ctx.fill();
+    ctx.fillStyle='#69db7c';ctx.beginPath();ctx.roundRect(W/2-TILE*2,H*0.7,TILE*4*pct,TILE*0.4,6);ctx.fill();
+    ctx.fillStyle='#ffd700';ctx.font='bold 14px monospace';ctx.textAlign='center';
+    ctx.fillText('STIRRING THE GRIME... '+Math.floor(pct*100)+'%',W/2,H*0.7+TILE*0.28);
+    drawCookProgress();
+  }else if(s===4){
+    // Plating
+    let pct=cooking.timer/COOK_STEP_TIME[4];
+    ctx.fillStyle='#c0c0c0';ctx.beginPath();ctx.ellipse(W/2,H*0.45,TILE*1.5,TILE*0.8,0,0,Math.PI*2);ctx.fill();
+    ctx.strokeStyle='#999';ctx.lineWidth=2;ctx.stroke();
+    // Poop assembling
+    ctx.globalAlpha=pct;
+    ctx.font='48px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText('💩',W/2,H*0.42);
+    ctx.globalAlpha=1;
+    ctx.fillStyle='#222';ctx.beginPath();ctx.roundRect(W/2-TILE*2,H*0.7,TILE*4,TILE*0.4,6);ctx.fill();
+    ctx.fillStyle='#ffa94d';ctx.beginPath();ctx.roundRect(W/2-TILE*2,H*0.7,TILE*4*pct,TILE*0.4,6);ctx.fill();
+    ctx.fillStyle='#ffd700';ctx.font='bold 14px monospace';ctx.textAlign='center';
+    ctx.fillText('PLATING IT UP... '+Math.floor(pct*100)+'%',W/2,H*0.7+TILE*0.28);
+    drawCookProgress();
+  }
+
+  // ESC to cancel
+  ctx.fillStyle='#444';ctx.font='10px monospace';ctx.textAlign='center';
+  ctx.fillText('TAP OUTSIDE / ESC to cancel',W/2,H-15);
+}
+
+function drawCookProgress(){
+  let y=H-50;
+  ctx.fillStyle='#1a0a05';ctx.fillRect(0,y-5,W,40);
+  let stepW=W/COOK_STEPS.length;
+  for(let i=0;i<COOK_STEPS.length;i++){
+    let sx=i*stepW+stepW/2;
+    ctx.fillStyle=i<cooking.step?'#69db7c':i===cooking.step?'#ffd700':'#333';
+    ctx.font='bold 12px monospace';ctx.textAlign='center';
+    ctx.fillText((i<cooking.step?'✓ ':i===cooking.step?'▶ ':'')+COOK_STEP_NAMES[i].substring(0,8),sx,y+12);
+  }
+}
+
+// ========== UPDATE ==========
+function update(){
+  if(state==='cooking'){cookTick();return}
+  if(state!=='playing')return;
+  frame++;
+
+  // Movement
+  let dx=0,dy=0;
+  if(keys['ArrowUp']||keys['w']||keys['W']||dpad.up)dy=-1;
+  if(keys['ArrowDown']||keys['s']||keys['S']||dpad.down)dy=1;
+  if(keys['ArrowLeft']||keys['a']||keys['A']||dpad.left)dx=-1;
+  if(keys['ArrowRight']||keys['d']||keys['D']||dpad.right)dx=1;
+  player.moving=dx!==0||dy!==0;
+  if(player.moving){
+    if(dy<0)player.dir=0;else if(dx>0)player.dir=1;else if(dy>0)player.dir=2;else if(dx<0)player.dir=3;
+    let nx=player.x+dx*PLAYER_SPEED/TILE*0.6; // slower
+    let ny=player.y+dy*PLAYER_SPEED/TILE*0.6;
+    if(walkable(nx,player.y))player.x=nx;
+    if(walkable(player.x,ny))player.y=ny;
+    player.x=Math.max(0.3,Math.min(COLS-0.7,player.x));
+    player.y=Math.max(0.3,Math.min(ROWS-0.7,player.y));
+    if(frame%10===0)sndStep();
+  }
+
+  // Camera follows player
   camera.x=player.x*TILE-W/2+TILE/2;
   camera.y=player.y*TILE-H/2+TILE/2;
-  camera.x=Math.max(0,Math.min(mapW*TILE-W,camera.x));
-  camera.y=Math.max(0,Math.min(mapH*TILE-H,camera.y));
+  camera.x=Math.max(0,Math.min(COLS*TILE-W,camera.x));
+  camera.y=Math.max(0,Math.min(ROWS*TILE-H,camera.y));
 
-  // Patience countdown
-  for(let o of orders){
-    if(!o.table.served&&o.table.customer&&gameState==='playing'){
-      o.order.patience-=1;
+  // Patience
+  for(let t of tables){
+    if(t.cust&&!t.served&&t.order)t.order.patience-=1;
+    if(t.reactTimer>0)t.reactTimer--;
+    // Chat bubbles from customers
+    if(t.cust&&!t.served){
+      t.chatTimer--;
+      if(t.chatTimer<=0){
+        spawnChat(t);
+        t.chatTimer=lvlCfg(level).chatRate+Math.floor(Math.random()*200);
+      }
     }
   }
-  if(frameCount%60===0)checkGameOver();
 
-  // Table reaction timers
-  for(let t of tables){if(t.reactionTimer>0)t.reactionTimer--}
+  // Check timeouts
+  if(frame%60===0){
+    for(let t of tables){
+      if(t.cust&&!t.served&&t.order&&t.order.patience<=0){
+        t.served=true;served++;combo=0;
+        t.react={emoji:'😤',quote:'I AM LEAVING!',correct:false};t.reactTimer=80;
+        sndGameOver();addFloat(t.x*TILE+TILE,t.y*TILE-10,'CUSTOMER LEFT!',{color:'#ff0000',size:16,life:60});
+        setTimeout(()=>{
+          t.cust=null;t.order=null;
+          if(served>=toServe){state='levelComplete';sndLevelUp();setTimeout(()=>showOverlay('levelComplete'),400)}
+          else{let empty=tables.filter(tt=>!tt.cust);if(empty.length>0)spawnCust(empty[Math.floor(Math.random()*empty.length)])}
+        },1800);
+      }
+    }
+  }
 
-  // Random events
-  let cfg=getLevelConfig(level);
-  if(frameCount%cfg.eventFrequency===0&&gameState==='playing')spawnRandomEvent();
+  // Events
+  let cfg=lvlCfg(level);
+  if(frame%cfg.eventRate===0)spawnEvent();
 
-  // Particles
-  for(let i=particles.length-1;i>=0;i--){let p=particles[i];p.x+=p.vx;p.y+=p.vy;p.vy+=0.1;p.life--;if(p.life<=0)particles.splice(i,1)}
-  for(let i=floatingTexts.length-1;i>=0;i--){floatingTexts[i].y-=0.8;floatingTexts[i].life--;if(floatingTexts[i].life<=0)floatingTexts.splice(i,1)}
+  // Particles/floats
+  for(let i=particles.length-1;i>=0;i--){let p=particles[i];p.x+=p.vx;p.y+=p.vy;p.vy+=0.08;p.life--;if(p.life<=0)particles.splice(i,1)}
+  for(let i=floats.length-1;i>=0;i--){floats[i].y-=0.6;floats[i].life--;if(floats[i].life<=0)floats.splice(i,1)}
 
-  updateHUD();updateOrderQueue();
+  updateHUD();
 }
 
-// === RENDER ===
+// ========== RENDER ==========
 function render(){
   ctx.fillStyle='#1a0a05';ctx.fillRect(0,0,W,H);
-  if(gameState==='menu')return;
+  if(state==='menu')return;
 
-  ctx.save();
   drawFloor();
-  drawObstacles();
-  drawTables();
+  for(let o of obstacles)drawObstacle(o);
+  for(let t of tables)drawTable(t);
   drawEvents();
   drawBubbleGirl();
   drawPlayer();
   drawParticles();
-  drawFloatingTexts();
+  drawFloats();
+  drawChatBubbles();
 
-  // Kitchen prompt
-  if(gameState==='playing'&&player.y<=KITCHEN_ROWS+1&&!player.carrying){
-    ctx.fillStyle='rgba(255,215,0,0.8)';ctx.font='bold 12px monospace';ctx.textAlign='center';
-    let flash=Math.sin(frameCount*0.1)>0;
-    if(flash)ctx.fillText('PRESS SPACE TO COOK!',W/2,H*0.4);
+  // Prompts
+  if(state==='playing'&&player.y<=KITCHEN_H+1&&!player.carrying){
+    let flash=Math.sin(frame*0.08)>0;
+    if(flash){ctx.fillStyle='rgba(255,215,0,0.9)';ctx.font='bold 16px monospace';ctx.textAlign='center';
+    ctx.fillText('PRESS SPACE TO COOK!',W/2,H*0.4)}
   }
-
-  // Serve prompt
-  if(player.carrying&&gameState==='playing'){
-    let nearTable=false;
-    for(let t of tables){
-      if(!t.customer||t.served)continue;
-      let ddx=Math.abs(player.x-(t.x+0.5)),ddy=Math.abs(player.y-(t.y+0.5));
-      if(ddx<2&&ddy<2){nearTable=true;break}
-    }
-    if(nearTable){
-      ctx.fillStyle='rgba(255,215,0,0.9)';ctx.font='bold 13px monospace';ctx.textAlign='center';
-      let flash=Math.sin(frameCount*0.15)>0;
-      if(flash)ctx.fillText('PRESS SPACE TO SERVE!',W/2,H*0.88);
-    }
+  if(player.carrying&&state==='playing'){
+    let near=false;
+    for(let t of tables){if(!t.cust||t.served)continue;let d=Math.sqrt(Math.pow(player.x-(t.x+1),2)+Math.pow(player.y-t.y,2));if(d<2.5){near=true;break}}
+    if(near){let flash=Math.sin(frame*0.12)>0;if(flash){ctx.fillStyle='rgba(255,215,0,0.9)';ctx.font='bold 16px monospace';ctx.textAlign='center';ctx.fillText('PRESS SPACE TO SERVE!',W/2,H*0.85)}}
   }
 
   // Cooking overlay
-  if(gameState==='cooking'){
-    ctx.fillStyle='rgba(26,10,5,0.7)';ctx.fillRect(0,0,W,H);
-    ctx.fillStyle='#ffd700';ctx.font='bold 16px monospace';ctx.textAlign='center';
-    ctx.fillText('COOKING POOP SALAD...',W/2,50);
-    if(cookingForOrder){
-      ctx.font='11px monospace';ctx.fillStyle='#a08060';
-      ctx.fillText('Order: '+cookingForOrder.order.emojis+' '+cookingForOrder.order.name,W/2,70);
-    }
-    ctx.font='10px monospace';ctx.fillStyle='#666';
-    ctx.fillText('(ESC to cancel)',W/2,H-20);
-  }
-
-  ctx.restore();
+  if(state==='cooking')drawCookingUI();
 }
 
-// === MAIN LOOP ===
-function frame(){
+// ========== MAIN LOOP ==========
+function gameLoop(){
   update();render();
-  requestAnimationFrame(frame);
+  requestAnimationFrame(gameLoop);
 }
 
-// === INIT ===
+// ========== INIT ==========
 resize();
 showOverlay('menu');
-frame();
+gameLoop();
 
 })();
 </script>

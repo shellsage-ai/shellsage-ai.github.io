@@ -49,17 +49,17 @@ canvas{display:block;margin:0 auto;touch-action:none}
   <div id="combo-display"></div>
   <div id="sumo-warning"></div>
   <div id="powerup-display">
-    <div class="pu-btn empty" id="pu-lightning" title="Lightning: destroy a row">⚡<span class="pu-count">0</span></div>
-    <div class="pu-btn empty" id="pu-paint" title="Paint: recolor an orb">🎨<span class="pu-count">0</span></div>
-    <div class="pu-btn empty" id="pu-shuffle" title="Shuffle: randomize board">🔀<span class="pu-count">0</span></div>
-    <div class="pu-btn empty" id="pu-freeze" title="Freeze: delay sumo">🧊<span class="pu-count">0</span></div>
+    <div class="pu-btn empty" id="pu-lightning" title="Lightning: destroy a row">âš¡<span class="pu-count">0</span></div>
+    <div class="pu-btn empty" id="pu-paint" title="Paint: recolor an orb">ðŸŽ¨<span class="pu-count">0</span></div>
+    <div class="pu-btn empty" id="pu-shuffle" title="Shuffle: randomize board">ðŸ”€<span class="pu-count">0</span></div>
+    <div class="pu-btn empty" id="pu-freeze" title="Freeze: delay sumo">ðŸ§Š<span class="pu-count">0</span></div>
   </div>
   <button id="pause-btn">PAUSE</button>
   <button id="hint-btn" class="on">HINTS</button>
 </div>
 <div id="overlay">
-  <h1>🏋️ CASCADE<br>SUMO EDITION</h1>
-  <div class="sub">Tap to rotate. Match to shatter. Chain to win.<br>Watch out for the sumo wrestler! 🏋️</div>
+  <h1>ðŸ‹ï¸ CASCADE<br>SUMO EDITION</h1>
+  <div class="sub">Tap to rotate. Match to shatter. Chain to win.<br>Watch out for the sumo wrestler! ðŸ‹ï¸</div>
   <button class="btn" id="btn-play">PLAY</button>
   <button class="btn secondary" id="btn-endless" style="display:none">ENDLESS MODE</button>
   <div id="level-info"></div>
@@ -220,93 +220,202 @@ function findBestMove(){
   return best;
 }
 
-// === SUMO WRESTLER ===
+// === SUMO WRESTLER (hand-drawn thicc boi in mawashi) ===
+const SUMO_RED_IDX=0; // index into ORB_COLORS for red - his signature color
+const WALK_SPEED=6; // frames per column (slower = more visible)
+const WALK_TOTAL_FRAMES=()=>COLS*WALK_SPEED+50; // total frames for walk across (+enter/exit)
+
+function drawSumoCharacter(x,y,size,dir,walkFrame,isSlapping){
+  ctx.save();
+  ctx.translate(x,y);
+  if(dir<0)ctx.scale(-1,1);
+  let s=size;
+  let walkCycle=Math.sin(walkFrame*0.2);
+  let breathe=Math.sin(walkFrame*0.08)*0.02+1;
+  let slapSwing=isSlapping?Math.sin(walkFrame*1.0)*0.6:0;
+
+  // Shadow on ground
+  ctx.fillStyle='rgba(0,0,0,0.35)';
+  ctx.beginPath();ctx.ellipse(0,s*0.55,s*0.5,s*0.1,0,0,Math.PI*2);ctx.fill();
+
+  // === LEGS (thick, wide stance, animated) ===
+  let legSpread=s*0.2;
+  let legKick=walkCycle*s*0.1;
+  ctx.fillStyle='#f0c8a0';ctx.strokeStyle='#c4956a';ctx.lineWidth=2;
+  // Left leg
+  ctx.beginPath();
+  ctx.moveTo(-legSpread-s*0.1,s*0.18);
+  ctx.quadraticCurveTo(-legSpread-s*0.12,s*0.38,-legSpread-s*0.07+legKick,s*0.52);
+  ctx.lineTo(-legSpread+s*0.07+legKick,s*0.52);
+  ctx.quadraticCurveTo(-legSpread+s*0.1,s*0.38,-legSpread+s*0.1,s*0.18);
+  ctx.closePath();ctx.fill();ctx.stroke();
+  // Right leg
+  ctx.beginPath();
+  ctx.moveTo(legSpread-s*0.1,s*0.18);
+  ctx.quadraticCurveTo(legSpread-s*0.12,s*0.38,legSpread-s*0.07-legKick,s*0.52);
+  ctx.lineTo(legSpread+s*0.07-legKick,s*0.52);
+  ctx.quadraticCurveTo(legSpread+s*0.1,s*0.38,legSpread+s*0.1,s*0.18);
+  ctx.closePath();ctx.fill();ctx.stroke();
+  // Feet
+  ctx.fillStyle='#e8b88a';
+  ctx.beginPath();ctx.ellipse(-legSpread+legKick,s*0.53,s*0.09,s*0.035,0,0,Math.PI*2);ctx.fill();ctx.stroke();
+  ctx.beginPath();ctx.ellipse(legSpread-legKick,s*0.53,s*0.09,s*0.035,0,0,Math.PI*2);ctx.fill();ctx.stroke();
+
+  // === MAWASHI (ceremonial loincloth - deep indigo with gold trim) ===
+  ctx.fillStyle='#1a0a3e';ctx.strokeStyle='#c8a832';ctx.lineWidth=2.5;
+  ctx.beginPath();
+  ctx.moveTo(-s*0.35,s*0.04);
+  ctx.lineTo(-s*0.3,s*0.22);
+  ctx.quadraticCurveTo(0,s*0.28,s*0.3,s*0.22);
+  ctx.lineTo(s*0.35,s*0.04);
+  ctx.quadraticCurveTo(s*0.37,0,s*0.35,-0.03);
+  ctx.lineTo(-s*0.35,-0.03);
+  ctx.quadraticCurveTo(-s*0.37,0,-s*0.35,s*0.04);
+  ctx.closePath();ctx.fill();ctx.stroke();
+  // Gold knot
+  ctx.fillStyle='#c8a832';
+  ctx.beginPath();ctx.moveTo(-s*0.06,s*0.17);ctx.lineTo(0,s*0.25);ctx.lineTo(s*0.06,s*0.17);ctx.closePath();ctx.fill();
+  // Sagari strips
+  ctx.strokeStyle='#c8a832';ctx.lineWidth=1.5;
+  for(let i=-3;i<=3;i++){
+    let sx2=i*s*0.04;
+    ctx.beginPath();ctx.moveTo(sx2,s*0.22);ctx.lineTo(sx2+Math.sin(walkFrame*0.15+i)*2,s*0.3);ctx.stroke();
+  }
+
+  // === BODY (very round, thicc, sumo proportions) ===
+  ctx.fillStyle='#f0c8a0';ctx.strokeStyle='#c4956a';ctx.lineWidth=2;
+  ctx.save();ctx.scale(1,breathe);
+  ctx.beginPath();ctx.ellipse(0,-s*0.06,s*0.42,s*0.35,0,0,Math.PI*2);ctx.fill();ctx.stroke();
+  // Belly fold
+  ctx.strokeStyle='rgba(180,140,110,0.4)';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.arc(0,s*0.06,s*0.22,0.3,Math.PI-0.3);ctx.stroke();
+  // Chest
+  ctx.beginPath();ctx.arc(-s*0.1,-s*0.14,s*0.13,Math.PI*0.7,Math.PI*1.7);ctx.stroke();
+  ctx.beginPath();ctx.arc(s*0.1,-s*0.14,s*0.13,Math.PI*1.3,Math.PI*0.3);ctx.stroke();
+  ctx.restore();
+
+  // === ARMS (thick, animated with walk/slap) ===
+  let armSwing=walkCycle*0.25;
+  // Back arm (left)
+  ctx.fillStyle='#f0c8a0';ctx.strokeStyle='#c4956a';ctx.lineWidth=2;
+  ctx.save();ctx.translate(-s*0.38,-s*0.1);ctx.rotate(-0.35-armSwing);
+  ctx.beginPath();
+  ctx.moveTo(0,-s*0.04);ctx.quadraticCurveTo(-s*0.06,s*0.16,-s*0.03,s*0.32);
+  ctx.lineTo(s*0.07,s*0.32);ctx.quadraticCurveTo(s*0.09,s*0.16,s*0.05,-s*0.04);
+  ctx.closePath();ctx.fill();ctx.stroke();
+  ctx.fillStyle='#f0c8a0';ctx.beginPath();ctx.ellipse(s*0.02,s*0.34,s*0.06,s*0.045,0,0,Math.PI*2);ctx.fill();ctx.stroke();
+  ctx.restore();
+  // Front arm (right - slap arm)
+  ctx.save();ctx.translate(s*0.38,-s*0.1);ctx.rotate(0.35+armSwing+slapSwing);
+  ctx.beginPath();
+  ctx.moveTo(0,-s*0.04);ctx.quadraticCurveTo(s*0.06,s*0.16,s*0.03,s*0.32);
+  ctx.lineTo(-s*0.07,s*0.32);ctx.quadraticCurveTo(-s*0.09,s*0.16,-s*0.05,-s*0.04);
+  ctx.closePath();ctx.fill();ctx.stroke();
+  if(isSlapping){
+    // Open palm
+    ctx.fillStyle='#f0c8a0';
+    ctx.beginPath();ctx.ellipse(-s*0.02,s*0.36,s*0.07,s*0.055,slapSwing*0.2,0,Math.PI*2);ctx.fill();ctx.stroke();
+    // Impact star burst
+    if(Math.abs(slapSwing)>0.35){
+      ctx.fillStyle='rgba(255,200,50,0.5)';
+      ctx.beginPath();
+      for(let i=0;i<8;i++){let a=i*Math.PI/4+walkFrame*0.08;let r1=s*0.05;let r2=s*0.14;
+        ctx.lineTo(Math.cos(a)*r2+s*0.06,Math.sin(a)*r2+s*0.34);
+        ctx.lineTo(Math.cos(a+Math.PI/8)*r1+s*0.06,Math.sin(a+Math.PI/8)*r1+s*0.34);}
+      ctx.fill();
+    }
+  }else{
+    ctx.fillStyle='#f0c8a0';ctx.beginPath();ctx.ellipse(-s*0.02,s*0.34,s*0.06,s*0.045,0,0,Math.PI*2);ctx.fill();ctx.stroke();
+  }
+  ctx.restore();
+
+  // === HEAD (round, Japanese features) ===
+  ctx.fillStyle='#f0c8a0';ctx.strokeStyle='#c4956a';ctx.lineWidth=2;
+  ctx.beginPath();ctx.ellipse(0,-s*0.42,s*0.22,s*0.19,0,0,Math.PI*2);ctx.fill();ctx.stroke();
+  // Chonmage topknot
+  ctx.fillStyle='#1a1a2e';
+  ctx.beginPath();ctx.ellipse(0,-s*0.46,s*0.19,s*0.1,0,Math.PI+0.3,Math.PI*2-0.3);ctx.fill();
+  ctx.beginPath();ctx.ellipse(0,-s*0.58,s*0.08,s*0.045,0,0,Math.PI*2);ctx.fill();
+  ctx.strokeStyle='#1a1a2e';ctx.lineWidth=s*0.045;
+  ctx.beginPath();ctx.moveTo(0,-s*0.52);ctx.lineTo(0,-s*0.56);ctx.stroke();
+  // Eyes (narrow, intense)
+  ctx.fillStyle='#1a1a2e';
+  ctx.beginPath();ctx.ellipse(-s*0.08,-s*0.42,s*0.04,s*0.018,0,0,Math.PI*2);ctx.fill();
+  ctx.beginPath();ctx.ellipse(s*0.08,-s*0.42,s*0.04,s*0.018,0,0,Math.PI*2);ctx.fill();
+  // White eye highlights
+  ctx.fillStyle='#fff';
+  ctx.beginPath();ctx.arc(-s*0.065,-s*0.422,s*0.008,0,Math.PI*2);ctx.fill();
+  ctx.beginPath();ctx.arc(s*0.065,-s*0.422,s*0.008,0,Math.PI*2);ctx.fill();
+  // Thick eyebrows
+  ctx.strokeStyle='#1a1a2e';ctx.lineWidth=s*0.028;ctx.lineCap='round';
+  ctx.beginPath();ctx.moveTo(-s*0.12,-s*0.46);ctx.lineTo(-s*0.04,-s*0.47);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(s*0.04,-s*0.47);ctx.lineTo(s*0.12,-s*0.46);ctx.stroke();
+  // Nose
+  ctx.fillStyle='#dbb89a';
+  ctx.beginPath();ctx.ellipse(0,-s*0.39,s*0.025,s*0.02,0,0,Math.PI*2);ctx.fill();
+  // Mouth (stern grimace)
+  ctx.strokeStyle='#8a4a3a';ctx.lineWidth=1.8;ctx.lineCap='round';
+  ctx.beginPath();ctx.moveTo(-s*0.06,-s*0.355);ctx.quadraticCurveTo(0,-s*0.34,s*0.06,-s*0.355);ctx.stroke();
+  // Cheeks (rosy)
+  ctx.fillStyle='rgba(255,100,90,0.2)';
+  ctx.beginPath();ctx.ellipse(-s*0.13,-s*0.39,s*0.045,s*0.03,0,0,Math.PI*2);ctx.fill();
+  ctx.beginPath();ctx.ellipse(s*0.13,-s*0.39,s*0.045,s*0.03,0,0,Math.PI*2);ctx.fill();
+
+  ctx.restore();
+}
+
 function checkSumoCharge(){
   if(sumoFrozenTurns>0){sumoFrozenTurns--;return}
   const cfg=getLevelConfig(level);
   let movesUsed=cfg.moves-movesLeft;
-  // Charge every N moves (sumoInterval), starting at move 2
   if(movesUsed>=sumo.nextChargeAt && sumo.phase==='idle'){
     triggerSumoWarning();
   }
 }
 
 function triggerSumoWarning(){
-  sumo.phase='warning';sumo.warningTimer=90; // 1.5 second warning (faster!)
-  const cfg=getLevelConfig(level);
-  // Pick row(s) to charge through
-  sumo.rows=[];
+  sumo.phase='warning';sumo.warningTimer=90;
   sumo.row=Math.floor(Math.random()*ROWS);
-  sumo.rows.push(sumo.row);
-  // Higher levels: multi-row charges (2-3 rows at once)
+  sumo.rows=[sumo.row];
+  const cfg=getLevelConfig(level);
   if(cfg.sumoMultiRow){
     let extra=level>=30?2:1;
-    for(let i=0;i<extra;i++){
-      let nr;do{nr=Math.floor(Math.random()*ROWS)}while(sumo.rows.includes(nr));
-      sumo.rows.push(nr);
-    }
+    for(let i=0;i<extra;i++){let nr;do{nr=Math.floor(Math.random()*ROWS)}while(sumo.rows.includes(nr));sumo.rows.push(nr)}
   }
   sumo.direction=Math.random()<0.5?1:-1;
-  sumoIdle.visible=false; // hide idle sumo during charge
+  sumoIdle.visible=false;
   playTone(150,0.2,'square',0.1);setTimeout(()=>playTone(150,0.2,'square',0.1),200);setTimeout(()=>playTone(200,0.15,'square',0.12),400);
 }
 
 function triggerSumoCharge(){
-  sumo.phase='charging';sumo.active=true;
-  sumo.x=sumo.direction===1?gridX0-cellSize*2:gridX0+COLS*cellSize+cellSize*2;
-  sumo.targetX=sumo.direction===1?gridX0+COLS*cellSize+cellSize*2:gridX0-cellSize*2;
-  sumo.y=gridY0+sumo.row*cellSize+cellSize/2;
-  sumo.timer=0;
-  sndSumo();
-  shakeMag=8;shakeTimer=30;
+  sumo.phase='walking';sumo.active=true;sumo.timer=0;
+  sumo.lastSlappedCol=-1;
+  sndSumo();shakeMag=4;shakeTimer=10;
 }
 
-function applySumoEffect(){
-  let rows=sumo.rows.length>0?sumo.rows:[sumo.row];
-  for(let row of rows){
-    if(sumo.direction===1){
-      let last=grid[row][COLS-1];
-      for(let c=COLS-1;c>0;c--)grid[row][c]=grid[row][c-1];
-      grid[row][0]=last;
-    }else{
-      let first=grid[row][0];
-      for(let c=0;c<COLS-1;c++)grid[row][c]=grid[row][c+1];
-      grid[row][COLS-1]=first;
-    }
-    // Scramble adjacent rows
-    for(let dr of [-1,1]){
-      let nr=row+dr;
-      if(nr>=0&&nr<ROWS&&!rows.includes(nr)){
-        let swappable=[];
-        for(let c=0;c<COLS;c++)if(grid[nr][c]&&grid[nr][c].type===ORB_NORMAL)swappable.push(c);
-        if(swappable.length>=2){
-          let i=Math.floor(Math.random()*swappable.length);
-          let j=(i+1+Math.floor(Math.random()*(swappable.length-1)))%swappable.length;
-          let tmp=grid[nr][swappable[i]];grid[nr][swappable[i]]=grid[nr][swappable[j]];grid[nr][swappable[j]]=tmp;
-        }
-      }
-    }
-    // Dust particles
-    for(let c=0;c<COLS;c++){
-      let px=gridX0+c*cellSize+cellSize/2;
-      let py=gridY0+row*cellSize+cellSize/2;
-      for(let i=0;i<5;i++){
-        particles.push({x:px+Math.random()*cellSize-cellSize/2,y:py,vx:(Math.random()-0.5)*4+sumo.direction*2,vy:-2-Math.random()*3,life:25+Math.random()*15,maxLife:40,color:'#c4956a',size:4+Math.random()*4});
-      }
-    }
-  }
+function sumoSlapOrb(row,col){
+  let orb=grid[row]&&grid[row][col];
+  if(!orb||orb.type===ORB_STONE||orb.color===SUMO_RED_IDX)return;
+  let px=gridX0+col*cellSize+cellSize/2,py=gridY0+row*cellSize+cellSize/2;
+  let oldColor=orb.color>=0?ORB_COLORS[orb.color].fill:'#888';
+  for(let i=0;i<6;i++){let a=Math.random()*Math.PI*2,sp=2+Math.random()*3;
+    particles.push({x:px,y:py,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-1,life:18+Math.random()*10,maxLife:28,color:oldColor,size:2+Math.random()*3})}
+  particles.push({x:px,y:py,vx:0,vy:0,life:8,maxLife:8,color:'#ff6b6b',size:cellSize*0.45});
+  orb.color=SUMO_RED_IDX;
+  playTone(200+col*30,0.04,'triangle',0.06);
+}
+
+function applySumoWalkComplete(){
   updatePositions();
   sumo.chargeCount++;
   const cfg=getLevelConfig(level);
-  sumo.nextChargeAt+=(cfg.sumoInterval||3); // next charge in N moves
-  sumoIdle.visible=true;sumoIdle.side=sumo.direction; // sumo stays on the side it exited
-  // Grant a power-up as compensation
+  sumo.nextChargeAt+=(cfg.sumoInterval||3);
+  sumoIdle.visible=true;sumoIdle.side=sumo.direction;
   let types=['lightning','paint','shuffle','freeze'];
   let gift=types[Math.floor(Math.random()*types.length)];
-  powerups[gift]++;
-  updatePowerupUI();
-  let rowText=rows.length>1?rows.length+' ROWS!':'';
-  floatingTexts.push({x:W/2,y:gridY0-20,text:'SUMO! '+rowText+' +1 '+gift.toUpperCase(),life:60,maxLife:60,color:'#ffa94d',size:18});
+  powerups[gift]++;updatePowerupUI();
+  let rowText=sumo.rows.length>1?sumo.rows.length+' ROWS! ':'';
+  floatingTexts.push({x:W/2,y:gridY0-20,text:'SUMO! '+rowText+'+1 '+gift.toUpperCase(),life:60,maxLife:60,color:'#ffa94d',size:18});
 }
 
 function updateSumo(){
@@ -314,85 +423,118 @@ function updateSumo(){
     sumo.warningTimer--;
     if(sumo.warningTimer<=0)triggerSumoCharge();
   }
-  if(sumo.phase==='charging'){
+  if(sumo.phase==='walking'){
     sumo.timer++;
-    let progress=Math.min(sumo.timer/40,1); // 40 frames to cross
-    let ease=progress<0.5?2*progress*progress:1-Math.pow(-2*progress+2,2)/2;
-    sumo.x=sumo.direction===1?
-      (gridX0-cellSize*2)+ease*(gridX0+COLS*cellSize+cellSize*4):
-      (gridX0+COLS*cellSize+cellSize*2)-ease*(gridX0+COLS*cellSize+cellSize*4);
-    if(sumo.timer===20)applySumoEffect(); // midway through
-    if(sumo.timer>=50){sumo.phase='idle';sumo.active=false}
+    let totalFrames=WALK_TOTAL_FRAMES();
+    let enterFrames=20,exitFrames=20;
+    let walkFrames=totalFrames-enterFrames-exitFrames;
+    let walkProg=Math.max(0,Math.min(1,(sumo.timer-enterFrames)/walkFrames));
+    // Which column is he at?
+    let col=sumo.direction===1?
+      Math.floor(walkProg*COLS):
+      COLS-1-Math.floor(walkProg*COLS);
+    col=Math.max(0,Math.min(COLS-1,col));
+    // Slap orbs column by column
+    if(col!==sumo.lastSlappedCol&&sumo.timer>enterFrames&&sumo.timer<totalFrames-exitFrames){
+      sumo.lastSlappedCol=col;
+      for(let row of sumo.rows)sumoSlapOrb(row,col);
+      shakeMag=2;shakeTimer=4;
+    }
+    // Position
+    if(sumo.timer<=enterFrames){
+      let t=sumo.timer/enterFrames;
+      let offscreen=sumo.direction===1?gridX0-cellSize*1.8:gridX0+COLS*cellSize+cellSize*1.8;
+      let firstCol=sumo.direction===1?gridX0+cellSize/2:gridX0+(COLS-1)*cellSize+cellSize/2;
+      sumo.x=offscreen+(firstCol-offscreen)*t*t; // ease in
+    }else if(sumo.timer>=totalFrames-exitFrames){
+      let t=(sumo.timer-(totalFrames-exitFrames))/exitFrames;
+      let lastCol=sumo.direction===1?gridX0+(COLS-1)*cellSize+cellSize/2:gridX0+cellSize/2;
+      let offscreen=sumo.direction===1?gridX0+COLS*cellSize+cellSize*1.8:gridX0-cellSize*1.8;
+      sumo.x=lastCol+(offscreen-lastCol)*t;
+    }else{
+      let wp=walkProg;
+      sumo.x=sumo.direction===1?
+        gridX0+cellSize/2+wp*(COLS-1)*cellSize:
+        gridX0+(COLS-1)*cellSize+cellSize/2-wp*(COLS-1)*cellSize;
+    }
+    sumo.y=gridY0+sumo.rows[0]*cellSize+cellSize/2;
+    // Footstep shakes
+    if(sumo.timer%10===0){shakeMag=Math.max(shakeMag,1.5);shakeTimer=Math.max(shakeTimer,3)}
+    if(sumo.timer>=totalFrames){
+      sumo.phase='idle';sumo.active=false;
+      applySumoWalkComplete();
+      gameState='animating';setTimeout(()=>processMatches(),200);
+    }
   }
 }
 
 function drawSumo(){
-  // Draw idle sumo pacing on the side when not charging
-  if(sumoIdle.visible && sumo.phase==='idle' && gameState==='playing'){
+  // Idle sumo on the side
+  if(sumoIdle.visible && sumo.phase==='idle' && (gameState==='playing'||gameState==='animating')){
     sumoIdle.bobTimer++;
-    let bob=Math.sin(sumoIdle.bobTimer*0.05)*cellSize*0.3;
-    let sx=sumoIdle.side===1?gridX0+COLS*cellSize+cellSize*0.6:gridX0-cellSize*0.6;
+    let bob=Math.sin(sumoIdle.bobTimer*0.04)*cellSize*0.12;
+    let sx=sumoIdle.side===1?gridX0+COLS*cellSize+cellSize*0.8:gridX0-cellSize*0.8;
     let sy=gridY0+ROWS*cellSize*0.5+bob;
-    ctx.font=`${cellSize*0.7}px sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.globalAlpha=0.6+Math.sin(sumoIdle.bobTimer*0.03)*0.2;
-    ctx.fillText('🏋️',sx,sy);
-    // Threat indicator: small stomps
-    if(frameCount%40<10){ctx.font=`${cellSize*0.25}px sans-serif`;ctx.fillText('💢',sx,sy-cellSize*0.5)}
+    ctx.globalAlpha=0.6;
+    drawSumoCharacter(sx,sy,cellSize*0.9,-sumoIdle.side,sumoIdle.bobTimer,false);
     ctx.globalAlpha=1;
+    // Stomping dust
+    if(frameCount%25<6){
+      ctx.fillStyle='rgba(200,160,120,0.25)';
+      ctx.beginPath();ctx.ellipse(sx,sy+cellSize*0.5,cellSize*0.35,cellSize*0.06,0,0,Math.PI*2);ctx.fill();
+    }
   }
+  // Warning
   if(sumo.phase==='warning'){
-    let rows=sumo.rows.length>0?sumo.rows:[sumo.row];
+    let rows=sumo.rows;
     for(let row of rows){
       let alpha=Math.sin(frameCount*0.3)*0.3+0.3;
-      ctx.fillStyle=`rgba(255,100,50,${alpha})`;
+      ctx.fillStyle=`rgba(255,80,50,${alpha})`;
       ctx.fillRect(gridX0,gridY0+row*cellSize,COLS*cellSize,cellSize);
     }
-    // Approaching emoji per row
-    for(let row of rows){
-      let wx=sumo.direction===1?gridX0-cellSize*(0.5+Math.sin(frameCount*0.15)*0.3):gridX0+COLS*cellSize+cellSize*(0.5+Math.sin(frameCount*0.15)*0.3);
-      ctx.font=`${cellSize*0.8}px sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';
-      ctx.globalAlpha=0.5+Math.sin(frameCount*0.2)*0.5;
-      ctx.fillText('🏋️',wx,gridY0+row*cellSize+cellSize/2);
-    }
-    // INCOMING text
+    let wx=sumo.direction===1?gridX0-cellSize*1.5:gridX0+COLS*cellSize+cellSize*1.5;
+    let sway=Math.sin(frameCount*0.12)*cellSize*0.1;
+    ctx.globalAlpha=0.3+Math.sin(frameCount*0.1)*0.35;
+    drawSumoCharacter(wx+sway,gridY0+rows[0]*cellSize+cellSize/2,cellSize*1.3,sumo.direction,frameCount,false);
+    ctx.globalAlpha=1;
+    ctx.fillStyle='#ff4444';ctx.font=`bold ${cellSize*0.35}px sans-serif`;ctx.textAlign='center';
     ctx.globalAlpha=0.5+Math.sin(frameCount*0.15)*0.5;
-    ctx.fillStyle='#ff6b4a';ctx.font=`bold ${cellSize*0.4}px sans-serif`;ctx.textAlign='center';
-    ctx.fillText(rows.length>1?'SUMO x'+rows.length+'!!':'SUMO INCOMING!',gridX0+COLS*cellSize/2,gridY0-cellSize*0.4);
+    ctx.fillText(rows.length>1?'SUMO x'+rows.length+'!':'SUMO INCOMING!',gridX0+COLS*cellSize/2,gridY0-cellSize*0.3);
     ctx.globalAlpha=1;
   }
-  if(sumo.phase==='charging'){
-    let rows=sumo.rows.length>0?sumo.rows:[sumo.row];
-    ctx.save();
-    for(let row of rows){
-      let progress=Math.min(sumo.timer/40,1);
-      let ease=progress<0.5?2*progress*progress:1-Math.pow(-2*progress+2,2)/2;
-      let sx=sumo.direction===1?
-        (gridX0-cellSize*2)+ease*(COLS*cellSize+cellSize*4):
-        (gridX0+COLS*cellSize+cellSize*2)-ease*(COLS*cellSize+cellSize*4);
-      let sy=gridY0+row*cellSize+cellSize/2;
-      ctx.font=`${cellSize*1.3}px sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';
-      // Dust trail
-      let dustAlpha=Math.max(0,1-sumo.timer/50);
-      ctx.globalAlpha=dustAlpha*0.7;
-      ctx.fillText('💨',sx-sumo.direction*cellSize*1.5,sy);
-      ctx.globalAlpha=1;
-      // The wrestler
-      ctx.fillText('🏋️',sx,sy);
-      // Motion lines
-      ctx.strokeStyle='rgba(255,165,0,0.5)';ctx.lineWidth=3;
-      for(let i=0;i<4;i++){
-        let lx=sx-sumo.direction*(30+i*18);
-        let ly=sy-20+i*13;
-        ctx.beginPath();ctx.moveTo(lx,ly);ctx.lineTo(lx-sumo.direction*30,ly);ctx.stroke();
-      }
-      // Ground crack effect
-      ctx.strokeStyle='rgba(200,150,100,0.4)';ctx.lineWidth=2;
-      for(let i=0;i<3;i++){
-        let cx2=sx+(Math.random()-0.5)*cellSize;
-        ctx.beginPath();ctx.moveTo(cx2,sy+cellSize*0.4);ctx.lineTo(cx2+(Math.random()-0.5)*15,sy+cellSize*0.6);ctx.stroke();
+  // Walking
+  if(sumo.phase==='walking'){
+    let totalFrames=WALK_TOTAL_FRAMES();
+    let walkProg=Math.max(0,Math.min(1,(sumo.timer-20)/(totalFrames-40)));
+    let isSlapping=walkProg>0&&walkProg<1&&sumo.timer%WALK_SPEED<WALK_SPEED*0.6;
+    // Dust trail
+    if(sumo.timer%4===0){
+      let dustX=sumo.x-sumo.direction*cellSize*0.4;
+      let dustY=sumo.y+cellSize*0.45;
+      particles.push({x:dustX+(Math.random()-0.5)*10,y:dustY,vx:-sumo.direction*1.2,vy:-0.8-Math.random()*0.5,life:12,maxLife:12,color:'#c4956a',size:3+Math.random()*2});
+    }
+    // Red glow trail on slapped columns
+    for(let i=0;i<=sumo.lastSlappedCol;i++){
+      let c2=sumo.direction===1?i:COLS-1-i;
+      if(c2<0||c2>=COLS)continue;
+      for(let row of sumo.rows){
+        let ix=gridX0+c2*cellSize+cellSize/2;
+        let iy=gridY0+row*cellSize+cellSize/2;
+        ctx.fillStyle='rgba(255,80,80,0.08)';
+        ctx.beginPath();ctx.arc(ix,iy,cellSize*0.4,0,Math.PI*2);ctx.fill();
       }
     }
-    ctx.restore();
+    // Draw the big guy
+    drawSumoCharacter(sumo.x,sumo.y,cellSize*1.5,sumo.direction,sumo.timer,isSlapping);
+    // Multi-row indicator lines
+    if(sumo.rows.length>1){
+      ctx.strokeStyle='rgba(255,100,80,0.3)';ctx.lineWidth=cellSize*0.05;ctx.setLineDash([4,6]);
+      for(let j=1;j<sumo.rows.length;j++){
+        let oy=gridY0+sumo.rows[j]*cellSize+cellSize/2;
+        ctx.beginPath();ctx.moveTo(sumo.x,sumo.y);ctx.lineTo(sumo.x,oy);ctx.stroke();
+      }
+      ctx.setLineDash([]);
+    }
   }
 }
 
@@ -425,7 +567,7 @@ function useLightning(row){
     }
   }
   score+=destroyed*15;
-  floatingTexts.push({x:W/2,y:gridY0+row*cellSize,text:'⚡ +'+destroyed*15,life:40,maxLife:40,color:'#00ffff',size:20});
+  floatingTexts.push({x:W/2,y:gridY0+row*cellSize,text:'âš¡ +'+destroyed*15,life:40,maxLife:40,color:'#00ffff',size:20});
   shakeMag=6;shakeTimer=10;
   updateHUD();
   gameState='animating';
@@ -558,7 +700,7 @@ function showOverlay(type){
   const lvlInfo=document.getElementById('level-info'),starsEl=document.getElementById('stars'),finalScore=document.getElementById('final-score');
   ov.classList.remove('hidden');starsEl.textContent='';finalScore.textContent='';lvlInfo.textContent='';
   if(type==='menu'){
-    h1.innerHTML='🏋️ CASCADE<br>SUMO EDITION';sub.textContent='Tap to rotate. Match to shatter. Survive the sumo! 🏋️';
+    h1.innerHTML='ðŸ‹ï¸ CASCADE<br>SUMO EDITION';sub.textContent='Tap to rotate. Match to shatter. Survive the sumo! ðŸ‹ï¸';
     btnPlay.textContent='PLAY';btnPlay.onclick=()=>{startLevel(1);ov.classList.add('hidden')};
     if(maxLevelUnlocked>1){lvlInfo.textContent='Continue from Level '+maxLevelUnlocked;btnPlay.textContent='LEVEL '+maxLevelUnlocked;
       let ex=document.createElement('button');ex.className='btn small secondary';ex.textContent='RESTART LVL 1';ex.onclick=()=>{startLevel(1);ov.classList.add('hidden');ex.remove()};lvlInfo.after(ex);setTimeout(()=>{if(ex.parentNode)ex.remove()},99999)}
@@ -679,8 +821,8 @@ function drawGrid(){
   // Selection highlight
   if(selectedGroup&&gameState==='playing'){let sg=selectedGroup;ctx.strokeStyle='rgba(255,255,255,0.3)';ctx.lineWidth=2;ctx.setLineDash([4,4]);ctx.strokeRect(gridX0+sg.c*cellSize+2,gridY0+sg.r*cellSize+2,cellSize*2-4,cellSize*2-4);ctx.setLineDash([])}
   // Active powerup targeting overlay
-  if(activePowerup==='lightning'){ctx.fillStyle='rgba(0,255,255,0.05)';for(let r=0;r<ROWS;r++)ctx.fillRect(gridX0,gridY0+r*cellSize,gw,cellSize);ctx.fillStyle='#00ffff';ctx.font='11px sans-serif';ctx.textAlign='center';ctx.fillText('TAP A ROW TO ZAP ⚡',gridX0+gw/2,gridY0-6)}
-  if(activePowerup==='paint'){ctx.fillStyle='#cc5de8';ctx.font='11px sans-serif';ctx.textAlign='center';ctx.fillText('TAP AN ORB TO PAINT 🎨',gridX0+gw/2,gridY0-6)}
+  if(activePowerup==='lightning'){ctx.fillStyle='rgba(0,255,255,0.05)';for(let r=0;r<ROWS;r++)ctx.fillRect(gridX0,gridY0+r*cellSize,gw,cellSize);ctx.fillStyle='#00ffff';ctx.font='11px sans-serif';ctx.textAlign='center';ctx.fillText('TAP A ROW TO ZAP âš¡',gridX0+gw/2,gridY0-6)}
+  if(activePowerup==='paint'){ctx.fillStyle='#cc5de8';ctx.font='11px sans-serif';ctx.textAlign='center';ctx.fillText('TAP AN ORB TO PAINT ðŸŽ¨',gridX0+gw/2,gridY0-6)}
   // Hint
   if(hintGroup&&hintTimer>=HINT_DELAY&&gameState==='playing'){
     let hg=hintGroup,pulse=Math.sin(hintFrame*0.08)*0.5+0.5,jiggle=Math.sin(hintFrame*0.15)*cellSize*0.05;

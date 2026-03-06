@@ -401,6 +401,26 @@ const CHATTER=[
   "The stink lines are visible from space","I'm calling the CDC and my therapist",
   "My dog wouldn't eat this and he eats vomit","This food is a war crime. Geneva Convention.",
   "Why is the special 'steaming'?","That salad just moved. I'M NOT CRAZY.",
+  // NEW FILTH
+  "I just sharted from the SMELL alone","The chef wiped his ass with the lettuce",
+  "Pretty sure that dressing is belly button cheese","The corn in my poop salad is RECYCLED",
+  "I can feel it crawling down my throat","There's a hair in my poop. A BUTT hair.",
+  "My colon just wrote a suicide note","This tastes like a sweaty taint on a hot day",
+  "I've seen fresher turds in a gas station toilet","The chef's special is just his morning dump",
+  "WHY IS IT CRUNCHY AND WET AT THE SAME TIME","Someone milked a rat for this sauce",
+  "I found a toenail clipping. It was the BEST part.","The toilet is the VIP dining room",
+  "My tongue just filed a restraining order","This poop has more personality than my ex",
+  "I swear the turd just whispered 'eat me daddy'","The aroma is weaponized",
+  "My nose hairs DIED. All of them. Gone.","That salad is 40% poop 60% regret",
+  "The 5 star review was written by a dung beetle","Even the flies are throwing up",
+  "I asked for well done. This is well DUNG.","My stomach sounds like a garbage disposal",
+  "Is that steam or is the poop breathing?","The menu should come with a trauma warning",
+  "I'm PAYING to develop food poisoning","Bro my farts will smell BETTER after this",
+  "The poop to lettuce ratio is criminal","That turd has been here longer than the staff",
+  "I think the poop just made eye contact","If hell had a buffet this would be it",
+  "My insurance doesn't cover this","The garnish just crawled off my plate",
+  "THIS POOP IS WARM AND I DIDN'T ORDER IT WARM","The chef sneezed in it. Twice. I watched.",
+  "I'd rather drink toilet water. It's cleaner.","Why does the salad have a heartbeat?",
 ];
 const REACTIONS=[
   "WHAT THE F***?!","IS THAT ACTUAL SHIT?!","OH HELL NO",
@@ -414,6 +434,16 @@ const REACTIONS=[
   "IT HAS TEETH AND THEY'RE SHARP","THE GARNISH IS A LIVE BUG","I CAN TASTE THE LAWSUIT",
   "PRETTY SURE THAT'S ILLEGAL","THIS CURED MY APPETITE FOREVER","*CALLS MOM CRYING*",
   "WHO HIRED THIS PSYCHOPATH","I NEED AN EXORCIST NOT A WAITER","THAT AIN'T RANCH SAUCE",
+  // NEW REACTIONS
+  "*PROJECTILE VOMITS ACROSS TABLE*","MY COLON JUST RAGE QUIT",
+  "THE POOP FOUGHT BACK","IT SPLASHED AND SOMETHING MOVED",
+  "*DIARRHEA SOUNDS INTENSIFY*","I CAN'T UNFEEL THIS IN MY MOUTH",
+  "MY TASTE BUDS ARE PRESSING CHARGES","EVEN THE PLATE IS SWEATING",
+  "THIS ISN'T FOOD THIS IS BIOLOGICAL WARFARE","I JUST LOST MY WILL TO LIVE AND EAT",
+  "THE TURD WINKED AT ME. WINKED.","*SPONTANEOUS RECTAL COMBUSTION*",
+  "THERE'S A PULSE. THE SALAD HAS A PULSE.","WHO COOKS POOP AL DENTE?!",
+  "MY MOUTH TASTES LIKE A DIAPER FIRE","*SOUL LEAVES BODY*",
+  "I'D RATHER EAT MY OWN FOOT","THE CORN MOVED. THE CORN F***ING MOVED.",
 ];
 const REACT_E=['😱','🤮','😨','🤢','😰','💀','🫣','😵','😳','😖','🥴','😤','😩','🫠','😧','😲'];
 
@@ -682,7 +712,7 @@ function spawnEvt(){
 }
 function spawnChat(t){
   if(!t.cust||t.svd)return;
-  chats.push({x:t.x*T+T,y:t.y*T-T*.5,txt:CHATTER[Math.floor(Math.random()*CHATTER.length)],life:240,ml:240});
+  chats.push({x:t.x*T+T,y:t.y*T-T*1.8,txt:CHATTER[Math.floor(Math.random()*CHATTER.length)],life:360,ml:360});
 }
 
 // ===== HELPERS =====
@@ -1049,7 +1079,28 @@ function drawWaitress(){
     X.fillStyle=b.col;X.beginPath();X.arc(b.x,b.y,b.sz,0,Math.PI*2);X.fill();
   }
   // Quips
-  let quips=["Like, ew, you reek","*blows bubble* Loser","Nice ass...apron, I mean","God this job blows","Your tip better be huge","Is that poop or your face?","I've dated worse. Barely.","My OnlyFans pays more","*yawns* Try harder, babe","Quit staring at my tips. MONEY tips.","The health inspector? He's dead inside.","You smell like the special.","I didn't go to college for this shit. Literally.","Honey, even the rats tipped better."];
+  let quips=["Like, ew, you reek","*blows bubble* Loser","Nice ass...apron, I mean","God this job blows",
+    "Your tip better be huge","Is that poop or your face?","I've dated worse. Barely.",
+    "My OnlyFans pays more","*yawns* Try harder, babe","Quit staring at my tips. MONEY tips.",
+    "The health inspector? He's dead inside.","You smell like the special.",
+    "I didn't go to college for this shit. Literally.","Honey, even the rats tipped better.",
+    "My ex was full of shit too but at least he was cute",
+    "Touch my butt and I'll put YOU in the salad",
+    "The only thing stiffer than this lettuce is the corpse out back",
+    "I've seen better dumps. In a TOILET.",
+    "*files nails* Wake me when you're not useless",
+    "The chef asked me out. I said I'd rather eat the poop.",
+    "My therapist charges double after I describe this place",
+    "Sweetie your salad game is weaker than your jawline",
+    "I make more in tips than your whole salary. Sad.",
+    "The cockroaches have a union here. I'm their president.",
+    "Stop looking at my legs and start cooking faster",
+    "Last chef got arrested. You're doing worse somehow.",
+    "Babe the poop has more charisma than you",
+    "I've had better propositions from the dumpster rats",
+    "*chews gum aggressively* You done being pathetic?",
+    "My skirt is short but my patience is shorter",
+  ];
   if(fr%550<45){
     X.fillStyle='rgba(255,105,180,.85)';X.font='bold 10px monospace';X.textAlign='center';
     X.fillText(quips[Math.floor(fr/550)%quips.length],px+T/2,py-T*.35+Math.sin(fr*.08)*2);
@@ -1089,13 +1140,13 @@ function drawChats(){
   for(let i=chats.length-1;i>=0;i--){
     let c=chats[i];c.life--;
     if(c.life<=0){chats.splice(i,1);continue}
-    let a=Math.min(c.life/30,1);
-    let bx=c.x-cam.x,by=c.y-cam.y-((c.ml-c.life)*.12);
+    let a=Math.min(c.life/40,1);
+    let bx=c.x-cam.x,by=c.y-cam.y-((c.ml-c.life)*.08);
     X.globalAlpha=a;
-    X.font='bold 10px monospace';
-    let tw=X.measureText(c.txt).width+14;
-    X.fillStyle='rgba(40,25,15,.85)';X.beginPath();X.roundRect(bx-tw/2,by-11,tw,20,5);X.fill();
-    X.strokeStyle='#6b4a20';X.lineWidth=1;X.stroke();
+    X.font='bold 11px monospace';
+    let tw=X.measureText(c.txt).width+16;
+    X.fillStyle='rgba(30,15,8,.9)';X.beginPath();X.roundRect(bx-tw/2,by-12,tw,22,6);X.fill();
+    X.strokeStyle='#8b5a20';X.lineWidth=1.5;X.stroke();
     X.fillStyle='#ffd700';X.textAlign='center';X.textBaseline='middle';
     X.fillText(c.txt,bx,by);
     X.globalAlpha=1;

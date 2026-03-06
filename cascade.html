@@ -102,6 +102,8 @@ let endlessMode=false;
 let selectedGroup=null;
 let animQueue=[];
 let shakeTimer=0, shakeMag=0;
+let hintTimer=0, hintGroup=null, hintFrame=0;
+const HINT_DELAY=180; // ~3 seconds at 60fps
 
 // === ORB TYPES ===
 const ORB_NORMAL=0, ORB_STONE=1, ORB_ICE=2, ORB_BOMB=3;
@@ -216,6 +218,40 @@ function findMatches(){
     if(run.length>=3) matches.push([...run]);
   }
   return matches;
+}
+
+// === HINT SYSTEM ===
+function findBestMove(){
+  let best=null, bestScore=0;
+  for(let r=0;r<ROWS-1;r++){
+    for(let c=0;c<COLS-1;c++){
+      // Check if rotation is possible (no stones)
+      let cells=[[r,c],[r,c+1],[r+1,c+1],[r+1,c]];
+      let blocked=false;
+      for(let [cr,cc] of cells){
+        if(!grid[cr]||!grid[cr][cc]||grid[cr][cc].type===ORB_STONE){blocked=true;break}
+      }
+      if(blocked) continue;
+      // Simulate clockwise rotation
+      let saved=[grid[r][c],grid[r][c+1],grid[r+1][c+1],grid[r+1][c]];
+      grid[r][c]=saved[3];
+      grid[r+1][c]=saved[2];
+      grid[r+1][c+1]=saved[1];
+      grid[r][c+1]=saved[0];
+      let matches=findMatches();
+      let matchCount=0;
+      let matchedCells=new Set();
+      for(let m of matches) for(let cell of m) matchedCells.add(cell.r+','+cell.c);
+      matchCount=matchedCells.size;
+      // Restore
+      grid[r][c]=saved[0];
+      grid[r][c+1]=saved[1];
+      grid[r+1][c+1]=saved[2];
+      grid[r+1][c]=saved[3];
+      if(matchCount>bestScore){bestScore=matchCount;best={r,c,score:matchCount}}
+    }
+  }
+  return best;
 }
 
 // === PROCESS MATCHES ===
@@ -377,6 +413,7 @@ function rotateGroup(row,col){
   
   ensureAudio();
   sndRotate();
+  hintTimer=0;hintGroup=null;
   
   // Rotate clockwise: TL->TR->BR->BL->TL
   let tmp=grid[row][col];
@@ -486,6 +523,7 @@ function startLevel(lv){
   initGrid();
   gameState='playing';
   selectedGroup=null;
+  hintTimer=0;hintGroup=null;hintFrame=0;
 }
 
 // === RESIZE ===
@@ -515,6 +553,7 @@ function getGridCell(px,py){
 function handleTap(px,py){
   if(gameState!=='playing') return;
   ensureAudio();
+  hintTimer=0;hintGroup=null;
   let {r,c}=getGridCell(px,py);
   // Find which 2x2 group center is closest
   let bestR=-1,bestC=-1,bestD=Infinity;
@@ -583,11 +622,18 @@ function drawOrb(orb,r,c){
   if(orb.color<0) return;
   let clr=ORB_COLORS[orb.color];
   
+  // Check if this orb is part of hint group
+  let isHinted=false;
+  if(hintGroup && hintTimer>=HINT_DELAY && gameState==='playing'){
+    let hg=hintGroup;
+    if((r===hg.r||r===hg.r+1)&&(c===hg.c||c===hg.c+1)) isHinted=true;
+  }
+  
   // Glow
   ctx.save();
-  ctx.globalAlpha=orb.alpha*0.3;
+  ctx.globalAlpha=orb.alpha*(isHinted?0.6:0.3);
   ctx.shadowColor=clr.glow;
-  ctx.shadowBlur=cellSize*0.4;
+  ctx.shadowBlur=cellSize*(isHinted?0.8:0.4);
   ctx.beginPath();ctx.arc(x,y,radius,0,Math.PI*2);
   ctx.fillStyle=clr.fill;ctx.fill();
   ctx.restore();
@@ -657,6 +703,49 @@ function drawGrid(){
     ctx.setLineDash([4,4]);
     ctx.strokeRect(gridX0+sg.c*cellSize+2,gridY0+sg.r*cellSize+2,cellSize*2-4,cellSize*2-4);
     ctx.setLineDash([]);
+  }
+  
+  // Hint glow + jiggle
+  if(hintGroup && hintTimer>=HINT_DELAY && gameState==='playing'){
+    let hg=hintGroup;
+    let pulse=Math.sin(hintFrame*0.08)*0.5+0.5; // 0-1 pulsing
+    let jiggle=Math.sin(hintFrame*0.15)*cellSize*0.04;
+    // Draw glow behind the 2x2 group
+    ctx.save();
+    ctx.shadowColor='rgba(255,255,255,0.6)';
+    ctx.shadowBlur=20+pulse*15;
+    ctx.strokeStyle='rgba(255,255,255,'+(0.15+pulse*0.25)+')';
+    ctx.lineWidth=3;
+    ctx.beginPath();
+    ctx.roundRect(gridX0+hg.c*cellSize+4,gridY0+hg.r*cellSize+4,cellSize*2-8,cellSize*2-8,8);
+    ctx.stroke();
+    ctx.restore();
+    // Draw a subtle rotation arrow in center
+    let cx=gridX0+(hg.c+1)*cellSize;
+    let cy=gridY0+(hg.r+1)*cellSize;
+    ctx.save();
+    ctx.globalAlpha=0.3+pulse*0.3;
+    ctx.translate(cx,cy);
+    ctx.rotate(hintFrame*0.03);
+    ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.lineCap='round';
+    ctx.beginPath();
+    ctx.arc(0,0,cellSize*0.22,0,Math.PI*1.5);
+    ctx.stroke();
+    // Arrowhead
+    let ax=Math.cos(Math.PI*1.5)*cellSize*0.22;
+    let ay=Math.sin(Math.PI*1.5)*cellSize*0.22;
+    ctx.beginPath();
+    ctx.moveTo(ax-5,ay-3);ctx.lineTo(ax,ay+5);ctx.lineTo(ax+5,ay-3);
+    ctx.stroke();
+    ctx.restore();
+    // Apply jiggle to hinted orbs
+    for(let [dr,dc] of [[0,0],[0,1],[1,0],[1,1]]){
+      let orb=grid[hg.r+dr]&&grid[hg.r+dr][hg.c+dc];
+      if(orb && orb.type!==ORB_STONE){
+        orb.x=orb.targetX+jiggle*(dr===0?1:-1);
+        orb.y=orb.targetY+jiggle*(dc===0?1:-1);
+      }
+    }
   }
   
   // Orbs
@@ -734,6 +823,17 @@ function update(){
   
   // Shake
   if(shakeTimer>0) shakeTimer--;
+  
+  // Hint timer
+  if(gameState==='playing'){
+    hintTimer++;
+    hintFrame++;
+    if(hintTimer===HINT_DELAY){
+      hintGroup=findBestMove();
+    }
+  } else {
+    hintTimer=0;hintGroup=null;
+  }
 }
 
 // === MAIN LOOP ===

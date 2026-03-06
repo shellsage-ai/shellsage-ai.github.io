@@ -9,4 +9,4 @@ User-agent: PerplexityBot
 Allow: /
 User-agent: Applebot
 Allow: /
-Sitemap: https://shellsage-ai.github.io/sitemap.xml
+Sitemap: https://shellsageai.com/sitemap.xml

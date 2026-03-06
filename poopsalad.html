@@ -54,7 +54,7 @@ canvas{display:block;touch-action:none}
 </div>
 <div id="overlay">
   <h1 id="otitle">💩🥗 POOP SALAD</h1>
-  <div class="sub" id="osub">The worst damn restaurant in existence.<br>Cook literal poop salads. Dodge farts. Serve the traumatized.<br><br>WASD/Arrows = Move | SPACE = Interact</div>
+  <div class="sub" id="osub">The worst damn restaurant in existence.<br>Cook literal poop salads. Dodge farts. Serve the traumatized.<br><br>TAP to walk | TAP kitchen to cook | TAP tables to serve<br>WASD + SPACE on keyboard</div>
   <button class="btn" id="obtn">START SHIFT</button>
   <div class="info" id="oinfo"></div>
 </div>
@@ -645,79 +645,77 @@ document.addEventListener('keyup',e=>{keys[e.key]=false});
 document.querySelectorAll('.db').forEach(b=>{});
 document.getElementById('actbtn').addEventListener('click',()=>{});
 
-// ===== CANVAS TOUCH CONTROLS =====
-let tBtns={u:{},d:{},l:{},r:{},act:{}};
-let tActive={};
-function calcBtns(){
-  if(!mobile)return;
-  let bs=62,gap=4,ox=16,oy=H-bs*3-gap*2-140;
-  tBtns.u={x:ox+bs+gap,y:oy,w:bs,h:bs,label:'▲'};
-  tBtns.l={x:ox,y:oy+bs+gap,w:bs,h:bs,label:'◀'};
-  tBtns.r={x:ox+bs*2+gap*2,y:oy+bs+gap,w:bs,h:bs,label:'▶'};
-  tBtns.d={x:ox+bs+gap,y:oy+bs*2+gap*2,w:bs,h:bs,label:'▼'};
-  tBtns.act={x:W-90,y:H-bs*2-140,w:76,h:76,label:'ACT'};
-}
-function drawControls(){
+// ===== TAP TO MOVE =====
+let tapTarget=null; // {x,y} in tile coords, null=no target
+let actBtnRect={x:0,y:0,w:76,h:76};
+function calcActBtn(){actBtnRect={x:W-90,y:H-160,w:76,h:76}}
+function drawTapUI(){
   if(!mobile||st==='menu')return;
-  // D-pad background
-  let bs=62,gap=4,ox=16,oy=H-bs*3-gap*2-140;
-  X.fillStyle='rgba(0,0,0,.45)';
-  X.beginPath();X.roundRect(ox-6,oy-6,bs*3+gap*2+12,bs*3+gap*2+12,14);X.fill();
-  X.strokeStyle='rgba(255,215,0,.25)';X.lineWidth=2;
-  X.beginPath();X.roundRect(ox-6,oy-6,bs*3+gap*2+12,bs*3+gap*2+12,14);X.stroke();
-  for(let k of['u','d','l','r']){
-    let b=tBtns[k];if(!b.w)continue;
-    let pressed=tActive[k];
-    X.fillStyle=pressed?'#ffd700':'rgba(20,20,0,.9)';
-    X.strokeStyle='#ffd700';X.lineWidth=3;
-    X.beginPath();X.arc(b.x+b.w/2,b.y+b.h/2,b.w/2,0,Math.PI*2);X.fill();X.stroke();
-    // Glow
-    if(!pressed){X.shadowColor='rgba(255,215,0,.4)';X.shadowBlur=10;X.beginPath();X.arc(b.x+b.w/2,b.y+b.h/2,b.w/2,0,Math.PI*2);X.stroke();X.shadowBlur=0}
-    X.fillStyle=pressed?'#000':'#ffd700';X.font='bold 26px sans-serif';X.textAlign='center';X.textBaseline='middle';
-    X.fillText(b.label,b.x+b.w/2,b.y+b.h/2);
+  // Draw target marker if walking
+  if(tapTarget){
+    let tx=tapTarget.x*T-cam.x+T/2,ty=tapTarget.y*T-cam.y+T/2;
+    let pulse=.4+Math.sin(fr*.15)*.15;
+    X.strokeStyle=`rgba(255,215,0,${pulse})`;X.lineWidth=2;
+    X.beginPath();X.arc(tx,ty,12+Math.sin(fr*.1)*3,0,Math.PI*2);X.stroke();
+    X.fillStyle=`rgba(255,215,0,${pulse*.5})`;X.beginPath();X.arc(tx,ty,4,0,Math.PI*2);X.fill();
   }
   // ACT button
-  let ab=tBtns.act;if(!ab.w)return;
-  let ap=tActive.act;
-  X.fillStyle=ap?'#ff6b35':'rgba(20,8,0,.9)';
-  X.strokeStyle='#ff6b35';X.lineWidth=3;
+  let ab=actBtnRect;
+  X.fillStyle='rgba(0,0,0,.75)';X.strokeStyle='#ff6b35';X.lineWidth=3;
   X.beginPath();X.arc(ab.x+ab.w/2,ab.y+ab.h/2,ab.w/2,0,Math.PI*2);X.fill();X.stroke();
-  if(!ap){X.shadowColor='rgba(255,107,53,.4)';X.shadowBlur=10;X.beginPath();X.arc(ab.x+ab.w/2,ab.y+ab.h/2,ab.w/2,0,Math.PI*2);X.stroke();X.shadowBlur=0}
-  X.fillStyle=ap?'#000':'#ff6b35';X.font='bold 15px monospace';X.textAlign='center';X.textBaseline='middle';
-  X.fillText('ACT',ab.x+ab.w/2,ab.y+ab.h/2);
+  X.shadowColor='rgba(255,107,53,.4)';X.shadowBlur=10;
+  X.beginPath();X.arc(ab.x+ab.w/2,ab.y+ab.h/2,ab.w/2,0,Math.PI*2);X.stroke();X.shadowBlur=0;
+  X.fillStyle='#ff6b35';X.font='bold 15px monospace';X.textAlign='center';X.textBaseline='middle';
+  // Context-sensitive label
+  let lbl='ACT';
+  if(pl.y<=6&&!pl.carry)lbl='COOK';
+  else if(pl.carry)lbl='SERVE';
+  X.fillText(lbl,ab.x+ab.w/2,ab.y+ab.h/2);
+  // Tap hint
+  if(fr<300&&fr%60<30){
+    X.fillStyle='rgba(255,215,0,.6)';X.font='bold 13px monospace';X.textAlign='center';
+    X.fillText('TAP ANYWHERE TO WALK',W/2,H-30);
+  }
 }
-function hitBtn(cx,cy){
-  for(let k in tBtns){let b=tBtns[k];if(!b.w)continue;
-    let dx=cx-(b.x+b.w/2),dy=cy-(b.y+b.h/2);
-    if(dx*dx+dy*dy<(b.w/2+10)*(b.h/2+10))return k;
-  }return null;
+function hitAct(cx,cy){
+  let ab=actBtnRect,dx=cx-(ab.x+ab.w/2),dy=cy-(ab.y+ab.h/2);
+  return dx*dx+dy*dy<(ab.w/2+12)*(ab.h/2+12);
 }
 C.addEventListener('touchstart',e=>{
   e.preventDefault();aOn();
-  for(let t of e.changedTouches){
-    let r=C.getBoundingClientRect();
-    let cx=t.clientX-r.left,cy=t.clientY-r.top;
-    let k=hitBtn(cx,cy);
-    if(k){
-      tActive[k]=t.identifier;
-      if(k==='u')dp.u=1;else if(k==='d')dp.d=1;else if(k==='l')dp.l=1;else if(k==='r')dp.r=1;
-      else if(k==='act'){if(st==='playing'){if(pl.y<=6&&!pl.carry)openCook();else if(pl.carry)tryServe()}}
-    }
+  if(st!=='playing')return;
+  let t=e.changedTouches[0];
+  let r=C.getBoundingClientRect();
+  let cx=t.clientX-r.left,cy=t.clientY-r.top;
+  // Check ACT button first
+  if(hitAct(cx,cy)){
+    if(pl.y<=6&&!pl.carry)openCook();
+    else if(pl.carry)tryServe();
+    return;
   }
+  // Tap to move: convert screen coords to tile coords
+  let tx=(cx+cam.x)/T,ty=(cy+cam.y)/T;
+  // If carrying and tapped near a table with a customer, auto-serve when we arrive
+  tapTarget={x:tx,y:ty,autoServe:!!pl.carry};
 },{passive:false});
-C.addEventListener('touchend',e=>{
-  e.preventDefault();
-  for(let t of e.changedTouches){
-    for(let k in tActive){if(tActive[k]===t.identifier){
-      delete tActive[k];
-      if(k==='u')dp.u=0;else if(k==='d')dp.d=0;else if(k==='l')dp.l=0;else if(k==='r')dp.r=0;
-    }}
-  }
-},{passive:false});
+C.addEventListener('touchend',e=>{e.preventDefault()},{passive:false});
 C.addEventListener('touchmove',e=>{e.preventDefault()},{passive:false});
+// Also support click for desktop testing
+C.addEventListener('click',e=>{
+  if(st!=='playing'||!mobile)return;
+  let r=C.getBoundingClientRect();
+  let cx=e.clientX-r.left,cy=e.clientY-r.top;
+  if(hitAct(cx,cy)){
+    if(pl.y<=6&&!pl.carry)openCook();
+    else if(pl.carry)tryServe();
+    return;
+  }
+  let tx2=(cx+cam.x)/T,ty2=(cy+cam.y)/T;
+  tapTarget={x:tx2,y:ty2,autoServe:!!pl.carry};
+});
 
 // ===== RESIZE =====
-function resize(){W=window.innerWidth;H=window.innerHeight;C.width=W;C.height=H;mobile=W<768||'ontouchstart'in window||navigator.maxTouchPoints>0;calcBtns()}
+function resize(){W=window.innerWidth;H=window.innerHeight;C.width=W;C.height=H;mobile=W<768||'ontouchstart'in window||navigator.maxTouchPoints>0;calcActBtn()}
 window.addEventListener('resize',resize);
 
 // ===== DRAWING =====
@@ -977,12 +975,29 @@ function update(){
   if(keys['ArrowDown']||keys['s']||keys['S']||dp.d)dy=1;
   if(keys['ArrowLeft']||keys['a']||keys['A']||dp.l)dx=-1;
   if(keys['ArrowRight']||keys['d']||keys['D']||dp.r)dx=1;
+  // Tap-to-move
+  if(tapTarget&&dx===0&&dy===0){
+    let tdx=tapTarget.x-pl.x,tdy=tapTarget.y-pl.y;
+    let dist=Math.hypot(tdx,tdy);
+    if(dist<.15){
+      let wasAutoServe=tapTarget.autoServe;
+      tapTarget=null;
+      // Auto-serve if we tapped near a table while carrying
+      if(wasAutoServe&&pl.carry){tryServe()}
+      // Auto-cook if we arrived in kitchen without food
+      else if(!pl.carry&&pl.y<=6){openCook()}
+    }
+    else{
+      let nd=1/dist;dx=tdx*nd;dy=tdy*nd;
+    }
+  }else if(dx!==0||dy!==0){tapTarget=null} // keyboard cancels tap target
   pl.mv=dx!==0||dy!==0;
   if(pl.mv){
-    if(dy<0)pl.dir=0;else if(dx>0)pl.dir=1;else if(dy>0)pl.dir=2;else if(dx<0)pl.dir=3;
+    if(Math.abs(dy)>Math.abs(dx)){if(dy<0)pl.dir=0;else pl.dir=2}else{if(dx>0)pl.dir=1;else pl.dir=3}
     let s=SPD/T;
     let nx=pl.x+dx*s,ny=pl.y+dy*s;
-    if(walk(nx,pl.y))pl.x=nx;if(walk(pl.x,ny))pl.y=ny;
+    if(walk(nx,pl.y))pl.x=nx;else if(tapTarget)tapTarget=null;
+    if(walk(pl.x,ny))pl.y=ny;else if(tapTarget)tapTarget=null;
     pl.x=Math.max(.3,Math.min(COLS-.7,pl.x));pl.y=Math.max(.3,Math.min(ROWS-.7,pl.y));
     if(fr%12===0)sStep();pl.anim++;
   }
@@ -1033,13 +1048,13 @@ function render(){
   drawParts();drawFloats();drawChats();drawZoneLabel();
   // Prompts
   if(st==='playing'&&pl.y<=6&&!pl.carry){
-    if(Math.sin(fr*.08)>0){X.fillStyle='rgba(255,215,0,.85)';X.font='bold 15px monospace';X.textAlign='center';X.fillText('PRESS SPACE TO COOK!',W/2,H*.35)}
+    if(Math.sin(fr*.08)>0){X.fillStyle='rgba(255,215,0,.85)';X.font='bold 15px monospace';X.textAlign='center';X.fillText(mobile?'TAP COOK BUTTON!':'PRESS SPACE TO COOK!',W/2,H*.35)}
   }
   if(pl.carry&&st==='playing'){
     let near=tables.some(t=>t.cust&&!t.svd&&Math.hypot(pl.x-(t.x+1),pl.y-t.y)<2.8);
-    if(near&&Math.sin(fr*.1)>0){X.fillStyle='rgba(255,215,0,.85)';X.font='bold 15px monospace';X.textAlign='center';X.fillText('PRESS SPACE TO SERVE!',W/2,H*.82)}
+    if(near&&Math.sin(fr*.1)>0){X.fillStyle='rgba(255,215,0,.85)';X.font='bold 15px monospace';X.textAlign='center';X.fillText(mobile?'TAP SERVE BUTTON!':'PRESS SPACE TO SERVE!',W/2,H*.6)}
   }
-  drawControls();
+  drawTapUI();
 }
 
 // ===== LOOP =====

@@ -650,17 +650,17 @@ let tBtns={u:{},d:{},l:{},r:{},act:{}};
 let tActive={};
 function calcBtns(){
   if(!mobile)return;
-  let bs=62,gap=4,ox=16,oy=H-bs*3-gap*2-20;
+  let bs=62,gap=4,ox=16,oy=H-bs*3-gap*2-140;
   tBtns.u={x:ox+bs+gap,y:oy,w:bs,h:bs,label:'▲'};
   tBtns.l={x:ox,y:oy+bs+gap,w:bs,h:bs,label:'◀'};
   tBtns.r={x:ox+bs*2+gap*2,y:oy+bs+gap,w:bs,h:bs,label:'▶'};
   tBtns.d={x:ox+bs+gap,y:oy+bs*2+gap*2,w:bs,h:bs,label:'▼'};
-  tBtns.act={x:W-90,y:H-bs*2-30,w:76,h:76,label:'ACT'};
+  tBtns.act={x:W-90,y:H-bs*2-140,w:76,h:76,label:'ACT'};
 }
 function drawControls(){
   if(!mobile||st==='menu')return;
   // D-pad background
-  let bs=62,gap=4,ox=16,oy=H-bs*3-gap*2-20;
+  let bs=62,gap=4,ox=16,oy=H-bs*3-gap*2-140;
   X.fillStyle='rgba(0,0,0,.45)';
   X.beginPath();X.roundRect(ox-6,oy-6,bs*3+gap*2+12,bs*3+gap*2+12,14);X.fill();
   X.strokeStyle='rgba(255,215,0,.25)';X.lineWidth=2;

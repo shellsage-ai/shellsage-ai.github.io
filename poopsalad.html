@@ -56,7 +56,7 @@ canvas{display:block;touch-action:none}
 </div>
 <div id="overlay">
   <h1 id="otitle">💩🥗 POOP SALAD</h1>
-  <div class="sub" id="osub">The worst restaurant in town.<br>Cook poop salads. Dodge obstacles. Serve the horrified.<br><br>WASD/Arrows = Move | SPACE = Interact</div>
+  <div class="sub" id="osub">The worst damn restaurant in existence.<br>Cook literal poop salads. Dodge farts. Serve the traumatized.<br><br>WASD/Arrows = Move | SPACE = Interact</div>
   <button class="btn" id="obtn">START SHIFT</button>
   <div class="info" id="oinfo"></div>
 </div>
@@ -293,7 +293,7 @@ function drawStink(x,y,sz,frame,alpha){
 const T=48; // tile size
 const COLS=22,ROWS=30;
 const MAPW=COLS*T,MAPH=ROWS*T;
-const SPD=1.3;
+const SPD=3.2;
 
 // ===== INGREDIENTS =====
 const BASES=[
@@ -318,32 +318,40 @@ const SAUCES=[
 
 // ===== CHATTER =====
 const CHATTER=[
-  "This place smells like a sewer on fire","I heard the chef is a raccoon",
-  "My Uber driver warned me","Just shut up and eat your poop",
-  "5 stars? More like 5 flies","Is that a turd or the special?",
-  "The toilet has better food","My dog eats better. Literally.",
-  "Gordon Ramsay would torch this","My stomach is filing a lawsuit",
-  "Why does the salad have a pulse?","The flies are the freshest thing here",
-  "I thought 'crappy food' was a metaphor","Even the rats won't eat here",
-  "I can smell the lawsuit from here","Plot twist: the salad IS the toilet",
-  "Is the cook potty trained?","I've seen better food in prison",
-  "The ambiance screams food poisoning","My therapist said try new things",
-  "The health inspector quit because of us","Do cockroaches tip well?",
-  "I bet the soap dispenser has gravy","The wifi password is 'runaway'",
-  "I ordered the special. It ordered me to leave","Who puts eyeballs on a SALAD",
-  "The table is stickier than the floor","Is this farm to table or toilet to table?",
-  "I can taste the regret already","The menu should come with a warning label",
+  "Smells like Satan's diaper in here","I swear that turd just blinked at me",
+  "My ass makes better food than this","Who the hell cooks with POOP?!",
+  "I'd rather lick a toilet seat","This is the worst damn decision of my life",
+  "The chef should be in prison","Holy shit... literally, holy shit",
+  "I found a tooth in my salad. A HUMAN tooth.","Even my ex wasn't this full of crap",
+  "The roaches are the cleanest thing here","Pretty sure that's not chocolate",
+  "My butthole just filed for divorce","This food gave me PTSD and diarrhea",
+  "That turd is looking at me funny","Did... did the poop just fart?",
+  "I'm gonna puke on this table","The bathroom smells BETTER than the food",
+  "WHO PUTS CORN IN A SALAD oh wait","My dead grandma cooks better. She's DEAD.",
+  "Is the chef on crack or just stupid?","This tastes like a porta potty at Coachella",
+  "The flies are the protein I guess","I bet the health inspector killed himself",
+  "Why is the lettuce brown and warm?","The toilet and the kitchen share a pipe",
+  "I asked for no nuts. Those aren't nuts.","This dumpster fire has a Yelp page?!",
+  "I'd rather eat my own shoe","Bro this smells like wet dog and regret",
+  "That ain't gravy. I know what that is.","My lawyer is on speed dial you sick freak",
+  "The poop has better presentation than me","I think I just got hepatitis from the menu",
+  "Jesus wept. Then he puked.","Is that a maggot or a sprinkle? DON'T ANSWER.",
+  "The stink lines are visible from space","I'm calling the CDC and my therapist",
+  "My dog wouldn't eat this and he eats vomit","This food is a war crime. Geneva Convention.",
+  "Why is the special 'steaming'?","That salad just moved. I'M NOT CRAZY.",
 ];
 const REACTIONS=[
-  "WHAT THE ACTUAL...?!","IS THAT REAL POOP?!","OH SWEET MOTHER OF...",
-  "THIS IS LITERALLY--","MY LAWYER. NOW.","CALL THE POLICE!",
-  "WHY. IS. IT. WARM.","IT'S LOOKING AT ME","*AGGRESSIVE GAGGING*",
-  "*SCREAMS IN ITALIAN*","THE HEALTH INSPECTOR!","DID IT JUST MOVE?!",
-  "I PAID MONEY FOR THIS?!","MAMA MIA SPICY TURD","YOU MONSTER.",
-  "MY EYES!!","I TRUSTED THE REVIEWS","*FAINTS INTO SALAD*",
-  "IT WINKED AT ME","NOPE NOPE NOPE","SIR THIS IS A CRIME",
-  "I WANT THE MANAGER","THE SMELL OH GOD","*SCREAMS FOREVER*",
-  "IT HAS TEETH","THERE'S A FLY oh wait that's garnish",
+  "WHAT THE F***?!","IS THAT ACTUAL SHIT?!","OH HELL NO",
+  "I'M GONNA HURL","MY LAWYER. RIGHT F***ING NOW.","CALL 911!",
+  "WHY IS IT WARM AND WET?!","IT'S STARING INTO MY SOUL","*VIOLENT PROJECTILE VOMITING*",
+  "*SCREAMS IN DIARRHEA*","THE HEALTH DEPT WOULD CRY","DID IT JUST MOVE?!",
+  "I PAID ACTUAL MONEY?!","THIS TURD HAS SEASONING","YOU SICK BASTARD.",
+  "MY EYES ARE BURNING!!","THE REVIEWS WERE RIGHT","*FACE PLANTS INTO POOP SALAD*",
+  "IT WINKED AT ME I SWEAR","NOPE NOPE NOPE F*** THIS","SIR THIS IS A FELONY",
+  "GET THE MANAGER OR A PRIEST","THE SMELL OH GOD THE SMELL","*SCREAMING INTO THE VOID*",
+  "IT HAS TEETH AND THEY'RE SHARP","THE GARNISH IS A LIVE BUG","I CAN TASTE THE LAWSUIT",
+  "PRETTY SURE THAT'S ILLEGAL","THIS CURED MY APPETITE FOREVER","*CALLS MOM CRYING*",
+  "WHO HIRED THIS PSYCHOPATH","I NEED AN EXORCIST NOT A WAITER","THAT AIN'T RANCH SAUCE",
 ];
 const REACT_E=['😱','🤮','😨','🤢','😰','💀','🫣','😵','😳','😖','🥴','😤','😩','🫠','😧','😲'];
 
@@ -575,7 +583,8 @@ function spawnEvt(){
   if(r<c.fartCh){
     let fx=(3+Math.random()*(COLS-6))*T,fy=(9+Math.random()*10)*T;
     evts.push({tp:'fart',x:fx,y:fy,life:220,ml:220,rad:T*2.5});
-    sFart();addF(fx,fy-25,'*PFFFFFFFT*','#90ee90',18,55);
+    let farts=['*BRAAAAAAAP*','*WET SPLUTTER*','*DEADLY SILENT BUT DEADLY*','*BUTT THUNDER*','*RECTAL REVENGE*','*CHEEK CLAPPER*','*TROUSER COUGH*','*ASS BLAST*'];
+    sFart();addF(fx,fy-25,farts[Math.floor(Math.random()*farts.length)],'#90ee90',18,55);
   }else if(r<c.fartCh+c.dogCh){
     let s=Math.random()<.5?-T:(COLS+1)*T;
     let dy=(9+Math.floor(Math.random()*10))*T;
@@ -830,7 +839,7 @@ function drawWaitress(){
     X.fillStyle=b.col;X.beginPath();X.arc(b.x,b.y,b.sz,0,Math.PI*2);X.fill();
   }
   // Quips
-  let quips=["Like, whatever...","*pop*","Nice apron, loser","This job sucks","Ew.","Is that poop?!","Gag me","*eyeroll*","Gross.","You smell."];
+  let quips=["Like, ew, you reek","*blows bubble* Loser","Nice ass...apron, I mean","God this job blows","Your tip better be huge","Is that poop or your face?","I've dated worse. Barely.","My OnlyFans pays more","*yawns* Try harder, babe","Quit staring at my tips. MONEY tips.","The health inspector? He's dead inside.","You smell like the special.","I didn't go to college for this shit. Literally.","Honey, even the rats tipped better."];
   if(fr%550<45){
     X.fillStyle='rgba(255,105,180,.85)';X.font='bold 10px monospace';X.textAlign='center';
     X.fillText(quips[Math.floor(fr/550)%quips.length],px+T/2,py-T*.35+Math.sin(fr*.08)*2);
@@ -856,10 +865,11 @@ function drawEvts(){
       let dx=ev.x-cam.x,dy=ev.y-cam.y;
       let flip=ev.tgt<ev.x;
       drawPx(SPR_DOG,dx,dy,flip);
-      if(ev.life%100===0){sBark();addF(ev.x+T/2,ev.y-10,'WOOF!','#DEB887',16,25)}
+      let barks=['WOOF!','*EATS POOP*','*LICKS BUTT*','*SNIFFS CROTCH*','ARF ARF!','*HUMPS LEG*'];
+      if(ev.life%100===0){sBark();addF(ev.x+T/2,ev.y-10,barks[Math.floor(Math.random()*barks.length)],'#DEB887',16,25)}
       if(Math.abs(pl.x*T-ev.x)<T*.7&&Math.abs(pl.y*T-ev.y)<T*.7){
         pl.x+=(ev.tgt>ev.x?-.25:.25);sBoing();
-        if(pl.carry&&Math.random()<.12){pl.carry=null;sSplat();addF(pl.x*T+T/2,pl.y*T-20,'DROPPED IT!','#ff4444',18,45)}
+        if(pl.carry&&Math.random()<.12){let drops=['SPLAT! POOP DOWN!','SHIT ON THE FLOOR!','5 SECOND RULE?!','TURD OVERBOARD!','OH CRAP! Literally!'];pl.carry=null;sSplat();addF(pl.x*T+T/2,pl.y*T-20,drops[Math.floor(Math.random()*drops.length)],'#ff4444',18,45)}
       }
     }
   }
@@ -911,7 +921,7 @@ function update(){
   pl.mv=dx!==0||dy!==0;
   if(pl.mv){
     if(dy<0)pl.dir=0;else if(dx>0)pl.dir=1;else if(dy>0)pl.dir=2;else if(dx<0)pl.dir=3;
-    let s=SPD/T*.55;
+    let s=SPD/T*.7;
     let nx=pl.x+dx*s,ny=pl.y+dy*s;
     if(walk(nx,pl.y))pl.x=nx;if(walk(pl.x,ny))pl.y=ny;
     pl.x=Math.max(.3,Math.min(COLS-.7,pl.x));pl.y=Math.max(.3,Math.min(ROWS-.7,pl.y));

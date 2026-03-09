@@ -64,7 +64,7 @@
     "description": "5-doc system to land your first 3 clients: niche scoring matrix, 20-site audit worksheet, email/LinkedIn/Reddit outreach scripts, AI-search visibility checklist, and follow-up cadence guide.",
     "buy_url": "https://buy.stripe.com/cNifZjdvH3Vc1d92bhdjO0u",
     "lemonsqueezy_url": "https://shellsage-ai.lemonsqueezy.com/checkout/buy/af871e38-14ea-4c65-9946-283e6b44f23c",
-    "gumroad_url": "https://jamiesupply.gumroad.com/l/drpsf",
+    "gumroad_url": null,
     "product_page_url": "https://shellsageai.com/products/first-client-outbound-system/",
     "category": "outbound",
     "tags": [
@@ -83,7 +83,7 @@
     "description": "Go direct-to-client: 5 niche offer templates, outbound audit workflow with Loom script, lightweight CRM tracker, follow-up cadences, and a profile-to-offer conversion checklist for Fiverr/Upwork sellers.",
     "buy_url": "https://buy.stripe.com/fZu5kFcrD8bscVRdTZdjO0v",
     "lemonsqueezy_url": "https://shellsage-ai.lemonsqueezy.com/checkout/buy/ed990cfd-1a34-4694-b699-e0457d2a1b8b",
-    "gumroad_url": "https://jamiesupply.gumroad.com/l/rilbj",
+    "gumroad_url": null,
     "product_page_url": "https://shellsageai.com/products/off-platform-lead-engine-kit/",
     "category": "lead gen",
     "tags": [
@@ -102,7 +102,7 @@
     "description": "4-doc SOP to protect every dollar you earn: pre-contract red flag checklist, client risk scoring sheet, hourly log template, and a dispute evidence bundle guide.",
     "buy_url": "https://buy.stripe.com/fZuaEZ63fgHYbRN3fldjO0w",
     "lemonsqueezy_url": "https://shellsage-ai.lemonsqueezy.com/checkout/buy/14078085-24ec-4d3e-a18b-19cfe13ddf79",
-    "gumroad_url": "https://jamiesupply.gumroad.com/l/jluvd",
+    "gumroad_url": null,
     "product_page_url": "https://shellsageai.com/products/upwork-contract-safety-sop-pack/",
     "category": "upwork",
     "tags": [
@@ -121,7 +121,7 @@
     "description": "The complete Claude Code setup kit: 10 AGENTS.md templates, pre-configured .claude/ directories, 4 multi-agent orchestration patterns, and a workflow cheat sheet. Go from blank project to production-ready Claude Code config in minutes.",
     "buy_url": "https://buy.stripe.com/cNi14pbnz4Zg9JF8zFdjO0x",
     "lemonsqueezy_url": "https://shellsage-ai.lemonsqueezy.com/checkout/buy/771cbb84-a41f-4d1e-b4f8-d264ca5332af",
-    "gumroad_url": "https://jamiesupply.gumroad.com/l/sdgpj",
+    "gumroad_url": null,
     "product_page_url": "https://shellsageai.com/products/claude-code-workflow-kit/",
     "category": "claude code",
     "tags": [
@@ -140,7 +140,7 @@
     "description": "Lightweight monitoring for AI agents — action logs, failure alerts, cost tracking, and audit exports. Zero dependencies. Self-hosted. Built for indie devs running autonomous agents in production.",
     "buy_url": "https://buy.stripe.com/28EaEZ9frbnEf3ZeY3djO0o",
     "lemonsqueezy_url": "https://shellsage-ai.lemonsqueezy.com/checkout/buy/36b9e987-da6a-47d5-827a-9c4c28e6785f",
-    "gumroad_url": "https://jamiesupply.gumroad.com/l/hfnafd",
+    "gumroad_url": null,
     "product_page_url": "https://shellsageai.com/products/agent-monitor-cli/",
     "category": "ai agents",
     "tags": [
@@ -159,7 +159,7 @@
     "description": "Ship agents to production with confidence — 85-item checklists, runbooks for systemd/Docker/PM2/OpenClaw, alerting configs, and rollback procedures.",
     "buy_url": "https://buy.stripe.com/3cIdRbdvH4ZgaNJbLRdjO0B",
     "lemonsqueezy_url": "https://shellsage-ai.lemonsqueezy.com/checkout/buy/7c4ed008-800a-473a-a3a7-2cfe1bf310e0",
-    "gumroad_url": "https://jamiesupply.gumroad.com/l/fyclb",
+    "gumroad_url": null,
     "product_page_url": "https://shellsageai.com/products/agent-deployment-checklist/",
     "category": "devops",
     "tags": [
@@ -178,7 +178,7 @@
     "description": "Cut your Claude Code bill without cutting output — 7-chapter guide with optimized settings, lean AGENTS.md templates, cost tracker, and budget calculator.",
     "buy_url": "https://buy.stripe.com/dRm8wR77j63kg832bhdjO0C",
     "lemonsqueezy_url": "https://shellsage-ai.lemonsqueezy.com/checkout/buy/b3cc103e-ef59-4f3d-95a8-16fc93d8722f",
-    "gumroad_url": "https://jamiesupply.gumroad.com/l/qmazow",
+    "gumroad_url": null,
     "product_page_url": "https://shellsageai.com/products/claude-code-cost-optimization/",
     "category": "claude code",
     "tags": [
@@ -197,7 +197,7 @@
     "description": "Build custom AI agent skills for any niche — starter templates, patterns, testing harness, and packaging tooling. The toolkit behind the Skills Launch Pack.",
     "buy_url": "https://buy.stripe.com/28E6oJ63f4ZgcVR8zFdjO0D",
     "lemonsqueezy_url": "https://shellsage-ai.lemonsqueezy.com/checkout/buy/1b3177fb-ea6e-4c1d-bd1f-a33a7e3e7058",
-    "gumroad_url": "https://jamiesupply.gumroad.com/l/rnvnq",
+    "gumroad_url": null,
     "product_page_url": "https://shellsageai.com/products/agent-skill-builder-kit/",
     "category": "skills",
     "tags": [
@@ -216,7 +216,7 @@
     "description": "15 production-ready MCP server recipes in TypeScript: Slack, PostgreSQL, GitHub, Docker, Auth (JWT/OAuth), rate limiting, server chaining, error handling, and CI/CD.",
     "buy_url": "https://buy.stripe.com/4gMbJ33V72R85tp6rxdjO0E",
     "lemonsqueezy_url": "https://shellsage-ai.lemonsqueezy.com/checkout/buy/269aff49-7df8-4835-9f03-f90bf29725b8",
-    "gumroad_url": "https://jamiesupply.gumroad.com/l/nmicq",
+    "gumroad_url": null,
     "product_page_url": "https://shellsageai.com/products/mcp-integration-cookbook/",
     "category": "mcp",
     "tags": [
@@ -235,7 +235,7 @@
     "description": "A practical evaluation starter kit for AI agents: benchmark templates, regression suites, quality scoring rubrics, and go/no-go decision frameworks. Stop guessing if your agent got better.",
     "buy_url": "https://buy.stripe.com/00w8wRfDP63kaNJg27djO0F",
     "lemonsqueezy_url": "https://shellsage-ai.lemonsqueezy.com/checkout/buy/b6b331ef-d72b-4026-82d2-82c0b8ad9444",
-    "gumroad_url": "https://jamiesupply.gumroad.com/l/huyrx",
+    "gumroad_url": null,
     "product_page_url": "https://shellsageai.com/products/agent-evals-starter-kit/",
     "category": "evals",
     "tags": [
@@ -254,7 +254,7 @@
     "description": "Everything you need to migrate agents between GPT-4/5, Claude 3/4, and multi-provider setups. Includes migration checklists, cost comparison calculator, prompt compatibility guide, OpenRouter/LiteLLM config templates, and a performance eval kit.",
     "buy_url": "https://buy.stripe.com/8x2eVf8bn3VccVRaHNdjO0G",
     "lemonsqueezy_url": null,
-    "gumroad_url": null,
+    "gumroad_url": "https://shellsageai.gumroad.com/l/ecgxle",
     "product_page_url": "https://shellsageai.com/products/multi-model-agent-migration-kit/",
     "category": "ai models",
     "tags": [
@@ -262,6 +262,51 @@
       "Migration",
       "Multi-Provider"
     ],
+    "format": "digital-download",
+    "version": "1.0.0"
+  },
+  {
+    "slug": "agent-coding-security-kit",
+    "title": "AI Coding Agent Security Kit",
+    "price": 19,
+    "currency": "USD",
+    "description": "",
+    "buy_url": "https://buy.stripe.com/7sYeVf0IVdvM5tp5ntdjO0H",
+    "lemonsqueezy_url": null,
+    "gumroad_url": "https://shellsageai.gumroad.com/l/jtjom",
+    "product_page_url": "https://shellsageai.com/products/agent-coding-security-kit/",
+    "category": "developer-tools",
+    "tags": [],
+    "format": "digital-download",
+    "version": "1.0.0"
+  },
+  {
+    "slug": "ai-agent-db-blast-radius-kit",
+    "title": "AI Agent Database Blast-Radius Prevention Kit",
+    "price": 19,
+    "currency": "USD",
+    "description": "",
+    "buy_url": null,
+    "lemonsqueezy_url": null,
+    "gumroad_url": null,
+    "product_page_url": "https://shellsageai.com/products/ai-agent-db-blast-radius-kit/",
+    "category": "developer-tools",
+    "tags": [],
+    "format": "digital-download",
+    "version": "1.0.0"
+  },
+  {
+    "slug": "mcp-registry-submission-kit",
+    "title": "MCP Registry Fast-Track Submission Kit",
+    "price": 19,
+    "currency": "USD",
+    "description": "",
+    "buy_url": null,
+    "lemonsqueezy_url": null,
+    "gumroad_url": null,
+    "product_page_url": "https://shellsageai.com/products/mcp-registry-submission-kit/",
+    "category": "developer-tools",
+    "tags": [],
     "format": "digital-download",
     "version": "1.0.0"
   }

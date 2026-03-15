@@ -270,13 +270,17 @@
     "title": "AI Coding Agent Security Kit",
     "price": 19,
     "currency": "USD",
-    "description": "",
+    "description": "Security patterns and hardening templates for AI coding agents. Covers secrets management, sandboxing, prompt injection defense, output validation, and audit logging for production agent deployments.",
     "buy_url": "https://buy.stripe.com/7sYeVf0IVdvM5tp5ntdjO0H",
     "lemonsqueezy_url": null,
     "gumroad_url": "https://shellsageai.gumroad.com/l/jtjom",
     "product_page_url": "https://shellsageai.com/products/agent-coding-security-kit/",
-    "category": "developer-tools",
-    "tags": [],
+    "category": "security",
+    "tags": [
+      "Security",
+      "AI Agents",
+      "Claude Code"
+    ],
     "format": "digital-download",
     "version": "1.0.0"
   },
@@ -285,13 +289,17 @@
     "title": "AI Agent Database Blast-Radius Prevention Kit",
     "price": 19,
     "currency": "USD",
-    "description": "",
+    "description": "Prevent AI agents from destroying your database. Blast-radius analysis templates, read-only mode patterns, mutation guards, rollback procedures, and a pre-flight checklist for any agent with DB access.",
     "buy_url": "https://buy.stripe.com/fZueVfcrDezQf3Z9DJdjO0J",
     "lemonsqueezy_url": null,
     "gumroad_url": "https://shellsageai.gumroad.com/l/qxeqf",
     "product_page_url": "https://shellsageai.com/products/ai-agent-db-blast-radius-kit/",
-    "category": "developer-tools",
-    "tags": [],
+    "category": "ai agents",
+    "tags": [
+      "AI Agents",
+      "Databases",
+      "Safety"
+    ],
     "format": "digital-download",
     "version": "1.0.0"
   },
@@ -300,13 +308,17 @@
     "title": "MCP Registry Fast-Track Submission Kit",
     "price": 19,
     "currency": "USD",
-    "description": "",
+    "description": "Complete kit for MCP registry submission: manifest templates, capability declaration files, automated validation scripts, and a review-ready README generator.",
     "buy_url": "https://buy.stripe.com/6oUfZjfDPgHYcVR8zFdjO0K",
     "lemonsqueezy_url": null,
     "gumroad_url": "https://shellsageai.gumroad.com/l/xwkxzq",
     "product_page_url": "https://shellsageai.com/products/mcp-registry-submission-kit/",
-    "category": "developer-tools",
-    "tags": [],
+    "category": "mcp",
+    "tags": [
+      "MCP",
+      "Submission",
+      "Templates"
+    ],
     "format": "digital-download",
     "version": "1.0.0"
   },
@@ -315,13 +327,36 @@
     "title": "MCP Registry Publishing Guide",
     "price": 29,
     "currency": "USD",
-    "description": "",
+    "description": "Step-by-step guide to getting your MCP server listed in the official registry. Includes submission checklist, metadata templates, validation scripts, and visibility optimization tips.",
     "buy_url": "https://buy.stripe.com/3cI4gBdvHajAg839DJdjO0M",
     "lemonsqueezy_url": null,
     "gumroad_url": "https://shellsageai.gumroad.com/l/otfpwg",
     "product_page_url": "https://shellsageai.com/products/mcp-registry-publishing-guide/",
-    "category": "developer-tools",
-    "tags": [],
+    "category": "mcp",
+    "tags": [
+      "MCP",
+      "Registry",
+      "Publishing"
+    ],
+    "format": "digital-download",
+    "version": "1.0.0"
+  },
+  {
+    "slug": "ai-dev-relevance-playbook",
+    "title": "AI Dev Relevance Playbook",
+    "price": 17,
+    "currency": "USD",
+    "description": "A no-BS framework for mid-career developers navigating the AI era. Includes a skill audit, positioning guide, 6-month action plan, AI-multiplier patterns, income diversification roadmap, and learning template. Stay indispensable starting this week.",
+    "buy_url": "https://buy.stripe.com/14AeVf9frezQ6xt2bhdjO0N",
+    "lemonsqueezy_url": null,
+    "gumroad_url": "https://shellsageai.gumroad.com/l/fvczcf",
+    "product_page_url": "https://shellsageai.com/products/ai-dev-relevance-playbook/",
+    "category": "career",
+    "tags": [
+      "Career",
+      "AI Skills",
+      "Developer"
+    ],
     "format": "digital-download",
     "version": "1.0.0"
   }

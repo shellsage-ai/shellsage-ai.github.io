@@ -384,14 +384,18 @@
     "title": "1M Context Mastery Kit",
     "price": 29,
     "currency": "USD",
-    "description": "",
+    "description": "Master Claude&rsquo;s 1M token context window. 9-chapter practical guide covering context budgeting, file selection, monorepo patterns, long-session design, multi-file refactoring, cost controls, and anti-patterns — plus a cheatsheet and budget calculator. Stop guessing, start shipping.",
     "buy_url": "https://buy.stripe.com/cNibJ33V7bnE4pl9DJdjO0O",
     "lemonsqueezy_url": null,
     "gumroad_url": "https://shellsageai.gumroad.com/l/naddq",
     "kofi_url": "https://ko-fi.com/s/7f6c8b49fc",
     "product_page_url": "https://shellsageai.com/products/1m-context-mastery-kit/",
-    "category": "developer-tools",
-    "tags": [],
+    "category": "claude",
+    "tags": [
+      "Claude",
+      "Context Window",
+      "AI Workflow"
+    ],
     "format": "digital-download",
     "version": "1.0.0"
   },

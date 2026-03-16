@@ -8,6 +8,7 @@
     "buy_url": "https://buy.stripe.com/aFaeVf2R31N45tpcPVdjO0A",
     "lemonsqueezy_url": "https://shellsage-ai.lemonsqueezy.com/checkout/buy/2e08468d-3493-46a9-b3ff-44f977d32f54",
     "gumroad_url": "https://shellsageai.gumroad.com/l/tfjylr",
+    "kofi_url": "https://ko-fi.com/s/2d9964a336",
     "product_page_url": "https://shellsageai.com/products/agent-skills-launch-pack/",
     "category": "10 skills",
     "tags": [
@@ -27,6 +28,7 @@
     "buy_url": "https://buy.stripe.com/fZueVf8bn77o0958zFdjO0n",
     "lemonsqueezy_url": "https://shellsage-ai.lemonsqueezy.com/checkout/buy/bcbbbe0f-9f88-4fb5-85f6-2b15d510730c",
     "gumroad_url": "https://shellsageai.gumroad.com/l/dylbak",
+    "kofi_url": "https://ko-fi.com/s/5e934a1643",
     "product_page_url": "https://shellsageai.com/products/first-10-customers-playbook/",
     "category": "playbook",
     "tags": [
@@ -46,6 +48,7 @@
     "buy_url": "https://buy.stripe.com/5kQfZj0IV0J0095cPVdjO0q",
     "lemonsqueezy_url": "https://shellsage-ai.lemonsqueezy.com/checkout/buy/6b6f0d62-684e-4dc9-a014-3bfe76f283df",
     "gumroad_url": "https://shellsageai.gumroad.com/l/pxcwts",
+    "kofi_url": "https://ko-fi.com/s/c7f71a6cb3",
     "product_page_url": "https://shellsageai.com/products/mcp-server-boilerplate-kit/",
     "category": "typescript",
     "tags": [
@@ -65,6 +68,7 @@
     "buy_url": "https://buy.stripe.com/cNifZjdvH3Vc1d92bhdjO0u",
     "lemonsqueezy_url": "https://shellsage-ai.lemonsqueezy.com/checkout/buy/af871e38-14ea-4c65-9946-283e6b44f23c",
     "gumroad_url": "https://shellsageai.gumroad.com/l/drpsf",
+    "kofi_url": "https://ko-fi.com/s/74b0ecaef9",
     "product_page_url": "https://shellsageai.com/products/first-client-outbound-system/",
     "category": "outbound",
     "tags": [
@@ -84,6 +88,7 @@
     "buy_url": "https://buy.stripe.com/fZu5kFcrD8bscVRdTZdjO0v",
     "lemonsqueezy_url": "https://shellsage-ai.lemonsqueezy.com/checkout/buy/ed990cfd-1a34-4694-b699-e0457d2a1b8b",
     "gumroad_url": "https://shellsageai.gumroad.com/l/rilbj",
+    "kofi_url": "https://ko-fi.com/s/8c22ed31cc",
     "product_page_url": "https://shellsageai.com/products/off-platform-lead-engine-kit/",
     "category": "lead gen",
     "tags": [
@@ -103,6 +108,7 @@
     "buy_url": "https://buy.stripe.com/fZuaEZ63fgHYbRN3fldjO0w",
     "lemonsqueezy_url": "https://shellsage-ai.lemonsqueezy.com/checkout/buy/14078085-24ec-4d3e-a18b-19cfe13ddf79",
     "gumroad_url": "https://shellsageai.gumroad.com/l/jluvd",
+    "kofi_url": "https://ko-fi.com/s/41b6173a10",
     "product_page_url": "https://shellsageai.com/products/upwork-contract-safety-sop-pack/",
     "category": "upwork",
     "tags": [
@@ -122,6 +128,7 @@
     "buy_url": "https://buy.stripe.com/cNi14pbnz4Zg9JF8zFdjO0x",
     "lemonsqueezy_url": "https://shellsage-ai.lemonsqueezy.com/checkout/buy/771cbb84-a41f-4d1e-b4f8-d264ca5332af",
     "gumroad_url": "https://shellsageai.gumroad.com/l/sdgpj",
+    "kofi_url": "https://ko-fi.com/s/aac4d24b18",
     "product_page_url": "https://shellsageai.com/products/claude-code-workflow-kit/",
     "category": "claude code",
     "tags": [
@@ -141,6 +148,7 @@
     "buy_url": "https://buy.stripe.com/28EaEZ9frbnEf3ZeY3djO0o",
     "lemonsqueezy_url": "https://shellsage-ai.lemonsqueezy.com/checkout/buy/36b9e987-da6a-47d5-827a-9c4c28e6785f",
     "gumroad_url": "https://shellsageai.gumroad.com/l/hfnafd",
+    "kofi_url": "https://ko-fi.com/s/340d80573b",
     "product_page_url": "https://shellsageai.com/products/agent-monitor-cli/",
     "category": "ai agents",
     "tags": [
@@ -160,6 +168,7 @@
     "buy_url": "https://buy.stripe.com/3cIdRbdvH4ZgaNJbLRdjO0B",
     "lemonsqueezy_url": "https://shellsage-ai.lemonsqueezy.com/checkout/buy/7c4ed008-800a-473a-a3a7-2cfe1bf310e0",
     "gumroad_url": "https://shellsageai.gumroad.com/l/fyclb",
+    "kofi_url": "https://ko-fi.com/s/175d9623c4",
     "product_page_url": "https://shellsageai.com/products/agent-deployment-checklist/",
     "category": "devops",
     "tags": [
@@ -179,6 +188,7 @@
     "buy_url": "https://buy.stripe.com/dRm00ldvHdvMaNJ7vBdjO0L",
     "lemonsqueezy_url": "https://shellsage-ai.lemonsqueezy.com/checkout/buy/b3cc103e-ef59-4f3d-95a8-16fc93d8722f",
     "gumroad_url": "https://shellsageai.gumroad.com/l/qmazow",
+    "kofi_url": "https://ko-fi.com/s/2df42012c9",
     "product_page_url": "https://shellsageai.com/products/claude-code-cost-optimization/",
     "category": "claude code",
     "tags": [
@@ -198,6 +208,7 @@
     "buy_url": "https://buy.stripe.com/28E6oJ63f4ZgcVR8zFdjO0D",
     "lemonsqueezy_url": "https://shellsage-ai.lemonsqueezy.com/checkout/buy/1b3177fb-ea6e-4c1d-bd1f-a33a7e3e7058",
     "gumroad_url": "https://shellsageai.gumroad.com/l/rnvnq",
+    "kofi_url": "https://ko-fi.com/s/c48a1a299d",
     "product_page_url": "https://shellsageai.com/products/agent-skill-builder-kit/",
     "category": "skills",
     "tags": [
@@ -217,6 +228,7 @@
     "buy_url": "https://buy.stripe.com/4gMbJ33V72R85tp6rxdjO0E",
     "lemonsqueezy_url": "https://shellsage-ai.lemonsqueezy.com/checkout/buy/269aff49-7df8-4835-9f03-f90bf29725b8",
     "gumroad_url": "https://shellsageai.gumroad.com/l/nmicq",
+    "kofi_url": "https://ko-fi.com/s/41b0b56e7f",
     "product_page_url": "https://shellsageai.com/products/mcp-integration-cookbook/",
     "category": "mcp",
     "tags": [
@@ -236,6 +248,7 @@
     "buy_url": "https://buy.stripe.com/00w8wRfDP63kaNJg27djO0F",
     "lemonsqueezy_url": "https://shellsage-ai.lemonsqueezy.com/checkout/buy/b6b331ef-d72b-4026-82d2-82c0b8ad9444",
     "gumroad_url": "https://shellsageai.gumroad.com/l/huyrx",
+    "kofi_url": "https://ko-fi.com/s/ae3309fd7c",
     "product_page_url": "https://shellsageai.com/products/agent-evals-starter-kit/",
     "category": "evals",
     "tags": [
@@ -255,6 +268,7 @@
     "buy_url": "https://buy.stripe.com/8x2eVf8bn3VccVRaHNdjO0G",
     "lemonsqueezy_url": null,
     "gumroad_url": "https://shellsageai.gumroad.com/l/ecgxle",
+    "kofi_url": "https://ko-fi.com/s/9093904dd2",
     "product_page_url": "https://shellsageai.com/products/multi-model-agent-migration-kit/",
     "category": "ai models",
     "tags": [
@@ -274,6 +288,7 @@
     "buy_url": "https://buy.stripe.com/7sYeVf0IVdvM5tp5ntdjO0H",
     "lemonsqueezy_url": null,
     "gumroad_url": "https://shellsageai.gumroad.com/l/jtjom",
+    "kofi_url": "https://ko-fi.com/s/25e75c4060",
     "product_page_url": "https://shellsageai.com/products/agent-coding-security-kit/",
     "category": "security",
     "tags": [
@@ -293,6 +308,7 @@
     "buy_url": "https://buy.stripe.com/fZueVfcrDezQf3Z9DJdjO0J",
     "lemonsqueezy_url": null,
     "gumroad_url": "https://shellsageai.gumroad.com/l/qxeqf",
+    "kofi_url": "https://ko-fi.com/s/3eac762e77",
     "product_page_url": "https://shellsageai.com/products/ai-agent-db-blast-radius-kit/",
     "category": "ai agents",
     "tags": [
@@ -312,6 +328,7 @@
     "buy_url": "https://buy.stripe.com/6oUfZjfDPgHYcVR8zFdjO0K",
     "lemonsqueezy_url": null,
     "gumroad_url": "https://shellsageai.gumroad.com/l/xwkxzq",
+    "kofi_url": "https://ko-fi.com/s/069cb0008b",
     "product_page_url": "https://shellsageai.com/products/mcp-registry-submission-kit/",
     "category": "mcp",
     "tags": [
@@ -331,6 +348,7 @@
     "buy_url": "https://buy.stripe.com/3cI4gBdvHajAg839DJdjO0M",
     "lemonsqueezy_url": null,
     "gumroad_url": "https://shellsageai.gumroad.com/l/otfpwg",
+    "kofi_url": "https://ko-fi.com/s/8a2b0210f0",
     "product_page_url": "https://shellsageai.com/products/mcp-registry-publishing-guide/",
     "category": "mcp",
     "tags": [
@@ -350,12 +368,49 @@
     "buy_url": "https://buy.stripe.com/14AeVf9frezQ6xt2bhdjO0N",
     "lemonsqueezy_url": null,
     "gumroad_url": "https://shellsageai.gumroad.com/l/fvczcf",
+    "kofi_url": "https://ko-fi.com/s/d3ca5f27d2",
     "product_page_url": "https://shellsageai.com/products/ai-dev-relevance-playbook/",
     "category": "career",
     "tags": [
       "Career",
       "AI Skills",
       "Developer"
+    ],
+    "format": "digital-download",
+    "version": "1.0.0"
+  },
+  {
+    "slug": "1m-context-mastery-kit",
+    "title": "1M Context Mastery Kit",
+    "price": 29,
+    "currency": "USD",
+    "description": "",
+    "buy_url": "https://buy.stripe.com/cNibJ33V7bnE4pl9DJdjO0O",
+    "lemonsqueezy_url": null,
+    "gumroad_url": "https://shellsageai.gumroad.com/l/naddq",
+    "kofi_url": "https://ko-fi.com/s/7f6c8b49fc",
+    "product_page_url": "https://shellsageai.com/products/1m-context-mastery-kit/",
+    "category": "developer-tools",
+    "tags": [],
+    "format": "digital-download",
+    "version": "1.0.0"
+  },
+  {
+    "slug": "mcp-registry-complete-kit",
+    "title": "MCP Registry Complete Kit",
+    "price": 39,
+    "currency": "USD",
+    "description": "Everything to publish and maintain your MCP server on the official registry — bundled. Includes the MCP Registry Submission Kit (checklist, templates, CI workflows) + the 8-chapter MCP Registry Publishing Guide. Save $9 vs buying separately.",
+    "buy_url": "https://buy.stripe.com/28E14pfDP3VcdZVeY3djO0P",
+    "lemonsqueezy_url": null,
+    "gumroad_url": "https://shellsageai.gumroad.com/l/qioaa",
+    "kofi_url": null,
+    "product_page_url": "https://shellsageai.com/products/mcp-registry-complete-kit/",
+    "category": "mcp",
+    "tags": [
+      "MCP",
+      "Registry",
+      "Bundle"
     ],
     "format": "digital-download",
     "version": "1.0.0"

@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Golden Navigation System — Browser Automation Rules</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --surface2: #222638;
+      --border: #2e3350;
+      --accent: #f5a623;
+      --accent2: #7c6af7;
+      --green: #36c27e;
+      --red: #f05e5e;
+      --yellow: #f5c842;
+      --text: #e2e8f0;
+      --muted: #8892aa;
+      --code-bg: #141722;
+      --radius: 10px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      min-height: 100vh;
+    }
+
+    /* Header */
+    header {
+      background: linear-gradient(135deg, #1a1d27 0%, #0f1117 60%);
+      border-bottom: 1px solid var(--border);
+      padding: 48px 24px 40px;
+      text-align: center;
+    }
+    .badge {
+      display: inline-block;
+      background: var(--accent);
+      color: #000;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 99px;
+      margin-bottom: 16px;
+    }
+    header h1 {
+      font-size: clamp(28px, 5vw, 48px);
+      font-weight: 800;
+      letter-spacing: -.02em;
+      line-height: 1.15;
+    }
+    header h1 span { color: var(--accent); }
+    header p {
+      color: var(--muted);
+      font-size: 16px;
+      max-width: 560px;
+      margin: 14px auto 0;
+    }
+
+    /* Layout */
+    main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* Section titles */
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-bottom: 8px;
+    }
+    h2 {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: var(--text);
+    }
+    section { margin-bottom: 56px; }
+
+    /* Philosophy callout */
+    .philosophy {
+      background: linear-gradient(135deg, #1e2036, #1a1d2e);
+      border: 1px solid var(--accent2);
+      border-left: 4px solid var(--accent2);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 40px;
+    }
+    .philosophy strong { color: var(--accent); font-size: 17px; }
+    .philosophy p { color: var(--muted); margin-top: 6px; font-size: 15px; }
+
+    /* Golden Sequence */
+    .sequence {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 16px;
+      align-items: center;
+    }
+    .seq-step {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 18px;
+      text-align: center;
+      min-width: 100px;
+      flex: 1;
+    }
+    .seq-step .num {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--muted);
+    }
+    .seq-step .label {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-top: 2px;
+    }
+    .seq-step .desc {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+    .arrow {
+      font-size: 20px;
+      color: var(--border);
+      flex-shrink: 0;
+    }
+    .seq-note {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+    .seq-note strong { color: var(--yellow); }
+
+    /* Profile cards */
+    .profile-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+    }
+    .card h3 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card h3 .icon { font-size: 18px; }
+    .card ul {
+      list-style: none;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .card ul li {
+      padding: 5px 0;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+    .card ul li:last-child { border-bottom: none; }
+    .card ul li .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent2);
+      margin-top: 6px;
+      flex-shrink: 0;
+    }
+
+    /* Rules table */
+    .rules-grid {
+      display: grid;
+      gap: 12px;
+    }
+    .rule-row {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      align-items: start;
+      transition: border-color .15s;
+    }
+    .rule-row:hover { border-color: var(--accent2); }
+    .rule-num {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--accent);
+      background: rgba(245, 166, 35, .1);
+      border-radius: 6px;
+      padding: 4px 8px;
+      text-align: center;
+      line-height: 1.3;
+    }
+    .rule-body h3 { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .rule-body p { font-size: 13px; color: var(--muted); }
+    .rule-row.critical { border-left: 3px solid var(--red); }
+    .rule-row.important { border-left: 3px solid var(--yellow); }
+    .rule-row.standard { border-left: 3px solid var(--accent2); }
+
+    /* Code block */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      overflow-x: auto;
+      font-size: 13px;
+      line-height: 1.6;
+      font-family: 'JetBrains Mono', 'Cascadia Code', 'Fira Code', monospace;
+      color: #c8d3f5;
+    }
+    .kw { color: #c099ff; }
+    .fn { color: #82aaff; }
+    .str { color: #c3e88d; }
+    .cmt { color: #444a6d; font-style: italic; }
+    .var { color: #f7c67f; }
+
+    /* Registry diagram */
+    .registry-flow {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+    .flow-step {
+      display: flex;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      align-items: flex-start;
+    }
+    .flow-step:last-child { border-bottom: none; }
+    .flow-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--accent2);
+      color: #fff;
+      font-weight: 700;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .flow-content h4 { font-size: 14px; font-weight: 700; color: var(--text); }
+    .flow-content p { font-size: 13px; color: var(--muted); margin-top: 3px; }
+    .flow-content code {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1px 6px;
+      font-size: 12px;
+      color: var(--accent);
+      font-family: monospace;
+    }
+
+    /* Failures section */
+    .failures-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+    }
+    .failure-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--red);
+      border-radius: var(--radius);
+      padding: 16px 18px;
+    }
+    .failure-card h4 { font-size: 13px; font-weight: 700; color: var(--red); margin-bottom: 6px; }
+    .failure-card p { font-size: 12px; color: var(--muted); }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 24px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .sequence { flex-direction: column; }
+      .arrow { transform: rotate(90deg); align-self: center; }
+      .rule-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="badge">Browser Automation Rules</div>
+  <h1>The <span>Golden Navigation System</span></h1>
+  <p>Non-negotiable rules for all browser automation pipelines. Violation of any rule is a pipeline failure.</p>
+</header>
+
+<main>
+
+  <!-- Philosophy -->
+  <div class="philosophy">
+    <strong>Core Philosophy: "Look Before You Leap" (LB4YL)</strong>
+    <p>Scan the page, discover <em>all</em> selectors, screenshot to verify — <em>then</em> act. Never interact with a page element you haven't first discovered through the registry.</p>
+  </div>
+
+  <!-- Golden Sequence -->
+  <section>
+    <div class="section-label">Rule 0 — The Foundation</div>
+    <h2>The Golden Sequence</h2>
+    <div class="sequence">
+      <div class="seq-step">
+        <div class="num">Step 1</div>
+        <div class="label">SCAN</div>
+        <div class="desc">Full DOM + screenshot of current page state</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="seq-step">
+        <div class="num">Step 2</div>
+        <div class="label">DISCOVER</div>
+        <div class="desc">Find element via SelectorRegistry — never bare locators</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="seq-step">
+        <div class="num">Step 3</div>
+        <div class="label">SCREENSHOT</div>
+        <div class="desc">Capture page state before action</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="seq-step">
+        <div class="num">Step 4</div>
+        <div class="label">ACT</div>
+        <div class="desc">Fill, click, upload, or navigate</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="seq-step">
+        <div class="num">Step 5</div>
+        <div class="label">SCREENSHOT</div>
+        <div class="desc">Capture page state after action</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="seq-step">
+        <div class="num">Step 6</div>
+        <div class="label">VERIFY</div>
+        <div class="desc">Programmatically confirm action worked</div>
+      </div>
+    </div>
+    <div class="seq-note">
+      <strong>⚠️ Page state changed?</strong> Dialog opened, form appeared, redirect happened, new content loaded — go back to Step 1. Re-scan. Re-discover. The DOM may have changed entirely.
+    </div>
+  </section>
+
+  <!-- Profile Persistence -->
+  <section>
+    <div class="section-label">Rule 5 — Auth & Sessions</div>
+    <h2>Persistent Profiles via OpenClaw</h2>
+    <div class="profile-grid">
+      <div class="card">
+        <h3><span class="icon">🗂️</span> Profile Storage</h3>
+        <ul>
+          <li><span class="dot"></span>Profiles live at <code>~/.openclaw/&lt;platform&gt;-chrome-profile</code></li>
+          <li><span class="dot"></span>Uses <code>chromium.launchPersistentContext(profileDir)</code></li>
+          <li><span class="dot"></span>Cookies, sessions, auth tokens persist across runs</li>
+          <li><span class="dot"></span>No re-login on next script execution</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3><span class="icon">🚫</span> Never Ephemeral</h3>
+        <ul>
+          <li><span class="dot"></span>Never launch a fresh browser for authenticated flows</li>
+          <li><span class="dot"></span>Closing a persistent profile destroys session state</li>
+          <li><span class="dot"></span>For multi-step OAuth/OTP: also save cookies to <code>tools/_cookies/{domain}.json</code></li>
+          <li><span class="dot"></span>Reuse browser across multiple platforms in the same pipeline run</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3><span class="icon">🔒</span> Browser Close Rule</h3>
+        <ul>
+          <li><span class="dot"></span><code>browser.close()</code> is the absolute last line</li>
+          <li><span class="dot"></span>Only called after ALL objectives verified with screenshots</li>
+          <li><span class="dot"></span>On failure mid-flow: stay in browser and debug</li>
+          <li><span class="dot"></span>When in doubt — leave it open</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Selector Registry -->
+  <section>
+    <div class="section-label">Rule 3 — Discovery Engine</div>
+    <h2>SelectorRegistry — How Discovery Works</h2>
+    <div class="registry-flow">
+      <div class="flow-step">
+        <div class="flow-num">1</div>
+        <div class="flow-content">
+          <h4>Cache Check</h4>
+          <p>If a previously-verified selector is still visible, reuse it immediately. Zero network cost.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">2</div>
+        <div class="flow-content">
+          <h4>Candidate List</h4>
+          <p>Try provided candidate selectors in order — first visible candidate wins.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">3</div>
+        <div class="flow-content">
+          <h4>Screenshot the Winner</h4>
+          <p>Screenshot the winning element → save to registry JSON with <code>verified_at</code> and <code>url_context</code>.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">4</div>
+        <div class="flow-content">
+          <h4>Semantic DOM Fallback</h4>
+          <p>All candidates failed? Run <code>DOM_SCANNER</code> on the full page — score every visible element by keyword matching against <code>semanticHint</code>. Build a precise selector from the best match.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">5</div>
+        <div class="flow-content">
+          <h4>Failure Dump</h4>
+          <p>Total failure? Write full DOM JSON to <code>~/.openclaw/selector-registry/failures/</code> for forensic inspection.</p>
+        </div>
+      </div>
+    </div>
+
+    <br/>
+    <p style="color:var(--muted); font-size:13px; margin-bottom: 16px;">Persistent selector dictionary stored at <code style="background:var(--code-bg);border:1px solid var(--border);border-radius:4px;padding:1px 6px;font-size:12px;color:var(--accent)">~/.openclaw/selector-registry/&lt;site&gt;.json</code> — reused by all future scripts on that site.</p>
+
+    <pre><span class="cmt">// Import once per script</span>
+<span class="kw">const</span> <span class="var">SelectorRegistry</span> = <span class="fn">require</span>(<span class="str">'./selector-registry'</span>);
+<span class="kw">const</span> <span class="var">reg</span> = <span class="kw">new</span> <span class="fn">SelectorRegistry</span>(<span class="str">'gumroad'</span>); <span class="cmt">// one instance per site</span>
+
+<span class="cmt">// ✅ RIGHT — all selectors through the registry</span>
+<span class="kw">const</span> <span class="var">sel</span> = <span class="kw">await</span> <span class="var">reg</span>.<span class="fn">discover</span>(<span class="var">page</span>, <span class="str">'email_field'</span>, {
+  candidates: [<span class="str">'input[name="email"]'</span>, <span class="str">'input[type="email"]'</span>],
+  semanticHint: <span class="str">'email login username'</span>,
+});
+
+<span class="cmt">// ❌ WRONG — never write bare locators inline</span>
+<span class="cmt">// page.locator('input[name="email"]')</span></pre>
+  </section>
+
+  <!-- Verification -->
+  <section>
+    <div class="section-label">Rule 4 — Proof Trail</div>
+    <h2>Triple Verification on Every Action</h2>
+    <pre><span class="cmt">// Triple verification — every fill follows this pattern</span>
+<span class="kw">const</span> <span class="var">el</span> = <span class="kw">await</span> <span class="var">page</span>.<span class="fn">locator</span>(<span class="var">sel</span>);
+
+<span class="cmt">// 1. Screenshot BEFORE</span>
+<span class="kw">await</span> <span class="fn">ssEl</span>(<span class="var">page</span>, <span class="var">sel</span>, <span class="str">'headline_BEFORE'</span>);
+
+<span class="cmt">// 2. Fill value</span>
+<span class="kw">await</span> <span class="var">el</span>.<span class="fn">fill</span>(<span class="var">targetValue</span>);
+
+<span class="cmt">// 3. Screenshot AFTER</span>
+<span class="kw">await</span> <span class="fn">ssEl</span>(<span class="var">page</span>, <span class="var">sel</span>, <span class="str">'headline_AFTER'</span>);
+
+<span class="cmt">// 4. Verify value stuck — programmatic check</span>
+<span class="kw">const</span> <span class="var">got</span> = <span class="kw">await</span> <span class="var">el</span>.<span class="fn">inputValue</span>();
+<span class="kw">if</span> (<span class="var">got</span>.trim() !== <span class="var">targetValue</span>.trim()) {
+  <span class="var">reg</span>.<span class="fn">strike</span>(<span class="str">'headline'</span>, <span class="str">'fill failed — value did not stick'</span>);
+}</pre>
+  </section>
+
+  <!-- All Rules -->
+  <section>
+    <div class="section-label">Complete Reference</div>
+    <h2>All 11 Rules</h2>
+    <div class="rules-grid">
+
+      <div class="rule-row critical">
+        <div class="rule-num">Rule 0</div>
+        <div class="rule-body">
+          <h3>Golden Sequence — SCAN → DISCOVER → SS → ACT → SS → VERIFY</h3>
+          <p>Every single interaction follows this sequence. On any page state change, restart from SCAN.</p>
+        </div>
+      </div>
+
+      <div class="rule-row critical">
+        <div class="rule-num">Rule 1</div>
+        <div class="rule-body">
+          <h3>Never Close the Browser Until Fully Verified</h3>
+          <p><code>browser.close()</code> is the absolute last line — only after all objectives are verified with screenshots. A lingering browser costs nothing; a destroyed session costs everything.</p>
+        </div>
+      </div>
+
+      <div class="rule-row important">
+        <div class="rule-num">Rule 2</div>
+        <div class="rule-body">
+          <h3>No Hard Reloads</h3>
+          <p>Never use <code>page.reload()</code>. Use <code>waitForSelector()</code> or <code>waitForLoadState("networkidle")</code>. Add human-paced waits (800–1800ms) between actions.</p>
+        </div>
+      </div>
+
+      <div class="rule-row critical">
+        <div class="rule-num">Rule 3</div>
+        <div class="rule-body">
+          <h3>SelectorRegistry for All Selectors — No Exceptions</h3>
+          <p>Every selector — including file inputs, buttons, labels, hidden inputs — goes through <code>reg.discover()</code>. Never write bare <code>page.locator()</code> inline.</p>
+        </div>
+      </div>
+
+      <div class="rule-row critical">
+        <div class="rule-num">Rule 4</div>
+        <div class="rule-body">
+          <h3>Screenshot at Every Decision Point</h3>
+          <p>Before action, after action, and after verification. Screenshots are the proof trail. Triple verification on every fill and upload.</p>
+        </div>
+      </div>
+
+      <div class="rule-row critical">
+        <div class="rule-num">Rule 5</div>
+        <div class="rule-body">
+          <h3>Persist Browser State — Persistent Profiles Only</h3>
+          <p>Use <code>chromium.launchPersistentContext(profileDir)</code>. Profiles at <code>~/.openclaw/&lt;platform&gt;-chrome-profile</code>. Never launch ephemeral browsers for authenticated flows.</p>
+        </div>
+      </div>
+
+      <div class="rule-row important">
+        <div class="rule-num">Rule 6</div>
+        <div class="rule-body">
+          <h3>3-Strike Rule — Stop and Report After 3 Failures</h3>
+          <p>After 3 failures on any field: stop the sub-step entirely. Generate a failure report with DOM dump, screenshots, tried selectors, and error messages. Never retry blindly.</p>
+        </div>
+      </div>
+
+      <div class="rule-row critical">
+        <div class="rule-num">Rule 7</div>
+        <div class="rule-body">
+          <h3>Re-scan After Every Page State Change</h3>
+          <p>After any click, navigation, upload, save, or scroll that might change the DOM — re-scan before the next action. This rule is the most commonly violated.</p>
+        </div>
+      </div>
+
+      <div class="rule-row standard">
+        <div class="rule-num">Rule 8</div>
+        <div class="rule-body">
+          <h3>Background Browsers for Multi-Step Flows</h3>
+          <p>For flows requiring human-like delays (OTP emails, OAuth redirects), launch the browser as a background process. Prevents timeout kills from destroying the session.</p>
+        </div>
+      </div>
+
+      <div class="rule-row standard">
+        <div class="rule-num">Rule 9</div>
+        <div class="rule-body">
+          <h3>Fill All Available Fields — 100% Completeness</h3>
+          <p>Scan the page to discover every field and image upload slot. If a field exists and data is available, it must be filled. Don't skip elements because they're hard.</p>
+        </div>
+      </div>
+
+      <div class="rule-row important">
+        <div class="rule-num">Rule 10</div>
+        <div class="rule-body">
+          <h3>CAPTCHA — Always Solve Automatically via Audio</h3>
+          <p>Never wait for manual solve. Always switch to audio challenge mode. Use the shared <code>captcha-solver.js</code> — download MP3 → convert → transcribe via Windows Speech → submit. Never write inline CAPTCHA handlers.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Why It Exists -->
+  <section>
+    <div class="section-label">Origin</div>
+    <h2>Real Failures — Why These Rules Exist</h2>
+    <div class="failures-grid">
+      <div class="failure-card">
+        <h4>Hardcoded Selectors</h4>
+        <p>Inline selectors like <code>input[accept=".jpeg,.jpg,.png"]</code> break when the site changes its DOM structure.</p>
+      </div>
+      <div class="failure-card">
+        <h4>No Re-scan After Click</h4>
+        <p>Clicked a button that revealed a file input, then tried to discover the new element from stale DOM state.</p>
+      </div>
+      <div class="failure-card">
+        <h4>Missing Upload Slots</h4>
+        <p>Didn't scan for all image upload areas — missed that a platform had a separate logo/icon slot.</p>
+      </div>
+      <div class="failure-card">
+        <h4>No Verification After Upload</h4>
+        <p>Uploaded a file but didn't screenshot or re-scan to confirm the preview image actually appeared.</p>
+      </div>
+      <div class="failure-card">
+        <h4>Browser Closed Per-Platform</h4>
+        <p>Lost auth state by closing the browser after each platform — forced re-login on every run.</p>
+      </div>
+      <div class="failure-card">
+        <h4>Manual CAPTCHA Waiting</h4>
+        <p>Scripts waited 60–180s hoping the user would solve it, or just clicked the checkbox and hoped for the best.</p>
+      </div>
+      <div class="failure-card">
+        <h4>Browser Closed Before Verification</h4>
+        <p>Job appeared complete but changes hadn't persisted. No screenshot proof. No way to confirm.</p>
+      </div>
+      <div class="failure-card">
+        <h4>Inline CAPTCHA Selectors</h4>
+        <p>Hardcoded <code>iframe[title*="reCAPTCHA"]</code> instead of routing through the shared <code>captcha-solver.js</code> module.</p>
+      </div>
+    </div>
+    <div class="seq-note" style="margin-top:16px;">
+      <strong>These are now rules precisely because they were violated.</strong> Every rule is a documented scar.
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>Golden Navigation System · <a href="https://shellsage-ai.github.io">shellsage-ai.github.io</a> · Non-negotiable. No exceptions. No shortcuts.</p>
+</footer>
+
+</body>
+</html>
